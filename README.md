@@ -22,7 +22,7 @@ This monorepo is used for building an open document format called "symthink". Th
 The problem so aptly described by Steve Teixeira has caused such extreme political polarization that governments may be unable to fix it. But developers and designers do have the power to fix it with:
 
 - Decentralized social networking protocols (e.g. ActivityPub).
-- Open source algorithms for metrics that promote or supress online speech.
+- Open source algorithms for metrics used to promote/supress user content.
 - Open source UI web components that support collective understanding and decision making.
 
 This project targets the latter two.
