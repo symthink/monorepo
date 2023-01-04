@@ -1,0 +1,30 @@
+:host {
+  background: var(--background);
+  position : relative;
+  bottom   : -6px;
+  border-radius: 0px 50% 50% 50%;
+  transform: rotate(-45deg);
+  margin-left: 7px;
+  display: inline-flex;
+}
+
+ion-icon {
+  font-size: 1.1em;
+  padding: 3px 0px 3px 5px;
+  color    : var(--color);
+  transform: rotate(45deg);
+}
+ion-icon[name='add'] {
+  padding: 3px 3px 3px 3px;
+}
+div {
+  font-size: 0.8em;
+  color: var(--color);
+  transform: rotate(45deg);
+  width: 31px;
+  height: 31px;
+  padding: 2px 2px 2px 2px;
+  margin: 0px 0px 2px 1px;
+  text-align: center;
+}
+

@@ -1,0 +1,69 @@
+:host {
+  margin : 0;
+}
+
+.card-text {
+  position: relative;
+  min-height: 3em;
+  border-radius: 3px;
+  margin-top: 10px;
+  z-index: 100;
+  white-space: pre-line;
+  line-height: 1.7em;
+  padding: 0px 10px 0px 10px;
+  border-left: 3px;
+  border-right: 3px;
+  overflow-wrap: anywhere;
+}
+
+// placeholder
+ion-toolbar {
+  --padding-start: 85px;
+  --background: rgba(var(--ion-color-secondary-rgb), 0.8);
+  --min-height: 55px;
+
+  ion-item {
+    --background: transparent;
+    --padding-start: 0px;
+    --color: white;
+  }
+}
+.card-content {
+  padding: 5px 5px 0px 5px;
+}
+
+.empty-card {
+  position: absolute;
+  top: 42%;
+  left: 41%;
+  border: 3px solid;
+  padding: 10px;
+  border-radius: 10px;
+  font-weight: bold;
+  opacity: 0.5;
+}
+
+// d2-card-btn component
+d2-card-btn {
+  --background: var(--ion-color-secondary);
+  --color: var(--ion-color-primary);
+
+  &.selected {
+    --background: var(--ion-color-primary);
+    --color: var(--ion-color-secondary);
+  }
+  &.start {
+    float: left;
+    margin: 0px 10px -8px 8px;
+  }
+  &.middle {
+    margin: 0px 10px 0px 17px;
+  }
+  &.end {
+    margin: 1px 10px 0px 0px;
+    float: right;
+  }
+  &[data-cid='newcard'] {
+    border-radius: 50%;
+  }
+}

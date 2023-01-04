@@ -1,0 +1,135 @@
+@import '../../../../../node_modules/swiper/swiper-bundle.min.css';
+
+:host {
+  display: block;
+}
+
+.toolbar-top, .toolbar-mid {
+  --padding-start: 15px;
+  /* --padding-end: 10px; */
+}
+.toolbar-mid {
+  height: 82px;
+}
+.toolbar-top ion-text {
+  font-weight: 600;
+}
+.toolbar-mid ion-text {
+  font-weight: 400;
+  font-size: 1.1em;
+  line-height: 1.2em;
+}
+
+.swiper-container {
+  padding-top: 10px;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.swiper-wrapper {
+  height: 205px;
+}
+
+.swiper-slide {
+  max-height: 90%;
+  overflow-y: hidden;
+  width: 95vw!important;
+  margin: 0px 10px 0px 10px;
+}
+
+.keys {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-evenly;
+}
+
+ion-chip {
+  margin: 8px;
+}
+
+.eg-toolbar {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 56px;
+}
+.eg-toolbar button {
+  height: 50px;
+  margin-top: auto;
+  margin-bottom: auto;
+}
+
+.swiper-slide div {
+  font-size: 1.1em;
+  font-style: italic;
+}
+.swiper-slide iframe {
+  margin: auto;
+}
+ion-button {
+  height: 50px!important;
+}
+.middle-btn {
+  margin: -8px auto 0px !important;
+  --border-radius: 15px !important;
+  --padding-start: 15px !important;
+  --padding-end: 15px !important;
+  --padding-top: 15px !important;
+  --padding-bottom: 15px !important;
+  width: 110px;
+  height: 35px!important;
+}
+.eg-nav-button {
+  width: 90px;
+  color: var(--ion-color-active);
+}
+.footer {
+  width: 100%;
+  flex: 1;
+}
+h4 {
+  margin-block-start: 0.5em;
+  margin-block-end: 0.5em;
+}
+.fallacy-keys {
+  position: absolute;
+  display: block;
+  width: 100%;
+  background-color: white;
+  border-top: 1px solid #cccccc;
+  -moz-transition: height .5s;
+  -ms-transition: height .5s;
+  -o-transition: height .5s;
+  -webkit-transition: height .5s;
+  transition: height .5s;
+  height: 204px;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 10000000;
+  overflow: hidden;
+}
+.measuring-wrapper {
+  height: 204px;
+}
+.measuring-wrapper table {
+  margin: auto;
+}
+.icon-text-btn {
+  height: 50px;
+  background: transparent;
+  border: 0;
+  border-radius: 0;
+  font-family: inherit;
+  font-style: inherit;
+  font-variant: inherit;
+  line-height: 1;
+  text-transform: none;
+  cursor: pointer;
+  -webkit-appearance: button;
+}
+.icon-text-btn ion-icon {
+  font-size: 2em;
+}

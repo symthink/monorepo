@@ -1,0 +1,286 @@
+:host {
+  display              : block;
+  height               : 100%;
+  font-family          : var(--ion-font-family);
+  font-size            : var(--font-size, 20px) !important;
+  font-weight          : var(--font-weight, 300);
+  letter-spacing       : var(--letter-spacing, normal);
+  --fab-visibility     : var(--visibility);
+  --ion-item-background: var(--ion-background-color);
+}
+
+// for ipad and desktop maybe
+// ion-content::part(scroll) {
+//   max-width: 600px;
+//   margin: auto !important;
+// }
+ion-fab.nav-top-back ion-fab-button {
+  --background: linear-gradient(to bottom, #aeaeae, #d4d4d6);
+  --color     : black;
+
+  ion-icon.second-chevron {
+    margin-left: -22px;
+  }
+}
+
+// maybe deprecated if no slider opts
+[color=secondary] {
+  background-color: var(--ion-color-secondary);
+  color           : var(--ion-color-secondary-contrast);
+}
+
+[color=primary] {
+  background-color: var(--ion-color-primary);
+  color           : var(--ion-color-primary-contrast);
+}
+
+[color=tertiary] {
+  background-color: var(--ion-color-tertiary);
+  color           : var(--ion-color-tertiary-contrast);
+}
+
+
+[color=danger] {
+  background-color: var(--ion-color-danger);
+  color           : var(--ion-color-danger-contrast);
+}
+
+[color=warn] {
+  background-color: var(--ion-color-warning);
+  color           : var(--ion-color-warning-contrast);
+  width           : 70px;
+}
+
+[color=medium] {
+  background-color: var(--ion-color-medium);
+  color           : var(--ion-color-medium-contrast);
+}
+
+ion-button.add-source-btn {
+  background  : transparent;
+  color       : currentColor;
+  --box-shadow: 0 2px 4px darkslategrey;
+}
+
+.center {
+  text-align: center;
+}
+
+ion-fab-button[color=primary] {
+  --ion-color-base: #cec8c8 !important;
+  color           : black;
+}
+
+// ion-item {
+//   --min-height: 50px;
+// }
+
+d2-icon {
+  margin-inline: 0px 0px;
+  align-self   : flex-start;
+}
+
+ion-reorder-group {
+  margin-left: 10px;
+  display: block;
+}
+/* Small devices (portrait tablets and large phones, 600px and up) */
+@media only screen and (min-width: 600px) {
+  ion-reorder-group {
+    margin-left: 16px;
+    display: block;
+  }  
+}
+
+ion-item.item-text {
+  align-items              : flex-start;
+  // --inner-padding-bottom: 10px;
+  --padding-start          : 0px;
+  --padding-top            : 5px;
+  --padding-end            : 0px;
+  --padding-bottom         : 0px;
+
+  ion-textarea {
+    --padding-top            : 0px;
+  }
+  ion-label {
+    margin: 0px 8px 0px 0px;
+    height: auto;
+  }
+}
+
+ion-label {
+  line-height: 1.8em !important;
+}
+
+
+ion-textarea {
+  textarea {
+    line-height: 1.8em;
+
+    height    : auto;
+    min-height: 65px;
+  }
+}
+
+.gtdot-ctr {
+  height : 100%;
+  padding: 0px 8px 0px 0px;
+}
+
+.gtdot {
+  font-size  : 2em;
+  margin-left: -1px;
+}
+
+.info-entity {
+  font-size: 1.2em;
+}
+
+.ion-text-wrap {
+  font-size: inherit !important;
+}
+
+.secondary-btn-theme {
+  --color     : black;
+  --background: linear-gradient(to bottom, #aeaeae, #d4d4d6);
+}
+
+.secondary-theme {
+  color     : black;
+  background: linear-gradient(to bottom, #aeaeae, #d4d4d6);
+}
+
+.dark {
+  .secondary-btn-theme {
+    --color     : white;
+    --background: linear-gradient(to bottom, #474747, #171717);
+  }
+
+  .secondary-theme {
+    color     : white;
+    background: linear-gradient(to bottom, #474747, #171717);
+  }
+}
+
+.placeholder {
+  font-weight: bold;
+  font-style : italic;
+  color      : var(--ion-color-step-400) !important;
+}
+
+.hidden {
+  display: none;
+}
+
+.selected {
+  --background: var(--selected-item);
+}
+
+.animatable {
+  position: absolute;
+  z-index : 10000;
+}
+
+.line-clamp {
+  // overflow          : hidden !important;
+  // text-overflow     : ellipsis !important;
+  // display           : -webkit-box !important;
+  // -webkit-line-clamp: 2;
+  // max-height        : 40px;
+  // -webkit-box-orient: vertical;
+  // line-height       : 20px !important;
+  white-space       : unset !important;
+}
+
+.sym-text * {
+  font-family   : var(--ion-font-family);
+  font-size     : var(--font-size, 20px) !important;
+  font-weight   : var(--font-weight, 300);
+  letter-spacing: var(--letter-spacing, normal);
+}
+
+ion-fab-button {
+  visibility: var(--fab-visibility);
+}
+
+// .single-line {
+//   padding: 0px 0 10px 0px;
+// }
+
+ion-icon[name=checkmark-outline] {
+  --ionicon-stroke-width: 64px;
+}
+
+ion-checkbox[hidden] {
+  display: none;
+}
+
+
+.info-icon {
+  color    : var(--ion-color-secondary);
+  font-size: 1.3em;
+}
+
+
+.fab-back-button {
+  left: 80px;
+}
+
+.card-type-icon {
+  margin    : 14px 10px;
+  align-self: start;
+}
+
+.sources {
+  font-size     : 110% !important;
+  font-weight   : bold;
+  text-align    : center;
+  text-transform: uppercase;
+  letter-spacing: 6px;
+  background    : var(--ion-color-light);
+  padding       : 9px;
+}
+
+
+ion-breadcrumb:last-child {
+  overflow     : hidden;
+  text-overflow: ellipsis;
+  white-space  : nowrap;
+  max-width    : 115px;
+}
+
+.sources-border {
+  ion-icon {
+    color: #c8c7cc;
+    ;
+    background: var(--background);
+  }
+
+  >div {
+    width     : 40px;
+    margin    : 0px auto 0px;
+    text-align: center;
+  }
+
+  hr {
+    border-top: 2px solid #c8c7cc;
+    width     : 90%;
+    margin-top: -23px;
+  }
+}
+
+.ico-bulb:before {
+  content: "\e900";
+  opacity: 0.6;
+}
+
+.ico-ques:before {
+  content: "\e901";
+  opacity: 0.6;
+}
+
+.ico-clm:before {
+  content: "\e902";
+  opacity: 0.6;
+}

@@ -1,0 +1,339 @@
+:host {
+  display: block;
+
+}
+
+
+*,
+*:before,
+*:after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+h1 {
+  color: #000000;
+  text-align: center;
+}
+h1, h2, h3, h4, h5, h6 {
+  text-align: left;
+
+}
+header {
+  display: flex;
+  height: 50px;
+}
+header > * {
+  flex: 1;
+  font-size: 1em;
+  margin-block-start: 0.5em;
+}
+header > *:first-child {
+  text-align: left;
+}
+header > *:last-child {
+  text-align: center;
+  margin-block-start: 0.8em;
+  font-size: larger;
+  color: black;
+}
+
+#wrapper {
+  background-color: #ffffff;
+}
+
+#container {
+  background-color: #ffffff;
+  float: left;
+  padding: 1em;
+  width: 100%;
+}
+
+ol.arg-outline,
+ol.arg-outline ol,
+ol.arg-outline li,
+ol.arg-outline li>div {
+  position: relative;
+}
+
+ol.arg-outline,
+ol.arg-outline ol {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+ol.arg-outline {
+  text-align: center;
+}
+
+ol.arg-outline ol {
+  padding-top: 1em;
+}
+
+ol.arg-outline ol:before,
+ol.arg-outline ol:after,
+ol.arg-outline li:before,
+ol.arg-outline li:after,
+ol.arg-outline>li>div:before,
+ol.arg-outline>li>div:after {
+  background-color: #9c9c9c;
+  content: '';
+  position: absolute;
+}
+
+ol.arg-outline ol>li {
+  padding: 1em 0 0 1em;
+}
+
+ol.arg-outline>li ol:before {
+  height: 1em;
+  left: 50%;
+  top: 0;
+  width: 3px;
+}
+
+ol.arg-outline>li ol:after {
+  height: 3px;
+  left: 3px;
+  top: 1em;
+  width: 50%;
+}
+
+ol.arg-outline>li ol>li:not(:last-of-type):before {
+  height: 3px;
+  left: 0;
+  top: 2em;
+  width: 1em;
+}
+
+ol.arg-outline>li ol>li:not(:last-of-type):after {
+  height: 100%;
+  left: 0;
+  top: 0;
+  width: 3px;
+}
+
+ol.arg-outline>li ol>li:last-of-type:before {
+  height: 3px;
+  left: 0;
+  top: 2em;
+  width: 1em;
+}
+
+ol.arg-outline>li ol>li:last-of-type:after {
+  height: 2em;
+  left: 0;
+  top: 0;
+  width: 3px;
+}
+
+ol.arg-outline li>div {
+  background-color: #fff;
+  border-radius: 10px;
+  min-height: 2em;
+  padding: 0.5em;
+}
+
+/*** PRIMARY ***/
+ol.arg-outline>li>div {
+  background-color: #00000021;
+  margin-right: 1em;
+}
+
+ol.arg-outline>li>div:before {
+  bottom: 2em;
+  height: 3px;
+  right: -1em;
+  width: 1em;
+}
+
+ol.arg-outline>li>div:first-of-type:after {
+  bottom: 0;
+  height: 2em;
+  right: -1em;
+  width: 3px;
+}
+
+ol.arg-outline>li>div+div {
+  margin-top: 1em;
+}
+
+ol.arg-outline>li>div+div:after {
+  height: calc(100% + 1em);
+  right: -1em;
+  top: -1em;
+  width: 3px;
+}
+
+/*** SECONDARY ***/
+ol.arg-outline>li>ol:before {
+  left: inherit;
+  right: 0;
+}
+
+ol.arg-outline>li>ol:after {
+  left: 0;
+  width: 100%;
+}
+
+ol.arg-outline>li>ol>li>div {
+  background-color: #00000026;
+}
+
+/*** TERTIARY ***/
+ol.arg-outline>li>ol>li>ol>li>div {
+  background-color: #00000031;
+}
+
+/*** QUATERNARY ***/
+ol.arg-outline>li>ol>li>ol>li>ol>li>div {
+  background-color: #00000036;
+}
+
+/*** QUINARY ***/
+ol.arg-outline>li>ol>li>ol>li>ol>li>ol>li>div {
+  background-color: #00000041;
+}
+
+/*** MEDIA QUERIES ***/
+@media only screen and (min-width: 64em) {
+
+  ol.arg-outline {
+    margin-left: -1em;
+    margin-right: -1em;
+  }
+
+  /* PRIMARY */
+  ol.arg-outline>li>div {
+    display: inline-block;
+    float: none;
+    margin: 0 1em 1em 1em;
+    vertical-align: bottom;
+  }
+
+  ol.arg-outline>li>div:only-of-type {
+    margin-bottom: 0;
+    width: calc((100% / 1) - 2em - 4px);
+  }
+
+  ol.arg-outline>li>div:first-of-type:nth-last-of-type(2),
+  ol.arg-outline>li>div:first-of-type:nth-last-of-type(2)~div {
+    width: calc((100% / 2) - 2em - 4px);
+  }
+
+  ol.arg-outline>li>div:first-of-type:nth-last-of-type(3),
+  ol.arg-outline>li>div:first-of-type:nth-last-of-type(3)~div {
+    width: calc((100% / 3) - 2em - 4px);
+  }
+
+  ol.arg-outline>li>div:first-of-type:nth-last-of-type(4),
+  ol.arg-outline>li>div:first-of-type:nth-last-of-type(4)~div {
+    width: calc((100% / 4) - 2em - 4px);
+  }
+
+  ol.arg-outline>li>div:first-of-type:nth-last-of-type(5),
+  ol.arg-outline>li>div:first-of-type:nth-last-of-type(5)~div {
+    width: calc((100% / 5) - 2em - 4px);
+  }
+
+  ol.arg-outline>li>div:before,
+  ol.arg-outline>li>div:after {
+    bottom: -1em !important;
+    top: inherit !important;
+  }
+
+  ol.arg-outline>li>div:before {
+    height: 1em !important;
+    left: 50% !important;
+    width: 3px !important;
+  }
+
+  ol.arg-outline>li>div:only-of-type:after {
+    display: none;
+  }
+
+  ol.arg-outline>li>div:first-of-type:not(:only-of-type):after,
+  ol.arg-outline>li>div:last-of-type:not(:only-of-type):after {
+    bottom: -1em;
+    height: 3px;
+    width: calc(50% + 1em + 3px);
+  }
+
+  ol.arg-outline>li>div:first-of-type:not(:only-of-type):after {
+    left: calc(50% + 3px);
+  }
+
+  ol.arg-outline>li>div:last-of-type:not(:only-of-type):after {
+    left: calc(-1em - 3px);
+  }
+
+  ol.arg-outline>li>div+div:not(:last-of-type):after {
+    height: 3px;
+    left: -2em;
+    width: calc(100% + 4em);
+  }
+
+  /* SECONDARY */
+  ol.arg-outline>li>ol {
+    display: flex;
+    flex-wrap: nowrap;
+  }
+
+  ol.arg-outline>li>ol:before,
+  ol.arg-outline>li>ol>li:before {
+    height: 1em !important;
+    left: 50% !important;
+    top: 0 !important;
+    width: 3px !important;
+  }
+
+  ol.arg-outline>li>ol:after {
+    display: none;
+  }
+
+  ol.arg-outline>li>ol>li {
+    flex-grow: 1;
+    padding-left: 1em;
+    padding-right: 1em;
+    padding-top: 1em;
+  }
+
+  ol.arg-outline>li>ol>li:only-of-type {
+    padding-top: 0;
+  }
+
+  ol.arg-outline>li>ol>li:only-of-type:before,
+  ol.arg-outline>li>ol>li:only-of-type:after {
+    display: none;
+  }
+
+  ol.arg-outline>li>ol>li:first-of-type:not(:only-of-type):after,
+  ol.arg-outline>li>ol>li:last-of-type:not(:only-of-type):after {
+    height: 3px;
+    top: 0;
+    width: 50%;
+  }
+
+  ol.arg-outline>li>ol>li:first-of-type:not(:only-of-type):after {
+    left: 50%;
+  }
+
+  ol.arg-outline>li>ol>li:last-of-type:not(:only-of-type):after {
+    left: 0;
+  }
+
+  ol.arg-outline>li>ol>li+li:not(:last-of-type):after {
+    height: 3px;
+    left: 0;
+    top: 0;
+    width: 100%;
+  }
+
+}
+
+.current {
+  box-shadow: -3px -3px 3px #9c9c9c;
+  background-color: yellow !important;
+}

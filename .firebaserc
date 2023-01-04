@@ -1,0 +1,24 @@
+{
+  "projects": {
+    "default": "symthink-io"
+  },
+  "targets": {
+    "symthink-io": {
+      "hosting": {
+        "symthink-app": [
+          "symthink"
+        ],
+        "symthink-staging": [
+          "symthink-staging"
+        ],
+        "symthink-io": [
+          "symthink-io"
+        ],
+        "symthink-org": [
+          "symthink-org"
+        ]
+      }
+    }
+  },
+  "etags": {}
+}

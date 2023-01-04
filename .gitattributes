@@ -1,0 +1,2 @@
+assets/logo-120x120.jpg filter=lfs diff=lfs merge=lfs -text
+assets/logo-1854x1183.png filter=lfs diff=lfs merge=lfs -text

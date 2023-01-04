@@ -1,0 +1,50 @@
+
+.circle-btn {
+  box-sizing: border-box;
+  position: relative;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  cursor: pointer;
+  outline: none;
+  border: none;
+  -webkit-tap-highlight-color: transparent;
+  background: transparent;
+  display: inline-block;
+  white-space: nowrap;
+  text-decoration: none;
+  vertical-align: baseline;
+  text-align: center;
+  margin: 0;
+  min-width: 64px;
+  line-height: 36px;
+  padding: 0 16px;
+  overflow: visible;
+  min-width: 0;
+  width: 40px;
+  height: 40px;
+  padding: 0;
+  flex-shrink: 0;
+}
+.circle {
+  border-radius: 50%;
+  border: 1px solid var(--ion-color-active);
+}
+/* icon or entity wrapper */
+.circle > span {
+  /* color: var(--ion-color-active); */
+  color: transparent;  
+  text-shadow: 0 0 0 var(--ion-color-active); 
+  display: inline-block;
+  font-size: 1.2em;
+}
+.circle-btn label {
+  color: var(--ion-color-active);
+  font-size: 1.2em;
+  text-transform: lowercase;
+  display: block;
+  position: absolute;
+  left: -10px;
+  width: 60px;
+}
