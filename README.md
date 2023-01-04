@@ -1,8 +1,6 @@
 # The Symthink Project
 
-Steve Teixeira, chief product officer at Mozilla was quoted by [The Guardian](https://www.theguardian.com/technology/2022/dec/21/firefox-and-tumblr-join-rush-to-support-mastodon-social-network) saying "We’re living through the consequences of 20 years of centralised, corporate-controlled social media, with a small oligopoly of large tech firms tightening their grip on the public square," ... “In private hands, our choice is limited, toxicity is rewarded, rage is called engagement, public trust is corroded, and basic human decency is often an afterthought."
-
-## TL;DR; Get Started
+## TLDR; Get Started
 
 ```sh
 git clone https://github.com/symthink/monorepo.git
@@ -18,6 +16,8 @@ npm run start:doc
 This monorepo is used for building an open document format called "symthink". The document format is a heirarchy of questions, claims and ideas, each no more than 250 characters. It is intended to incentivize integrity indirectly by using metrics measuring mindset, sources and depth. It will eventually have an an interactive component and integrate with social & fundraising platforms.
 
 ## Why it matters
+
+Steve Teixeira, chief product officer at Mozilla was quoted by [The Guardian](https://www.theguardian.com/technology/2022/dec/21/firefox-and-tumblr-join-rush-to-support-mastodon-social-network) saying "We’re living through the consequences of 20 years of centralised, corporate-controlled social media, with a small oligopoly of large tech firms tightening their grip on the public square," ... “In private hands, our choice is limited, toxicity is rewarded, rage is called engagement, public trust is corroded, and basic human decency is often an afterthought."
 
 The problem so aptly described by Steve Teixeira has caused such extreme political polarization that governments may be unable to fix it. But developers and designers do have the power to fix it with:
 
