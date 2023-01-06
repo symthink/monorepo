@@ -1,16 +1,9 @@
 // export * from './components';
-// export * as STModel from './core/interfaces';
-// export * from './core/argument.class';
+export * from './core/animations';
 export * from './core/symthink.class';
-// export * from './components/d2-card/d2-card';
-// export * from './components/d2-card-btn/d2-card-btn';
-// export * from './components/d2-learn-select';
-// export * from './components/d2-bullet/d2-bullet';
 export * from './components/d2-icon/d2-icon';
 export * from './components/d2-rcard/d2-rcard';
-// export * from './components/d2-list-popover/d2-list-popover';
 export * from './components/d2-symthink-doc/d2-symthink-doc';
 export * from './components/d2-src-metadata/d2-src-metadata';
 export * from './components/d2-metrics/d2-metrics';
 export * from './components/d2-metric/d2-metric';
-export * from './core/animations';
