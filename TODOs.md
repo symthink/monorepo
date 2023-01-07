@@ -3,15 +3,6 @@
 Critical Bugs:
 * Cannot add a PDF source (probably image too) due to metascraper error and Save button is never enabled.
 
-1. One complete example to post on home page
-
-2. Redo parts of video demo
-
-3. Meetup on Sat.
-
-4. Setup a trial project for co-founder matching (simultaneously with #3)
-
-    * https://github.com/symthink
 
 5. Complete Drive UI integration
 
