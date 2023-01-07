@@ -1,6 +1,7 @@
 # The Symthink Project
 
 ![alt hands puzzle gankyil overlay](https://github.com/symthink/monorepo/blob/main/hands-puzzle-gankyil-overlay.png?raw=true)
+
 [https://symthink.org](https://symthink.org)
 
 ## TLDR; Get Started
