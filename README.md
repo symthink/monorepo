@@ -21,7 +21,10 @@ This monorepo is used for building an open document format called "symthink". Th
 
 ## Why it matters
 
-Steve Teixeira, chief product officer at Mozilla was quoted by [The Guardian](https://www.theguardian.com/technology/2022/dec/21/firefox-and-tumblr-join-rush-to-support-mastodon-social-network) saying "We’re living through the consequences of 20 years of centralised, corporate-controlled social media, with a small oligopoly of large tech firms tightening their grip on the public square," ... “In private hands, our choice is limited, toxicity is rewarded, rage is called engagement, public trust is corroded, and basic human decency is often an afterthought."
+> We’re living through the consequences of 20 years of centralised, corporate-controlled social media, with a small oligopoly of large tech firms tightening their grip on the public square,
+> 
+> In private hands, our choice is limited, toxicity is rewarded, rage is called engagement, public trust is corroded, and basic human decency is often an afterthought.
+> - Steve Teixeira, chief product officer at Mozilla quoted in [The Guardian](https://www.theguardian.com/technology/2022/dec/21/firefox-and-tumblr-join-rush-to-support-mastodon-social-network)
 
 The problem so aptly described by Steve Teixeira has caused such extreme political polarization that government may be unable to fix it. But developers and designers do have the power to fix it with:
 
