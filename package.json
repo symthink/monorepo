@@ -23,7 +23,7 @@
     "save": "npm run clean ; git commit -am'wip' && git push",
     "release": "release-it",
     "release:ci": "release-it --ci",
-    "prebuild": "npm run release:ci && node pkg-version.js",
+    "prebuild": "npm run release && node pkg-version.js",
     "copydoctoio": "mkdir apps/dot-io/www/n ; mv apps/doc/www/build apps/dot-io/www/n/ ; mv apps/doc/www/assets apps/dot-io/www/n/",
     "deploy:org": "npm run build:org && firebase deploy --only hosting:symthink-org",
     "deploy:editor": "npm run build:editor && firebase deploy --only hosting:symthink-staging",

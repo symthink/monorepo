@@ -1,8 +1,6 @@
-# Next up
+# Next up in Monorepo
 
 Critical Bugs:
-* Cannot add a PDF source (probably image too) due to metascraper error and Save button is never enabled.
-
 
 5. Complete Drive UI integration
 
