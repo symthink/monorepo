@@ -26,7 +26,7 @@ This monorepo is used for building an open document format called "symthink". Th
 > In private hands, our choice is limited, toxicity is rewarded, rage is called engagement, public trust is corroded, and basic human decency is often an afterthought.
 > - Steve Teixeira, chief product officer at Mozilla quoted in [The Guardian](https://www.theguardian.com/technology/2022/dec/21/firefox-and-tumblr-join-rush-to-support-mastodon-social-network)
 
-The problem so aptly described by Steve Teixeira has caused such extreme political polarization that government may be unable to fix it. But developers and designers do have the power to fix it with:
+The problem so aptly described by Steve Teixeira has also resulted in such intense political polarization it has blocked legislative progress on several important issues, including the ability to impose any sort of regulation on Big Tech.  Social media toxicity, rage and corroded public trust will continue to deteriorate unless individual developers and designers take the initiative to work on some of the hard technical problems facing democracies' relationship with social media. For example:
 
 - Decentralized social networking protocols (e.g. ActivityPub).
 - Open source algorithms for metrics used to promote/supress user content.
