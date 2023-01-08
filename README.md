@@ -29,7 +29,7 @@ This monorepo is used for building an open document format called "symthink". Th
 The problem so aptly described by Steve Teixeira has also resulted in such intense political polarization it has blocked legislative progress on several important issues, including the ability to impose any sort of regulation on Big Tech.  Social media toxicity, rage and corroded public trust will continue to deteriorate unless individual developers and designers take the initiative to work on some of the hard technical problems facing democracies' relationship with social media. For example:
 
 - Decentralized social networking protocols (e.g. ActivityPub).
-- Open source algorithms for metrics used to promote/supress user content.
+- Fair & open source algorithms for metrics used to promote/supress user content.
 - Open source UI web components that support collective understanding and decision making.
 
 This project targets the latter two.
