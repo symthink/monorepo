@@ -1,0 +1,9 @@
+[submodule "apps/editor"]
+	path = apps/editor
+	url = https://github.com/symthink/editor.git
+[submodule "apps/org-home"]
+	path = apps/org-home
+	url = https://github.com/symthink/org-home.git
+[submodule "apps/io-site"]
+	path = apps/io-site
+	url = https://github.com/symthink/io-site.git
