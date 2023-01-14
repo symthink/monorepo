@@ -13,7 +13,7 @@ export class D2Icon {
   renderText() {
     let style = {};
     if (this.expandable) {
-      style = { position: 'absolute' };
+      // style = { position: 'absolute' };
     }
     switch (this.label) {
       case 'therefore':
@@ -31,8 +31,9 @@ export class D2Icon {
         style['font-size'] = '1.5em';
         style['opacity'] = '0.8';
         if (this.expandable) {
-          style['top'] = '8px';
-          style['left'] = '14.5px';
+          // style['top'] = '8px';
+          // style['left'] = '14.5px';
+          style['margin'] = '-35px 7px';
         } else {
           style['margin-top'] = '6px';
         }
@@ -42,8 +43,9 @@ export class D2Icon {
         style['font-family'] = 'monospace';
         style['opacity'] = '0.8';
         if (this.expandable) {
-          style['top'] = '11px';
-          style['left'] = '14.5px';
+          // style['top'] = '11px';
+          // style['left'] = '14.5px';
+          style['margin'] = '-34px 7px';
         } else {
           style['margin-top'] = '5px';
         }

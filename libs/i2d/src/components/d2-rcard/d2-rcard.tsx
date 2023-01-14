@@ -297,6 +297,12 @@ export class D2Rcard {
     }
   }
 
+  renderItemOptionsBtn(item: SymThink, ix: number) {
+    return <ion-button slot="start" fill="clear">
+      <ion-icon slot="icon-only" name="ellipsis-horizontal"></ion-icon>
+    </ion-button>
+  }
+
   renderLabel(txt?: string, type = ARG_TYPE.Claim) {
     if (!txt) return null;
     let label;
@@ -341,6 +347,7 @@ export class D2Rcard {
               lines="none"
               onClick={(ev) => this.onSupportItemClick(item, ev)}
             >
+              {this.renderItemOptionsBtn(item, index)}
               {this.renderItemIcon(item, index + 1)}
               {isEditable(item) && (
                 <ion-textarea
