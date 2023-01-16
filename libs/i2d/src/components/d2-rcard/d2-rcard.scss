@@ -82,14 +82,15 @@ d2-icon {
 
 ion-reorder-group {
   margin-left: 10px;
-  display: block;
+  display    : block;
 }
+
 /* Small devices (portrait tablets and large phones, 600px and up) */
 @media only screen and (min-width: 600px) {
   ion-reorder-group {
     margin-left: 16px;
-    display: block;
-  }  
+    display    : block;
+  }
 }
 
 ion-item.item-text {
@@ -101,8 +102,9 @@ ion-item.item-text {
   --padding-bottom         : 0px;
 
   ion-textarea {
-    --padding-top            : 0px;
+    --padding-top: 0px;
   }
+
   ion-label {
     margin: 0px 8px 0px 0px;
     height: auto;
@@ -190,7 +192,7 @@ ion-textarea {
   // max-height        : 40px;
   // -webkit-box-orient: vertical;
   // line-height       : 20px !important;
-  white-space       : unset !important;
+  white-space: unset !important;
 }
 
 .sym-text * {
@@ -283,4 +285,26 @@ ion-breadcrumb:last-child {
 .ico-clm:before {
   content: "\e902";
   opacity: 0.6;
+}
+
+.opts-btn {
+  --color        : transparent;
+  --background   : transparent;
+  --border-radius: 0px;
+  height         : -webkit-fill-available;
+  max-height     : 46px;
+  min-width      : 72px;
+}
+
+.opts-over {
+  --color           : var(--ion-color-primary) !important;
+  --color-hover     : var(--ion-color-primary) !important;
+  --background      : var(--ion-color-secondary) !important;
+  --background-hover: var(--ion-color-secondary) !important;
+}
+
+@media screen and (min-width: 600px) {
+  .opts-btn-slide {
+    display: none;
+  }
 }

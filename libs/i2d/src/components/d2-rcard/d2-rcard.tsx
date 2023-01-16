@@ -1,7 +1,4 @@
-import {
-  alertController,
-  IonTextareaCustomEvent
-} from '@ionic/core';
+import { alertController, IonTextareaCustomEvent } from '@ionic/core';
 import {
   Component,
   h,
@@ -22,7 +19,6 @@ import {
   ARG_TYPE,
 } from '../../core/symthink.class';
 // import getPercentageDifference from 'text-percentage-difference';
-
 
 @Component({
   tag: 'd2-rcard',
@@ -64,9 +60,7 @@ export class D2Rcard {
   disableSlideOpts(itm: SymThink) {
     if (!this.canEdit) return true;
     // else can edit
-    return (
-      !this.reOrderDisabled || !!(itm.selected && !itm.isKidEnabled())
-    );
+    return !this.reOrderDisabled || !!(itm.selected && !itm.isKidEnabled());
   }
 
   componentWillLoad() {
@@ -225,6 +219,10 @@ export class D2Rcard {
     this.modified();
   }
 
+  async onItemOptionsClick(item: SymThink) {
+    console.log('onItemOptionsClick', item);
+  }
+
   async onExtendItem(item: SymThink) {
     const enabled = item.enableKids();
     await this.listEl.closeSlidingItems();
@@ -274,7 +272,8 @@ export class D2Rcard {
   }
 
   renderItemIcon(item: SymThink, num: number) {
-    const useConcl = this.data.lastSupIsConcl && this.data.support.length === num;
+    const useConcl =
+      this.data.lastSupIsConcl && this.data.support.length === num;
     const label = useConcl ? 'therefore' : this.data.numeric ? num : 'bullet';
     if (item.url) {
       return (
@@ -283,24 +282,24 @@ export class D2Rcard {
         </div>
       );
     } else if (item.isKidEnabled()) {
-      return (
-        <d2-icon
-          slot="start"
-          expandable={true}
-          label={label}
-        ></d2-icon>
-      );
+      return <d2-icon slot="start" expandable={true} label={label}></d2-icon>;
     } else {
-      return (
-        <d2-icon slot="start" label={label}></d2-icon>
-      );
+      return <d2-icon slot="start" label={label}></d2-icon>;
     }
   }
 
   renderItemOptionsBtn(item: SymThink, ix: number) {
-    return <ion-button slot="start" fill="clear">
-      <ion-icon slot="icon-only" name="ellipsis-horizontal"></ion-icon>
-    </ion-button>
+    return (
+      <ion-button
+        class="opts-btn"
+        slot="end"
+        fill="solid"
+        shape="round"
+        onClick={() => this.onItemOptionsClick(item)}
+      >
+        <ion-icon slot="icon-only" name="ellipsis-horizontal"></ion-icon>
+      </ion-button>
+    );
   }
 
   renderLabel(txt?: string, type = ARG_TYPE.Claim) {
@@ -313,14 +312,14 @@ export class D2Rcard {
     }
     txt = txt.replace(trailingSympunkRegExp, '');
     let iconCls;
-    let cr = CardRules.find(cr => cr.type === type);
+    let cr = CardRules.find((cr) => cr.type === type);
     if (cr) {
       iconCls = cr.iconCls;
     }
     return [
       !!label && <b style={{ 'font-weight': 'bold' }}>{label}:</b>,
       ' ' + txt,
-      <span class={iconCls}></span>
+      <span class={iconCls}></span>,
     ];
   }
 
@@ -346,6 +345,20 @@ export class D2Rcard {
               }}
               lines="none"
               onClick={(ev) => this.onSupportItemClick(item, ev)}
+              onMouseEnter={(evt: MouseEvent) => {
+                const e = evt.target as HTMLElement;
+                const btn = e.querySelector(
+                  '.opts-btn'
+                ) as HTMLIonButtonElement;
+                btn.classList.add('opts-over');
+              }}
+              onMouseLeave={(evt: MouseEvent) => {
+                const e = evt.target as HTMLElement;
+                const btn = e.querySelector(
+                  '.opts-btn'
+                ) as HTMLIonButtonElement;
+                btn.classList.remove('opts-over');
+              }}
             >
               {this.renderItemOptionsBtn(item, index)}
               {this.renderItemIcon(item, index + 1)}
@@ -391,6 +404,13 @@ export class D2Rcard {
               side="start"
               onIonSwipe={() => this.onExtendItem(item)}
             >
+              <ion-item-option
+                color="tertiary"
+                class="secondary-btn-theme opts-btn-slide"
+                onClick={() => this.onItemOptionsClick(item)}
+              >
+                <ion-icon name="ellipsis-horizontal"></ion-icon>
+              </ion-item-option>
               <ion-item-option
                 expandable
                 class="secondary-btn-theme"
@@ -443,10 +463,11 @@ export class D2Rcard {
     const ta = evt.target as HTMLIonTextareaElement;
     const typ = CardRules.find((r) => r.type === item.type);
     if (typ && ta && ta.value && ta.value.length) {
-      let newVal = ta.value.replace(/[\r\n\t]+/g, ' ')
-                  .replace(trailingSympunkRegExp, '')
-                  .replace(/[\.\!\?]+$/, '')
-                   + typ.char;
+      let newVal =
+        ta.value
+          .replace(/[\r\n\t]+/g, ' ')
+          .replace(trailingSympunkRegExp, '')
+          .replace(/[\.\!\?]+$/, '') + typ.char;
       const m = newVal.matchAll(/[^\.\!\?]*[\.\!\?]/g);
       let nxt = m.next();
       const sentences = [];
@@ -503,7 +524,8 @@ export class D2Rcard {
               placeholder: !this.data.hasItemText(),
             }}
           >
-            {this.renderLabel(this.data.getCurrentItemText(), this.data.type) || this.textPh(this.data)}
+            {this.renderLabel(this.data.getCurrentItemText(), this.data.type) ||
+              this.textPh(this.data)}
             {this.data.isEvent && (
               <p>
                 <b>Date:</b> {this.data.eventDate?.toLocaleString()}
@@ -514,7 +536,7 @@ export class D2Rcard {
         {/* {this.data.selected && (
       <ion-icon name="create-outline" slot="end"></ion-icon>
     )} */}
-      </ion-item>, 
+      </ion-item>,
       this.data.hasKids() && this.renderSupportItems(),
       this.data.concl && (
         <ion-item
