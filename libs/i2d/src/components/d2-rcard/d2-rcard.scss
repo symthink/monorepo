@@ -288,23 +288,30 @@ ion-breadcrumb:last-child {
 }
 
 .opts-btn {
-  --color        : transparent;
-  --background   : transparent;
-  --border-radius: 0px;
-  height         : -webkit-fill-available;
-  max-height     : 46px;
-  min-width      : 72px;
-}
-
-.opts-over {
+  display           : none;
   --color           : var(--ion-color-primary) !important;
   --color-hover     : var(--ion-color-primary) !important;
   --background      : var(--ion-color-secondary) !important;
   --background-hover: var(--ion-color-secondary) !important;
+  --border-radius   : 0px;
+  height            : -webkit-fill-available;
+  min-height        : 36px;
+  max-height        : 46px;
+  min-width         : 72px;
+  margin-right      : 0px;
+}
+
+.item-over {
+  --inner-padding-end: 0px;
+
+  .opts-btn {
+    display: block;
+  }
 }
 
 @media screen and (min-width: 600px) {
   .opts-btn-slide {
     display: none;
   }
+
 }

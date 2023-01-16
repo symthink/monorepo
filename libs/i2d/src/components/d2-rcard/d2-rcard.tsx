@@ -219,8 +219,13 @@ export class D2Rcard {
     this.modified();
   }
 
-  async onItemOptionsClick(item: SymThink) {
-    console.log('onItemOptionsClick', item);
+  async onItemOptionsClick(item: SymThink, evt?: MouseEvent) {
+    if (evt) {
+      evt.stopPropagation();
+      evt.preventDefault();
+    }
+    this.itemAction.emit({ action: 'item-opts-clicked', value: item });
+
   }
 
   async onExtendItem(item: SymThink) {
@@ -295,7 +300,7 @@ export class D2Rcard {
         slot="end"
         fill="solid"
         shape="round"
-        onClick={() => this.onItemOptionsClick(item)}
+        onClick={(evt: MouseEvent) => this.onItemOptionsClick(item, evt)}
       >
         <ion-icon slot="icon-only" name="ellipsis-horizontal"></ion-icon>
       </ion-button>
@@ -347,20 +352,13 @@ export class D2Rcard {
               onClick={(ev) => this.onSupportItemClick(item, ev)}
               onMouseEnter={(evt: MouseEvent) => {
                 const e = evt.target as HTMLElement;
-                const btn = e.querySelector(
-                  '.opts-btn'
-                ) as HTMLIonButtonElement;
-                btn.classList.add('opts-over');
+                e.classList.add('item-over');
               }}
               onMouseLeave={(evt: MouseEvent) => {
                 const e = evt.target as HTMLElement;
-                const btn = e.querySelector(
-                  '.opts-btn'
-                ) as HTMLIonButtonElement;
-                btn.classList.remove('opts-over');
+                e.classList.remove('item-over');
               }}
             >
-              {this.renderItemOptionsBtn(item, index)}
               {this.renderItemIcon(item, index + 1)}
               {isEditable(item) && (
                 <ion-textarea
@@ -398,6 +396,7 @@ export class D2Rcard {
                   {item.isEvent && <p>{item.eventDate?.toLocaleString()}</p>}
                 </ion-label>
               )}
+              {this.canEdit && this.renderItemOptionsBtn(item, index)}
               <ion-reorder slot="end"></ion-reorder>
             </ion-item>
             <ion-item-options
