@@ -10,6 +10,11 @@ export enum REF_LABEL {
     TV = 'TV',
 }
 
+export enum FormatEnum {
+    Default = 1,
+    Review = 2, // puts 1st citation at top instead of byline
+}
+
 export interface IReference {
     id: string;
     label: REF_LABEL;
@@ -59,6 +64,7 @@ export interface ISymThink {
 export interface ISymThinkDocument extends ISymThink {
     $chemaver?: number;
     orphans?: ISymThink[];
+    format?: FormatEnum;
 }
 
 export enum StLogActionEnum {
@@ -444,6 +450,7 @@ export class SymThinkDocument extends SymThink {
     // $activePath: BehaviorSubject<SymThink[]>;
     orphans: ISymThink[];
     log$: Subject<{ action: number, ts: number }>;
+    format: FormatEnum = FormatEnum.Default;
 
     get title() {
         return this.label || this.text;
@@ -464,6 +471,7 @@ export class SymThinkDocument extends SymThink {
         // console.log('load() arg.$chemaver',arg.$chemaver)
         this.$chemaver = arg.$chemaver || SCHEMA_VERSION;
         this.orphans = arg.orphans || [];
+        this.format = arg.format;
         if (arg.$chemaver < SCHEMA_VERSION) {
             console.log('Schema migrate from %s to %s', arg.$chemaver, SCHEMA_VERSION);
         }
@@ -478,6 +486,7 @@ export class SymThinkDocument extends SymThink {
         const o: ISymThinkDocument = {
             id: this.id,
             $chemaver: SCHEMA_VERSION,
+            format: this.format || FormatEnum.Default,
             type: this.type,
             text: this.text,
             concl: this.concl,

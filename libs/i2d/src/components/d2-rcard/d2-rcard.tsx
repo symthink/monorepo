@@ -223,9 +223,10 @@ export class D2Rcard {
     if (evt) {
       evt.stopPropagation();
       evt.preventDefault();
+      this.itemAction.emit({ action: 'item-opts-clicked', value: item });
+    } else {
+      this.itemAction.emit({ action: 'item-opts-tapped', value: item });
     }
-    this.itemAction.emit({ action: 'item-opts-clicked', value: item });
-
   }
 
   async onExtendItem(item: SymThink) {
@@ -293,7 +294,7 @@ export class D2Rcard {
     }
   }
 
-  renderItemOptionsBtn(item: SymThink, ix: number) {
+  renderItemOptionsBtn(item: SymThink) {
     return (
       <ion-button
         class="opts-btn"
@@ -396,7 +397,7 @@ export class D2Rcard {
                   {item.isEvent && <p>{item.eventDate?.toLocaleString()}</p>}
                 </ion-label>
               )}
-              {this.canEdit && this.renderItemOptionsBtn(item, index)}
+              {this.canEdit && this.renderItemOptionsBtn(item)}
               <ion-reorder slot="end"></ion-reorder>
             </ion-item>
             <ion-item-options
