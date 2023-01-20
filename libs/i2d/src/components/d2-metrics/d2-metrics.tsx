@@ -210,7 +210,6 @@ export class D2Metrics {
   }
 
   render() {
-    console.log('this.modalClassName', this.modalClassName);
     const breakPoint = this.selected?.initBreakpoint || 0.25;
     return (
       <div class="container">
