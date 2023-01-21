@@ -1,0 +1,19 @@
+:host {
+  display: block;
+  margin: 0.2em 1.5em 0em;
+}
+.doc-title {
+  text-align: center;
+
+  h1 {
+    font-size: 32px;
+    font-weight: 500;
+    border-bottom: 1px solid #cccccc;
+    color: currentColor;
+    min-height: 18px;
+  }
+}
+.invisible {
+  visibility: hidden;
+  height: 8px;
+}

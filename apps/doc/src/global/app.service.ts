@@ -37,30 +37,6 @@ class AppService {
         return window.innerWidth >= 600;
     }
 
-    get created() {
-        if (this.docMeta.timeCreated) {
-            return dayjs(this.docMeta.timeCreated).format('MMMM D, YYYY');
-        } else {
-            return '';
-        }
-    }
-
-    get updated() {
-        if (this.docMeta.updated) {
-            return dayjs(this.docMeta.updated).fromNow();
-        } else {
-            return '';
-        }
-    }
-
-    get author() {
-        if (this.docMeta.author) {
-            return this.docMeta.author;
-        } else {
-            return '';
-        }
-    }
-
     hideSplashScreen() {
         const splashEl = document.querySelector('#splash-loading');
         if (splashEl) {

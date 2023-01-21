@@ -196,46 +196,21 @@ export class D2Rcard {
   }
 
   async onRemoveOrTrimItem(item: SymThink) {
-    if (item.canDisable()) {
-      item.disableKids();
-    } else {
-      if (item.hasKids()) {
-        const alert = await alertController.create({
-          cssClass: 'confirm-archive',
-          header: 'Confirm Remove',
-          message: `Click Continue to move this item and it's child items into this document's Recycling Bin.  It will be automatically deleted after 7 days.`,
-          buttons: ['Cancel', { text: 'Continue', role: 'archive' }],
-        });
-        await alert.present();
-        const { role } = await alert.onDidDismiss();
-        if (role === 'archive') {
-          item.makeOrphan();
-        }
-      } else {
-        item.makeOrphan();
-      }
-    }
-    await this.listEl.closeSlidingItems();
-    this.modified();
+    this.itemAction.emit({ action: 'slide-opt-trim', value: item });
+  }
+
+  async onExtendItem(item: SymThink) {
+    this.itemAction.emit({ action: 'slide-opt-extend', value: item });
   }
 
   async onItemOptionsClick(item: SymThink, evt?: MouseEvent) {
     if (evt) {
       evt.stopPropagation();
       evt.preventDefault();
-      this.itemAction.emit({ action: 'item-opts-clicked', value: item });
-    } else {
-      this.itemAction.emit({ action: 'item-opts-tapped', value: item });
     }
+    this.itemAction.emit({ action: 'item-opts-clicked', value: item });
   }
 
-  async onExtendItem(item: SymThink) {
-    const enabled = item.enableKids();
-    await this.listEl.closeSlidingItems();
-    if (enabled) {
-      this.modified();
-    }
-  }
 
   textPh(item: SymThink) {
     const info = CardRules.find((itm) => itm.type === item.type);

@@ -1,5 +1,5 @@
 import { Component, Event, EventEmitter, h, Prop, Host } from '@stencil/core';
-import { SymThink, SymThinkDocument } from '@symthink/i2d';
+import { FormatEnum, SymThink, SymThinkDocument } from '@symthink/i2d';
 import { AppSvc } from '../../global/app.service';
 
 @Component({
@@ -86,27 +86,6 @@ export class AppDoc {
     );
   }
 
-  renderRootSubheader() {
-    return [
-      <div
-        class={{ 'doc-title': true, invisible: !!!this.symthinkDoc.label }}
-        slot="card-top"
-      >
-        <h1>{this.symthinkDoc.label}</h1>
-      </div>,
-      <div class="by-line" slot="card-top">
-        By {AppSvc.author} {!AppSvc.isWidescreen && <br />}on {AppSvc.created}
-        <br />
-        updated {AppSvc.updated}
-      </div>,
-      <d2-metrics
-        slot="card-top"
-        symthinkDoc={this.symthinkDoc}
-        modalClassName="modal-sheet sym-text"
-      />,
-    ];
-  }
-
   render() {
     return (
       <Host>
@@ -123,7 +102,13 @@ export class AppDoc {
           </ion-toolbar>
         </ion-header>
         <d2-rcard data={this.data}>
-          {this.data.isRoot && this.renderRootSubheader()}
+          {this.data.isRoot && <d2-head-format 
+                  slot="card-top"
+                  symthinkDoc={this.symthinkDoc}
+                  created={AppSvc.docMeta.timeCreated}
+                  modified={AppSvc.docMeta.updated}
+                  displayName={AppSvc.docMeta.author}
+          />}
           {!this.data.isRoot && <div slot="card-top" class="spacer-row"></div>}
           {this.showTouchBack() && this.renderTouchBackBtn()}
         </d2-rcard>

@@ -15,33 +15,36 @@ export class D2Byline {
    * Symthink Document
    */
   @Prop() symthinkDoc: SymThinkDocument;
-  @Prop() created: number;
-  @Prop() modified: number;
+  @Prop() created: number|string;
+  @Prop() modified: number|string;
   @Prop() displayName: string;
 
   @Prop() refresh?: Subject<any | void>;
   @State() changed = false;
 
   componentWillLoad() {
-    console.log('d2-byline componentWillLoad');
-    console.debug(this.symthinkDoc);
+    if (this.refresh) {
+      this.refresh.subscribe(() => this.changed = !this.changed);
+    }
   }
 
   renderReviewByLine() {
-    const src = this.symthinkDoc.source[0];
+    const src = this.symthinkDoc.source && this.symthinkDoc.source[0];
+    const year = dayjs(this.modified).format('YYYY');
     if (src) {
-      const year = dayjs(this.modified).format('YYYY');
       return (
-        <Host class="by-line">
-          <div>
-            {this.displayName||'Created'} ({year}). [Symthink of <i>{src.title}</i>, by {src.author}]. {src.publisher}
+        <Host>
+          <div class="by-line">
+            {this.displayName||'Created'} ({year}). [Symthink&nbsp;of <i>{src.title}</i>, by&nbsp;{src.author}]. {src.publisher}
           </div>
         </Host>
       );
     } else {
       return (
-        <Host class="by-line">
-          <div>No Source</div>
+        <Host>
+          <div class="by-line">
+            {this.displayName||'Created'} ({year}). [Symthink&nbsp;of <i>_Source_</i>, by&nbsp;_Author_]. _Publisher_
+          </div>
         </Host>
       );
     }
@@ -55,9 +58,9 @@ export class D2Byline {
     }
     let author = this.displayName ? `By ${this.displayName} on` : 'Created';
     return (
-      <Host class="by-line">
-        <i>{author}&nbsp;{createdDate} <br />
-        {!!updatedDate && <span>Updated {updatedDate}</span>}</i>
+      <Host>
+        <div class="by-line"><i>{author}&nbsp;{createdDate} <br />
+        {!!updatedDate && <span>Updated {updatedDate}</span>}</i></div>
       </Host>
     );
   }

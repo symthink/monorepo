@@ -15,6 +15,26 @@ export namespace Components {
     }
     interface AppRoot {
     }
+    interface D2Byline {
+        "created": number|string;
+        "displayName": string;
+        "modified": number|string;
+        "refresh"?: Subject<any | void>;
+        /**
+          * Symthink Document
+         */
+        "symthinkDoc": SymThinkDocument;
+    }
+    interface D2HeadFormat {
+        "created": number|string;
+        "displayName": string;
+        "modified": number|string;
+        "refresh"?: Subject<any | void>;
+        /**
+          * Symthink Document
+         */
+        "symthinkDoc": SymThinkDocument;
+    }
     interface D2Icon {
         "expandable": boolean;
         "label": any;
@@ -84,6 +104,18 @@ declare global {
         prototype: HTMLAppRootElement;
         new (): HTMLAppRootElement;
     };
+    interface HTMLD2BylineElement extends Components.D2Byline, HTMLStencilElement {
+    }
+    var HTMLD2BylineElement: {
+        prototype: HTMLD2BylineElement;
+        new (): HTMLD2BylineElement;
+    };
+    interface HTMLD2HeadFormatElement extends Components.D2HeadFormat, HTMLStencilElement {
+    }
+    var HTMLD2HeadFormatElement: {
+        prototype: HTMLD2HeadFormatElement;
+        new (): HTMLD2HeadFormatElement;
+    };
     interface HTMLD2IconElement extends Components.D2Icon, HTMLStencilElement {
     }
     var HTMLD2IconElement: {
@@ -123,6 +155,8 @@ declare global {
     interface HTMLElementTagNameMap {
         "app-doc": HTMLAppDocElement;
         "app-root": HTMLAppRootElement;
+        "d2-byline": HTMLD2BylineElement;
+        "d2-head-format": HTMLD2HeadFormatElement;
         "d2-icon": HTMLD2IconElement;
         "d2-metric": HTMLD2MetricElement;
         "d2-metrics": HTMLD2MetricsElement;
@@ -138,6 +172,26 @@ declare namespace LocalJSX {
         "onDocAction"?: (event: AppDocCustomEvent<{ action; value }>) => void;
     }
     interface AppRoot {
+    }
+    interface D2Byline {
+        "created"?: number|string;
+        "displayName"?: string;
+        "modified"?: number|string;
+        "refresh"?: Subject<any | void>;
+        /**
+          * Symthink Document
+         */
+        "symthinkDoc"?: SymThinkDocument;
+    }
+    interface D2HeadFormat {
+        "created"?: number|string;
+        "displayName"?: string;
+        "modified"?: number|string;
+        "refresh"?: Subject<any | void>;
+        /**
+          * Symthink Document
+         */
+        "symthinkDoc"?: SymThinkDocument;
     }
     interface D2Icon {
         "expandable"?: boolean;
@@ -182,6 +236,8 @@ declare namespace LocalJSX {
     interface IntrinsicElements {
         "app-doc": AppDoc;
         "app-root": AppRoot;
+        "d2-byline": D2Byline;
+        "d2-head-format": D2HeadFormat;
         "d2-icon": D2Icon;
         "d2-metric": D2Metric;
         "d2-metrics": D2Metrics;
@@ -196,6 +252,8 @@ declare module "@stencil/core" {
         interface IntrinsicElements {
             "app-doc": LocalJSX.AppDoc & JSXBase.HTMLAttributes<HTMLAppDocElement>;
             "app-root": LocalJSX.AppRoot & JSXBase.HTMLAttributes<HTMLAppRootElement>;
+            "d2-byline": LocalJSX.D2Byline & JSXBase.HTMLAttributes<HTMLD2BylineElement>;
+            "d2-head-format": LocalJSX.D2HeadFormat & JSXBase.HTMLAttributes<HTMLD2HeadFormatElement>;
             "d2-icon": LocalJSX.D2Icon & JSXBase.HTMLAttributes<HTMLD2IconElement>;
             "d2-metric": LocalJSX.D2Metric & JSXBase.HTMLAttributes<HTMLD2MetricElement>;
             "d2-metrics": LocalJSX.D2Metrics & JSXBase.HTMLAttributes<HTMLD2MetricsElement>;
