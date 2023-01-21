@@ -8,6 +8,7 @@ import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
 import { SymThink } from "@symthink/i2d";
 import { ISource, SymThink as SymThink1, SymThinkDocument } from "../../../libs/i2d/src/core/symthink.class";
 import { Subject } from "rxjs";
+import { ActionSheetOptions } from "@ionic/core/dist/types/components/action-sheet/action-sheet-interface";
 export namespace Components {
     interface AppDoc {
         "data": SymThink;
@@ -61,6 +62,9 @@ export namespace Components {
         "domrect"?: DOMRect;
         "notify"?: Subject<string>;
         "reOrderDisabled": boolean;
+    }
+    interface D2Select {
+        "options": ActionSheetOptions;
     }
     interface D2SrcMetadata {
         "canEdit": boolean;
@@ -140,6 +144,12 @@ declare global {
         prototype: HTMLD2RcardElement;
         new (): HTMLD2RcardElement;
     };
+    interface HTMLD2SelectElement extends Components.D2Select, HTMLStencilElement {
+    }
+    var HTMLD2SelectElement: {
+        prototype: HTMLD2SelectElement;
+        new (): HTMLD2SelectElement;
+    };
     interface HTMLD2SrcMetadataElement extends Components.D2SrcMetadata, HTMLStencilElement {
     }
     var HTMLD2SrcMetadataElement: {
@@ -161,6 +171,7 @@ declare global {
         "d2-metric": HTMLD2MetricElement;
         "d2-metrics": HTMLD2MetricsElement;
         "d2-rcard": HTMLD2RcardElement;
+        "d2-select": HTMLD2SelectElement;
         "d2-src-metadata": HTMLD2SrcMetadataElement;
         "d2-symthink-doc": HTMLD2SymthinkDocElement;
     }
@@ -223,6 +234,9 @@ declare namespace LocalJSX {
         "onItemAction"?: (event: D2RcardCustomEvent<{ action; value; domrect?: DOMRect }>) => void;
         "reOrderDisabled"?: boolean;
     }
+    interface D2Select {
+        "options"?: ActionSheetOptions;
+    }
     interface D2SrcMetadata {
         "canEdit"?: boolean;
         "data"?: ISource;
@@ -242,6 +256,7 @@ declare namespace LocalJSX {
         "d2-metric": D2Metric;
         "d2-metrics": D2Metrics;
         "d2-rcard": D2Rcard;
+        "d2-select": D2Select;
         "d2-src-metadata": D2SrcMetadata;
         "d2-symthink-doc": D2SymthinkDoc;
     }
@@ -258,6 +273,7 @@ declare module "@stencil/core" {
             "d2-metric": LocalJSX.D2Metric & JSXBase.HTMLAttributes<HTMLD2MetricElement>;
             "d2-metrics": LocalJSX.D2Metrics & JSXBase.HTMLAttributes<HTMLD2MetricsElement>;
             "d2-rcard": LocalJSX.D2Rcard & JSXBase.HTMLAttributes<HTMLD2RcardElement>;
+            "d2-select": LocalJSX.D2Select & JSXBase.HTMLAttributes<HTMLD2SelectElement>;
             "d2-src-metadata": LocalJSX.D2SrcMetadata & JSXBase.HTMLAttributes<HTMLD2SrcMetadataElement>;
             "d2-symthink-doc": LocalJSX.D2SymthinkDoc & JSXBase.HTMLAttributes<HTMLD2SymthinkDocElement>;
         }

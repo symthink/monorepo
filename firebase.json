@@ -12,7 +12,7 @@
   "hosting": [
   {
     "target": "symthink-io",
-    "public": "apps/dot-io/www",
+    "public": "apps/io-site/www",
     "ignore": [
       "firebase.json",
       "**/.*",

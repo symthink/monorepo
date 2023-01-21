@@ -57,9 +57,9 @@
         }
       }
     },
-    "dot-io": {
-      "root": "apps/dot-io",
-      "sourceRoot": "apps/dot-io/src",
+    "io-site": {
+      "root": "apps/io-site",
+      "sourceRoot": "apps/io-site/src",
       "projectType": "application",
       "generators": {
         "@nxext/stencil:component": {
@@ -75,9 +75,9 @@
           ],
           "options": {
             "projectType": "application",
-            "tsConfig": "apps/dot-io/tsconfig.app.json",
-            "configPath": "apps/dot-io/stencil.config.ts",
-            "outputPath": "apps/dot-io"
+            "tsConfig": "apps/io-site/tsconfig.app.json",
+            "configPath": "apps/io-site/stencil.config.ts",
+            "outputPath": "apps/io-site"
           },
           "configurations": {
             "production": {
@@ -93,9 +93,9 @@
           ],
           "options": {
             "projectType": "application",
-            "tsConfig": "apps/dot-io/tsconfig.app.json",
-            "configPath": "apps/dot-io/stencil.config.ts",
-            "outputPath": "apps/dot-io",
+            "tsConfig": "apps/io-site/tsconfig.app.json",
+            "configPath": "apps/io-site/stencil.config.ts",
+            "outputPath": "apps/io-site",
             "serve": true,
             "watch": true
           }
@@ -107,7 +107,7 @@
           ],
           "options": {
             "lintFilePatterns": [
-              "apps/dot-io/**/*.{ts,tsx}"
+              "apps/io-site/**/*.{ts,tsx}"
             ]
           }
         }
