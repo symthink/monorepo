@@ -1,21 +1,30 @@
 {
   "npmScope": "symthink",
-  "affected": {
-    "defaultBase": "master"
+  "namedInputs": {
+    "default": ["{projectRoot}/**/*", "sharedGlobals"],
+    "sharedGlobals": ["{workspaceRoot}/babel.config.json"],
+    "production": ["default", "!{projectRoot}/.eslintrc.json"]
+  },
+  "targetDefaults": {
+    "build": {
+      "dependsOn": ["^build"],
+      "inputs": ["production", "^production"]
+    },
+    "lint": {
+      "inputs": ["default", "{workspaceRoot}/.eslintrc.json"]
+    }
   },
   "tasksRunnerOptions": {
     "default": {
       "runner": "nx/tasks-runners/default",
       "options": {
-        "cacheableOperations": [
-          "build",
-          "lint",
-          "test",
-          "e2e"
-        ],
+        "cacheableOperations": ["build", "lint", "test", "e2e"],
         "parallel": 1
       }
     }
+  },
+  "affected": {
+    "defaultBase": "master"
   },
   "generators": {
     "@nrwl/web:application": {
@@ -30,36 +39,5 @@
       "unitTestRunner": "jest"
     }
   },
-  "defaultProject": "core",
-  "$schema": "./node_modules/nx/schemas/nx-schema.json",
-  "targetDefaults": {
-    "build": {
-      "dependsOn": [
-        "^build"
-      ],
-      "inputs": [
-        "production",
-        "^production"
-      ]
-    },
-    "lint": {
-      "inputs": [
-        "default",
-        "{workspaceRoot}/.eslintrc.json"
-      ]
-    }
-  },
-  "namedInputs": {
-    "default": [
-      "{projectRoot}/**/*",
-      "sharedGlobals"
-    ],
-    "sharedGlobals": [
-      "{workspaceRoot}/babel.config.json"
-    ],
-    "production": [
-      "default",
-      "!{projectRoot}/.eslintrc.json"
-    ]
-  }
+  "defaultProject": "core"
 }

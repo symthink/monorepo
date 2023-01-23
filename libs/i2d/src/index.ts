@@ -10,3 +10,5 @@ export * from './components/d2-src-metadata/d2-src-metadata';
 export * from './components/d2-metrics/d2-metrics';
 export * from './components/d2-metric/d2-metric';
 export * from './components/d2-select/d2-select';
+export * from './components/d2-outline/d2-outline';
+

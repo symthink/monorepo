@@ -14,9 +14,7 @@
       "targets": {
         "build": {
           "executor": "@nxext/stencil:build",
-          "outputs": [
-            "{options.outputPath}"
-          ],
+          "outputs": ["{options.outputPath}"],
           "options": {
             "projectType": "application",
             "tsConfig": "apps/doc/tsconfig.app.json",
@@ -32,9 +30,7 @@
         },
         "serve": {
           "executor": "@nxext/stencil:build",
-          "outputs": [
-            "{options.outputPath}"
-          ],
+          "outputs": ["{options.outputPath}"],
           "options": {
             "projectType": "application",
             "tsConfig": "apps/doc/tsconfig.app.json",
@@ -46,69 +42,9 @@
         },
         "lint": {
           "executor": "@nrwl/linter:eslint",
-          "outputs": [
-            "{options.outputFile}"
-          ],
+          "outputs": ["{options.outputFile}"],
           "options": {
-            "lintFilePatterns": [
-              "apps/doc/**/*.{ts,tsx}"
-            ]
-          }
-        }
-      }
-    },
-    "io-site": {
-      "root": "apps/io-site",
-      "sourceRoot": "apps/io-site/src",
-      "projectType": "application",
-      "generators": {
-        "@nxext/stencil:component": {
-          "style": "scss"
-        }
-      },
-      "tags": [],
-      "targets": {
-        "build": {
-          "executor": "@nxext/stencil:build",
-          "outputs": [
-            "{options.outputPath}"
-          ],
-          "options": {
-            "projectType": "application",
-            "tsConfig": "apps/io-site/tsconfig.app.json",
-            "configPath": "apps/io-site/stencil.config.ts",
-            "outputPath": "apps/io-site"
-          },
-          "configurations": {
-            "production": {
-              "dev": false,
-              "prod": true
-            }
-          }
-        },
-        "serve": {
-          "executor": "@nxext/stencil:build",
-          "outputs": [
-            "{options.outputPath}"
-          ],
-          "options": {
-            "projectType": "application",
-            "tsConfig": "apps/io-site/tsconfig.app.json",
-            "configPath": "apps/io-site/stencil.config.ts",
-            "outputPath": "apps/io-site",
-            "serve": true,
-            "watch": true
-          }
-        },
-        "lint": {
-          "executor": "@nrwl/linter:eslint",
-          "outputs": [
-            "{options.outputFile}"
-          ],
-          "options": {
-            "lintFilePatterns": [
-              "apps/io-site/**/*.{ts,tsx}"
-            ]
+            "lintFilePatterns": ["apps/doc/**/*.{ts,tsx}"]
           }
         }
       }
@@ -126,9 +62,7 @@
       "targets": {
         "build": {
           "executor": "@nxext/stencil:build",
-          "outputs": [
-            "{options.outputPath}"
-          ],
+          "outputs": ["{options.outputPath}"],
           "options": {
             "projectType": "application",
             "tsConfig": "apps/editor/tsconfig.app.json",
@@ -144,9 +78,7 @@
         },
         "serve": {
           "executor": "@nxext/stencil:build",
-          "outputs": [
-            "{options.outputPath}"
-          ],
+          "outputs": ["{options.outputPath}"],
           "options": {
             "projectType": "application",
             "tsConfig": "apps/editor/tsconfig.app.json",
@@ -165,13 +97,9 @@
         },
         "lint": {
           "executor": "@nrwl/linter:eslint",
-          "outputs": [
-            "{options.outputFile}"
-          ],
+          "outputs": ["{options.outputFile}"],
           "options": {
-            "lintFilePatterns": [
-              "apps/editor/**/*.{ts,tsx}"
-            ]
+            "lintFilePatterns": ["apps/editor/**/*.{ts,tsx}"]
           }
         }
       }
@@ -188,9 +116,7 @@
       "targets": {
         "test": {
           "executor": "@nxext/stencil:test",
-          "outputs": [
-            "{options.outputPath}"
-          ],
+          "outputs": ["{options.outputPath}"],
           "options": {
             "projectType": "library",
             "tsConfig": "libs/i2d/tsconfig.lib.json",
@@ -200,6 +126,54 @@
         }
       },
       "tags": []
+    },
+    "io-site": {
+      "root": "apps/io-site",
+      "sourceRoot": "apps/io-site/src",
+      "projectType": "application",
+      "generators": {
+        "@nxext/stencil:component": {
+          "style": "scss"
+        }
+      },
+      "tags": [],
+      "targets": {
+        "build": {
+          "executor": "@nxext/stencil:build",
+          "outputs": ["{options.outputPath}"],
+          "options": {
+            "projectType": "application",
+            "tsConfig": "apps/io-site/tsconfig.app.json",
+            "configPath": "apps/io-site/stencil.config.ts",
+            "outputPath": "apps/io-site"
+          },
+          "configurations": {
+            "production": {
+              "dev": false,
+              "prod": true
+            }
+          }
+        },
+        "serve": {
+          "executor": "@nxext/stencil:build",
+          "outputs": ["{options.outputPath}"],
+          "options": {
+            "projectType": "application",
+            "tsConfig": "apps/io-site/tsconfig.app.json",
+            "configPath": "apps/io-site/stencil.config.ts",
+            "outputPath": "apps/io-site",
+            "serve": true,
+            "watch": true
+          }
+        },
+        "lint": {
+          "executor": "@nrwl/linter:eslint",
+          "outputs": ["{options.outputFile}"],
+          "options": {
+            "lintFilePatterns": ["apps/io-site/**/*.{ts,tsx}"]
+          }
+        }
+      }
     },
     "org-home": {
       "root": "apps/org-home",
@@ -214,9 +188,7 @@
       "targets": {
         "build": {
           "executor": "@nxext/stencil:build",
-          "outputs": [
-            "{options.outputPath}"
-          ],
+          "outputs": ["{options.outputPath}"],
           "options": {
             "projectType": "application",
             "tsConfig": "apps/org-home/tsconfig.app.json",
@@ -232,9 +204,7 @@
         },
         "serve": {
           "executor": "@nxext/stencil:build",
-          "outputs": [
-            "{options.outputPath}"
-          ],
+          "outputs": ["{options.outputPath}"],
           "options": {
             "projectType": "application",
             "tsConfig": "apps/org-home/tsconfig.app.json",
@@ -246,13 +216,9 @@
         },
         "lint": {
           "executor": "@nrwl/linter:eslint",
-          "outputs": [
-            "{options.outputFile}"
-          ],
+          "outputs": ["{options.outputFile}"],
           "options": {
-            "lintFilePatterns": [
-              "apps/org-home/**/*.{ts,tsx}"
-            ]
+            "lintFilePatterns": ["apps/org-home/**/*.{ts,tsx}"]
           }
         }
       }
