@@ -40,7 +40,7 @@ export interface ISource {
     description?: string;
     image?: URL;
     logo?: URL;
-  }
+}
 
 
 
@@ -91,7 +91,7 @@ export class SymThink {
     id: string;
     type: ARG_TYPE = ARG_TYPE.Question;
     // 1-2 words, max 40 chars? for outline or mind map displays
-    label: string; 
+    label: string;
     text: string;
     // A fully qualified URL to public Symthink document
     // https://symthink.io/n/SOMEID#nodeId
@@ -171,14 +171,14 @@ export class SymThink {
         }
         if (arg.source) {
             this.source = arg.source.map(s => {
-                const cp = {...s} as any;
-                try {cp.url = new URL(s.url)} catch(e) {}
-                try {cp.date = new Date(s.date)} catch(e) {}
-                return cp;            
+                const cp = { ...s } as any;
+                try { cp.url = new URL(s.url) } catch (e) { }
+                try { cp.date = new Date(s.date) } catch (e) { }
+                return cp;
             });
         }
         if (arg.url) {
-            try {this.url = new URL(arg.url)} catch(e) {}
+            try { this.url = new URL(arg.url) } catch (e) { }
         }
         if (arg.numeric) {
             this.numeric = arg.numeric;
@@ -277,7 +277,6 @@ export class SymThink {
         }
         return undefined;
     }
-
     getRoot() {
         let card: SymThink = this;
         while (card.parent) {
@@ -299,10 +298,10 @@ export class SymThink {
         };
         if (this.source) {
             o.source = this.source.map(s => {
-                const cp = {...s} as any;
-                try {cp.url = s.url.toString()} catch(e) {}
-                try {cp.date = s.date.toString()} catch(e) {}
-                return cp;                
+                const cp = { ...s } as any;
+                try { cp.url = s.url.toString() } catch (e) { }
+                try { cp.date = s.date.toString() } catch (e) { }
+                return cp;
             });
         }
         if (this.lastSupIsConcl !== undefined) {
@@ -365,20 +364,20 @@ export class SymThink {
         return n;
     }
 
-    getDepth(level=0, depth=0) {
+    getDepth(level = 0, depth = 0) {
         if (depth < level) {
             ++depth;
         }
         if (this.support?.length) {
             for (let card of this.support) {
                 ++level;
-                const {lev, dep} = card.getDepth(level, depth);
+                const { lev, dep } = card.getDepth(level, depth);
                 level = lev;
                 depth = dep;
                 --level;
             }
         }
-        return {lev:level, dep: depth};
+        return { lev: level, dep: depth };
     }
 
     get flatJson(): ISymThink {
@@ -437,10 +436,26 @@ export class SymThink {
         const doc = this.getRoot();
         if (doc.log$) {
             doc.log$.next({ action, ts: (new Date()).getTime() })
-        }    
+        }
     }
 
     get isRoot() { return !this.parent }
+
+    get shortText() {
+        if (this.label) {
+            return this.label;
+        }
+        else if (/^[^:]+:/.test(this.text)) {
+            let parts = this.text.split(':');
+            return parts.shift();
+        }
+        else {
+            if (this.text?.length > 50) {
+                return this.text.substring(0, 50).trim();
+            }
+            return this.text || '- empty -';
+        }
+    }
 }
 
 // a.k.a root card
@@ -499,10 +514,10 @@ export class SymThinkDocument extends SymThink {
         };
         if (this.source) {
             o.source = this.source.map(s => {
-                const cp = {...s} as any;
-                try {cp.url = s.url.toString()} catch(e) {}
-                try {cp.date = s.date.toString()} catch(e) {}   
-                return cp;             
+                const cp = { ...s } as any;
+                try { cp.url = s.url.toString() } catch (e) { }
+                try { cp.date = s.date.toString() } catch (e) { }
+                return cp;
             });
         }
         if (this.lastSupIsConcl !== undefined) {
@@ -544,7 +559,7 @@ export class SymThinkDocument extends SymThink {
             if (symthink) {
                 symthink.selected = false;
                 return true;
-            }    
+            }
         }
         return false;
     }
@@ -553,9 +568,9 @@ export class SymThinkDocument extends SymThink {
     }
     getTotalsByType() {
         return {
-            questionCnt: this.countDecendents(ARG_TYPE.Question) + (this.type === ARG_TYPE.Question?1:0),
-            claimCnt: this.countDecendents(ARG_TYPE.Claim) + (this.type === ARG_TYPE.Claim?1:0),
-            ideaCnt: this.countDecendents(ARG_TYPE.Idea) + (this.type === ARG_TYPE.Idea?1:0),
+            questionCnt: this.countDecendents(ARG_TYPE.Question) + (this.type === ARG_TYPE.Question ? 1 : 0),
+            claimCnt: this.countDecendents(ARG_TYPE.Claim) + (this.type === ARG_TYPE.Claim ? 1 : 0),
+            ideaCnt: this.countDecendents(ARG_TYPE.Idea) + (this.type === ARG_TYPE.Idea ? 1 : 0),
         };
     }
     getTotalSources(): number {
@@ -574,6 +589,7 @@ export class SymThinkDocument extends SymThink {
     //         return prevVal;
     //     }, start);
     // }
+
 }
 export interface ICardRules {
     type: ARG_TYPE;
