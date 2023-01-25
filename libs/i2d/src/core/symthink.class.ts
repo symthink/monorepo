@@ -450,10 +450,7 @@ export class SymThink {
             return parts.shift();
         }
         else {
-            if (this.text?.length > 50) {
-                return this.text.substring(0, 50).trim();
-            }
-            return this.text || '- empty -';
+            return this.text || ' ';
         }
     }
 }

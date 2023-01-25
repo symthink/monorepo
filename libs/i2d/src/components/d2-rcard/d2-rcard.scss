@@ -289,10 +289,13 @@ ion-breadcrumb:last-child {
 
 .opts-btn {
   display           : none;
-  --color           : var(--ion-color-primary) !important;
-  --color-hover     : var(--ion-color-primary) !important;
-  --background      : var(--ion-color-secondary) !important;
-  --background-hover: var(--ion-color-secondary) !important;
+  position: absolute;
+  right: 0px;
+  top: 2px;
+  --color: var(--ion-color-primary) !important;
+  --color-hover: var(--ion-color-primary) !important;
+  --background: rgba(var(--ion-color-secondary-rgb),0.8) !important;
+  --background-hover: rgba(var(--ion-color-secondary-rgb),0.8) !important;
   --border-radius   : 0px;
   height            : -webkit-fill-available;
   min-height        : 36px;
