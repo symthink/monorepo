@@ -135,6 +135,14 @@ export class SymThink {
             card = card.parent;
         }
         this.selected = true;
+        const ids = [];
+        let c: SymThink = this;
+        while (c.parent) {
+            ids.unshift(c.id);
+            c = c.parent;
+        }
+        const doc = (c as SymThinkDocument);
+        doc.selection$.next(ids);
     }
 
     get isEvent(): boolean { return this.type === ARG_TYPE.Event; }
@@ -251,17 +259,17 @@ export class SymThink {
         return true;
     }
 
-    getClickPath() {
-        let card: SymThink = { ...this };
-        card.active = true;
-        const path = [card];
-        while (card.parent) {
-            card = card.parent;
-            card.active = false;
-            path.unshift(card);
-        }
-        return path;
-    }
+    // getClickPath() {
+    //     let card: SymThink = { ...this };
+    //     card.active = true;
+    //     const path = [card];
+    //     while (card.parent) {
+    //         card = card.parent;
+    //         card.active = false;
+    //         path.unshift(card);
+    //     }
+    //     return path;
+    // }
 
     findChild(id: string) {
         return this.support.find((c) => c.id === id);
@@ -463,6 +471,7 @@ export class SymThinkDocument extends SymThink {
     orphans: ISymThink[];
     log$: Subject<{ action: number, ts: number }>;
     format: FormatEnum = FormatEnum.Default;
+    selection$ = new Subject<string[]>();
 
     get title() {
         return this.label || this.text;
@@ -560,9 +569,11 @@ export class SymThinkDocument extends SymThink {
         }
         return false;
     }
+
     getTotalNodes() {
         return this.countDecendents() + 1;
     }
+
     getTotalsByType() {
         return {
             questionCnt: this.countDecendents(ARG_TYPE.Question) + (this.type === ARG_TYPE.Question ? 1 : 0),
@@ -570,6 +581,7 @@ export class SymThinkDocument extends SymThink {
             ideaCnt: this.countDecendents(ARG_TYPE.Idea) + (this.type === ARG_TYPE.Idea ? 1 : 0),
         };
     }
+
     getTotalSources(): number {
         return this.countSources();
     }

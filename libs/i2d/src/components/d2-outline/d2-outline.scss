@@ -18,12 +18,17 @@
   fill: currentColor;
 }
 
-.QUE text {
-  fill: green;
+.type-que  {
+  circle, text {
+    fill: green;
+  }  
 }
-.IDA text {
-  fill: blue;
+.type-ida  {
+  circle, text {
+    fill: blue;
+  }  
 }
+
 
 .link {
   fill: none;

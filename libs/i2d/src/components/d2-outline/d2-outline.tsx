@@ -1,5 +1,5 @@
 // see:  https://codepen.io/brendandougan/pen/PpEzRp
-import { Component, h, Prop } from '@stencil/core';
+import { Component, h, Prop, Element } from '@stencil/core';
 import { tree, select } from 'd3';
 import { hierarchy } from 'd3-hierarchy';
 import { SymThink, SymThinkDocument } from '../../core/symthink.class';
@@ -10,6 +10,8 @@ import { SymThink, SymThinkDocument } from '../../core/symthink.class';
   shadow: false,
 })
 export class D2Outline {
+  @Element() el: HTMLElement;
+
   @Prop() doc: Promise<SymThinkDocument>;
 
   margin: { left: number; right: number; top: number; bottom: number };
@@ -32,6 +34,7 @@ export class D2Outline {
     function callback(obj: any) {
       const st: SymThink = this;
       if (st && st.shortText) {
+        obj.id = st.id;
         obj.name = st?.shortText;
         obj.type = st.type;
         if (st?.hasKids()) {
@@ -72,7 +75,6 @@ export class D2Outline {
 
     this.tree = tree().nodeSize([0, 30]);
 
-    // NEED TO CONVERT DATA HERE ---
     this.root = this.tree(hierarchy(this.data));
     this.root.each((d) => {
       d.name = d.id; //transferring name to a name variable
@@ -109,6 +111,7 @@ export class D2Outline {
     const func = this.getDebouncedResizeFunc();
     window.addEventListener('resize', func);
     console.log('d2-outline componentDidLoad');
+    //this.el.querySelector
   }
 
   connector(d: any) {
@@ -143,8 +146,8 @@ export class D2Outline {
   update(source) {
     // this.width = 800;
 
-    const type = source?.data?.type;
-    console.log('-update()', source?.data, type);
+    // const type = source?.data?.type;
+    // console.log('-update()', source?.data, type);
 
     // Compute the new tree layout.
     let nodes = this.tree(this.root);
@@ -176,7 +179,7 @@ export class D2Outline {
     var nodeEnter = node
       .enter()
       .append('g')
-      .attr('class', 'node')
+      .attr('class', (d) => `node type-${d.data?.type?.toLowerCase()}`)
       .attr('transform', function () {
         return 'translate(' + source.y0 + ',' + source.x0 + ')';
       })
@@ -199,11 +202,12 @@ export class D2Outline {
         return d.children || d._children ? 'start' : 'start';
       })
       .text(function (d: any) {
-        if (d.data.name.length > 20) {
-          return d.data.name.substring(0, 20) + '...';
-        } else {
-          return d.data.name;
-        }
+        return d.data.name;
+        // if (d.data.name.length > 20) {
+        //   return d.data.name.substring(0, 20) + '...';
+        // } else {
+        //   return d.data.name;
+        // }
       })
       .style('fill-opacity', 1e-6);
 
