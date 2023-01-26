@@ -31,17 +31,23 @@ export class D2Outline {
   async convertData(symthink: SymThinkDocument) {
     function callback(obj: any) {
       const st: SymThink = this;
-      obj.name = st.shortText;
-      if (st.hasKids()) {
-        obj.children = [];
-        for (let card of st.support) {
-          const o = {};
-          obj.children.push(callback.call(card, [o]));
+      if (st && st.shortText) {
+        obj.name = st?.shortText;
+        obj.type = st.type;
+        if (st?.hasKids()) {
+          obj.children = [];
+          for (let card of st.support) {
+            const o = {};
+            obj.children.push(callback.call(card, [o]));
+          }
         }
+        return obj;
+      } else {
+        console.warn('No Symthink to convert to d3 format for tree viewing');
+        return obj;
       }
-      return obj;
     }
-    
+
     this.data = callback.call(symthink, {});
   }
 
@@ -49,10 +55,10 @@ export class D2Outline {
     const container: HTMLDivElement = document.querySelector(
       '.hierarchy-container'
     );
-    var child = container.lastElementChild; 
+    var child = container.lastElementChild;
     while (child) {
       container.removeChild(child);
-        child = container.lastElementChild;
+      child = container.lastElementChild;
     }
     this.margin = { top: 20, right: 10, bottom: 20, left: 10 };
     this.width = container.offsetWidth - this.margin.right - this.margin.left;
@@ -135,8 +141,10 @@ export class D2Outline {
   }
 
   update(source) {
-    console.log('update ', source)
     // this.width = 800;
+
+    const type = source?.data?.type;
+    console.log('-update()', source?.data, type);
 
     // Compute the new tree layout.
     let nodes = this.tree(this.root);
@@ -162,7 +170,7 @@ export class D2Outline {
     // Update the nodes…
     let node = this.svg.selectAll('g.node').data(nodesSort, function (d: any) {
       return d.id || (d.id = ++this.i);
-    });
+    });    
 
     // Enter any new nodes at the parent's previous position.
     var nodeEnter = node

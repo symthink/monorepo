@@ -10,12 +10,19 @@
 }
 
 .node text {
-  // font: 14px sans-serif;
   font-family   : var(--ion-font-family);
   font-size     : var(--font-size, 20px) !important;
   font-weight   : var(--font-weight, 300);
   letter-spacing: var(--letter-spacing, normal);
-  color: currentColor;
+  // text color
+  fill: currentColor;
+}
+
+.QUE text {
+  fill: green;
+}
+.IDA text {
+  fill: blue;
 }
 
 .link {
