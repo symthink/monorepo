@@ -304,12 +304,15 @@ ion-breadcrumb:last-child {
   margin-right      : 0px;
 }
 
-.item-over {
-  --inner-padding-end: 0px;
-
-  .opts-btn {
-    display: block;
+@media (pointer: fine) {
+  .item-over {
+    --inner-padding-end: 0px;
+  
+    .opts-btn {
+      display: block;
+    }
   }
+  
 }
 
 @media screen and (min-width: 600px) {

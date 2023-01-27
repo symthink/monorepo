@@ -33,11 +33,9 @@ export class D2Outline {
 
   async componentWillUpdate() {
     const IDs = this.active.split(',');
-    console.log('IDs in outline', IDs)
     this.el.querySelectorAll('.node').forEach(n => n.classList.remove('highlight'));
     for(let id of IDs) {
       const el = document.getElementById('node-' + id);
-      console.log('node-' + id, el)
       if (el) {
         el.classList.add('highlight');
       }
@@ -124,8 +122,6 @@ export class D2Outline {
 
     const func = this.getDebouncedResizeFunc();
     window.addEventListener('resize', func);
-    console.log('d2-outline componentDidLoad');
-    //this.el.querySelector
   }
 
   connector(d: any) {
@@ -309,7 +305,7 @@ export class D2Outline {
           <ion-title>Outline View</ion-title>
         </ion-toolbar>
       </ion-header>,
-      <ion-content>
+      <ion-content class="outline-content">
         <div class="hierarchy-container"></div>
       </ion-content>,
     ];

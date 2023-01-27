@@ -63,10 +63,15 @@ body.dark {
   stroke: #ccc;
   stroke-width: 1px;
 }
-.outline-header {
-  margin-top: 49px;
+
+ion-content.outline-content {
+  height: 100vh; // for Safari
 }
+
 .hierarchy-container{
   border-right: solid 1.5em rgba(#000, .2);
   height: 100%;
+}
+body.dark .hierarchy-container {
+  border-right: solid 1.5em rgba(255, 255, 255, 0.2);
 }
