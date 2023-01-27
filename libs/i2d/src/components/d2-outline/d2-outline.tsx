@@ -1,4 +1,5 @@
 // see:  https://codepen.io/brendandougan/pen/PpEzRp
+import { modalController } from '@ionic/core';
 import { Component, h, Prop, Element } from '@stencil/core';
 import { tree, select } from 'd3';
 import { hierarchy } from 'd3-hierarchy';
@@ -14,6 +15,7 @@ export class D2Outline {
 
   @Prop() doc: Promise<SymThinkDocument>;
   @Prop() active: string;
+  @Prop() closeBtn = false;
 
   margin: { left: number; right: number; top: number; bottom: number };
   width: number;
@@ -28,18 +30,53 @@ export class D2Outline {
   data = {};
 
   async componentWillLoad() {
+    if (!this.doc) {
+      return Promise.reject(new Error('Symthink document not found. Could not render outline.'));
+    }
     return this.doc.then((symthink) => this.convertData(symthink));
   }
 
   async componentWillUpdate() {
-    const IDs = this.active.split(',');
-    this.el.querySelectorAll('.node').forEach(n => n.classList.remove('highlight'));
-    for(let id of IDs) {
-      const el = document.getElementById('node-' + id);
-      if (el) {
-        el.classList.add('highlight');
-      }
+    this.highlightCurrentPage();
+  }
+
+  componentDidLoad() {
+    this.createOutlineView();
+
+    const func = this.getDebouncedResizeFunc();
+    if (this.closeBtn) {
+      // for some reason, in the modal, el.offsetWidth is 0 at this point,
+      // but calling again after a second seems to work.
+      func();
     }
+    window.addEventListener('resize', func);
+  }
+
+  afterUpdate() {
+    this.highlightCurrentPage();
+  }
+
+  highlightCurrentPage() {
+    if (this.active) {
+      const IDs = this.active.split(',');
+      this.el
+        .querySelectorAll('.node')
+        .forEach((n) => n.classList.remove('highlight'));
+      for (let id of IDs) {
+        const el = document.getElementById('node-' + id);
+        if (el) {
+          el.classList.add('highlight');
+        }
+      }  
+    }
+  }
+
+  getDebouncedResizeFunc() {
+    let timer;
+    return () => {
+      clearTimeout(timer);
+      timer = setTimeout(() => this.createOutlineView(), 1000);
+    };
   }
 
   async convertData(symthink: SymThinkDocument) {
@@ -86,7 +123,6 @@ export class D2Outline {
     // this.tree = tree().nodeSize([0, 30]);
 
     this.tree = tree().nodeSize([0, 30]);
-
     this.root = this.tree(hierarchy(this.data));
     this.root.each((d) => {
       d.name = d.id; //transferring name to a name variable
@@ -107,21 +143,6 @@ export class D2Outline {
 
     // this.root.children.forEach(this.collapse);
     this.update(this.root);
-  }
-
-  getDebouncedResizeFunc() {
-    let timer;
-    return () => {
-      clearTimeout(timer);
-      timer = setTimeout(() => this.createOutlineView(), 1000);
-    };
-  }
-
-  componentDidLoad() {
-    this.createOutlineView();
-
-    const func = this.getDebouncedResizeFunc();
-    window.addEventListener('resize', func);
   }
 
   connector(d: any) {
@@ -183,7 +204,7 @@ export class D2Outline {
     // Update the nodes…
     let node = this.svg.selectAll('g.node').data(nodesSort, function (d: any) {
       return d.id || (d.id = ++this.i);
-    });    
+    });
 
     // Enter any new nodes at the parent's previous position.
     var nodeEnter = node
@@ -212,8 +233,8 @@ export class D2Outline {
       .attr('text-anchor', function (d: any) {
         return d.children || d._children ? 'start' : 'start';
       })
-      .text(d => d.data.name);
-      // .style('fill-opacity', 1e-6);
+      .text((d) => d.data.name);
+    // .style('fill-opacity', 1e-6);
 
     nodeEnter.append('svg:title').text(function (d: any) {
       return d.data.name;
@@ -296,16 +317,29 @@ export class D2Outline {
       d.x0 = d.x;
       d.y0 = d.y;
     });
+
+    this.afterUpdate();
   }
 
   render() {
     return [
       <ion-header class="outline-header">
         <ion-toolbar color="secondary">
+          {this.closeBtn && (
+            <ion-buttons slot="start">
+              <ion-button
+                color="primary"
+                onClick={() => modalController.dismiss()}
+              >
+                <ion-label>Close</ion-label>
+              </ion-button>
+            </ion-buttons>
+          )}
           <ion-title>Outline View</ion-title>
         </ion-toolbar>
       </ion-header>,
       <ion-content class="outline-content">
+        <div class="fade-right"></div>
         <div class="hierarchy-container"></div>
       </ion-content>,
     ];

@@ -69,9 +69,17 @@ ion-content.outline-content {
 }
 
 .hierarchy-container{
-  border-right: solid 1.5em rgba(#000, .2);
   height: 100%;
 }
-body.dark .hierarchy-container {
-  border-right: solid 1.5em rgba(255, 255, 255, 0.2);
+.fade-right {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 50px;
+  background: linear-gradient(to left, #ffffff, rgba(255, 255, 256, 0.5));
+  z-index: 500000;
+  height: 1000000px;
+}
+body.dark .fade-right {
+  background: linear-gradient(to left, #1a1a1a, rgba(0, 0, 0, 0.3));
 }
