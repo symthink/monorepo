@@ -16,19 +16,47 @@
   letter-spacing: var(--letter-spacing, normal);
   // text color
   fill: currentColor;
+  fill-opacity: 0.8;
 }
 
 .type-que  {
   circle, text {
-    fill: green;
+    fill: rgb(0, 71, 0);
   }  
 }
 .type-ida  {
   circle, text {
-    fill: blue;
+    fill: rgb(64, 1, 75);
   }  
 }
-
+.type-clm  {
+  circle, text {
+    fill: rgb(59, 31, 1);
+  }  
+}
+.highlight {
+  text {
+    fill-opacity: 1;
+    font-weight   : bold;  
+  }
+}
+body.dark {
+  .type-que  {
+    circle, text {
+      fill: rgb(164, 255, 164);
+    }  
+  }
+  .type-ida  {
+    circle, text {
+      fill: #f1bdfa;
+    }  
+  }
+  .type-clm  {
+    circle, text {
+      fill: rgb(255, 188, 117);
+    }  
+  }
+}
 
 .link {
   fill: none;
@@ -38,6 +66,7 @@
 .outline-header {
   margin-top: 49px;
 }
-// .hierarchy-container{
-
-// }
+.hierarchy-container{
+  border-right: solid 1.5em rgba(#000, .2);
+  height: 100%;
+}

@@ -192,7 +192,8 @@ export class SymThink {
         if (!this.isKidEnabled()) {
             throw new Error(`This item(${this.id}) is not child enabled`);
         }
-        let symthink = new SymThink(this.genId(), this);
+
+        let symthink = new SymThink(card?.id || this.genId(), this);
         symthink.apply(card);
         this.support.push(symthink);
         this.sup$.next(true);
@@ -424,6 +425,7 @@ export class SymThink {
         if (orphanX !== -1) {
             this.logAction(StLogActionEnum.ADOPT_ORPHAN);
             const orphan = baseCard.orphans.splice(orphanX, orphanX + 1)[0];
+            delete orphan.id; // to generate new id
             return this.addChild(orphan);
         }
     }

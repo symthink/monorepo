@@ -36,9 +36,9 @@ export class D2Outline {
     console.log('IDs in outline', IDs)
     this.el.querySelectorAll('.node').forEach(n => n.classList.remove('highlight'));
     for(let id of IDs) {
-      const el = document.getElementById(id);
+      const el = document.getElementById('node-' + id);
+      console.log('node-' + id, el)
       if (el) {
-        console.log('el', el)
         el.classList.add('highlight');
       }
     }
@@ -193,7 +193,7 @@ export class D2Outline {
     var nodeEnter = node
       .enter()
       .append('g')
-      .attr('id', (d) => d.data?.id)
+      .attr('id', (d) => `node-${d.data?.id}`)
       .attr('class', (d) => `node type-${d.data?.type?.toLowerCase()}`)
       .attr('transform', function () {
         return 'translate(' + source.y0 + ',' + source.x0 + ')';
@@ -216,8 +216,8 @@ export class D2Outline {
       .attr('text-anchor', function (d: any) {
         return d.children || d._children ? 'start' : 'start';
       })
-      .text(d => d.data.name)
-      .style('fill-opacity', 1e-6);
+      .text(d => d.data.name);
+      // .style('fill-opacity', 1e-6);
 
     nodeEnter.append('svg:title').text(function (d: any) {
       return d.data.name;
@@ -237,7 +237,7 @@ export class D2Outline {
         return d._children ? 'lightsteelblue' : '#fff';
       });
 
-    nodeUpdate.select('text').style('fill-opacity', 1);
+    // nodeUpdate.select('text').style('fill-opacity', 1);
 
     // Transition exiting nodes to the parent's new position (and remove the nodes)
     var nodeExit = node.exit().transition().duration(this.duration);
