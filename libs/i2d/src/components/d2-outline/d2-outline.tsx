@@ -78,7 +78,7 @@ export class D2Outline {
     this.margin = { top: 20, right: 10, bottom: 20, left: 10 };
     this.width = container.offsetWidth - this.margin.right - this.margin.left;
     this.height = container.offsetHeight - this.margin.top - this.margin.bottom;
-    this.barHeight = 28;
+    this.barHeight = 32;
     this.barWidth = this.width * 0.8;
     this.i = 0;
     this.duration = 750;
