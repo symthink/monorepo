@@ -123,6 +123,7 @@ export class SymThink {
     }
 
     onSelect() {
+        console.log('onSelect', this.text)
         if (this.hasKids()) {
             this.support.map(k => k.selected = false);
         }
@@ -135,14 +136,6 @@ export class SymThink {
             card = card.parent;
         }
         this.selected = true;
-        const ids = [];
-        let c: SymThink = this;
-        while (c.parent) {
-            ids.unshift(c.id);
-            c = c.parent;
-        }
-        const doc = (c as SymThinkDocument);
-        doc.selection$.next(ids);
     }
 
     get isEvent(): boolean { return this.type === ARG_TYPE.Event; }
@@ -292,7 +285,19 @@ export class SymThink {
         }
         return card as SymThinkDocument;
     }
-
+    getPageIDs() {
+        let card: SymThink = this;
+        const IDs = [];
+        if (card.hasKids()) {
+            card.support.map(s => IDs.push(s.id));
+        }
+        // while (card.parent) {
+        //     IDs.unshift(card.id);
+        //     card = card.parent;
+        // }
+        IDs.unshift(card.id);
+        return IDs;
+    }
     getRaw(deep = true): ISymThink {
         const o: ISymThink = {
             id: this.id,
@@ -471,7 +476,7 @@ export class SymThinkDocument extends SymThink {
     orphans: ISymThink[];
     log$: Subject<{ action: number, ts: number }>;
     format: FormatEnum = FormatEnum.Default;
-    selection$ = new Subject<string[]>();
+    page$ = new Subject<string[]>();
 
     get title() {
         return this.label || this.text;

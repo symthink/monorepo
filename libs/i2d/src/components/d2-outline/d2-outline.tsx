@@ -13,6 +13,7 @@ export class D2Outline {
   @Element() el: HTMLElement;
 
   @Prop() doc: Promise<SymThinkDocument>;
+  @Prop() active: string;
 
   margin: { left: number; right: number; top: number; bottom: number };
   width: number;
@@ -28,6 +29,19 @@ export class D2Outline {
 
   async componentWillLoad() {
     return this.doc.then((symthink) => this.convertData(symthink));
+  }
+
+  async componentWillUpdate() {
+    const IDs = this.active.split(',');
+    console.log('IDs in outline', IDs)
+    this.el.querySelectorAll('.node').forEach(n => n.classList.remove('highlight'));
+    for(let id of IDs) {
+      const el = document.getElementById(id);
+      if (el) {
+        console.log('el', el)
+        el.classList.add('highlight');
+      }
+    }
   }
 
   async convertData(symthink: SymThinkDocument) {
@@ -179,6 +193,7 @@ export class D2Outline {
     var nodeEnter = node
       .enter()
       .append('g')
+      .attr('id', (d) => d.data?.id)
       .attr('class', (d) => `node type-${d.data?.type?.toLowerCase()}`)
       .attr('transform', function () {
         return 'translate(' + source.y0 + ',' + source.x0 + ')';
@@ -201,14 +216,7 @@ export class D2Outline {
       .attr('text-anchor', function (d: any) {
         return d.children || d._children ? 'start' : 'start';
       })
-      .text(function (d: any) {
-        return d.data.name;
-        // if (d.data.name.length > 20) {
-        //   return d.data.name.substring(0, 20) + '...';
-        // } else {
-        //   return d.data.name;
-        // }
-      })
+      .text(d => d.data.name)
       .style('fill-opacity', 1e-6);
 
     nodeEnter.append('svg:title').text(function (d: any) {
@@ -235,7 +243,7 @@ export class D2Outline {
     var nodeExit = node.exit().transition().duration(this.duration);
 
     nodeExit
-      .attr('transform', function (d) {
+      .attr('transform', function (_d) {
         return 'translate(' + source.y + ',' + source.x + ')';
       })
       .remove();
@@ -256,7 +264,7 @@ export class D2Outline {
       .enter()
       .insert('path', 'g')
       .attr('class', 'link')
-      .attr('d', (d) => {
+      .attr('d', (_d) => {
         var o = {
           x: source.x0,
           y: source.y0,
@@ -277,7 +285,7 @@ export class D2Outline {
       .exit()
       .transition()
       .duration(this.duration)
-      .attr('d', (d: any) => {
+      .attr('d', (_d: any) => {
         var o = {
           x: source.x,
           y: source.y,

@@ -192,7 +192,6 @@ export class D2Rcard {
     if (ionItem) {
       this.selectedElHeight = ionItem.offsetHeight;
     }
-    console.log('onItemClick', item.id)
     item.select$.next(true);
   }
 
