@@ -211,7 +211,6 @@ export class D2Rcard {
     this.itemAction.emit({ action: 'item-opts-clicked', value: item });
   }
 
-
   textPh(item: SymThink) {
     const info = CardRules.find((itm) => itm.type === item.type);
     if (info && this.data.selected) {
@@ -539,26 +538,6 @@ export class D2Rcard {
     );
   }
 
-  renderAddSourcesBtn() {
-    return (
-      <div class="center">
-        <br />
-        <br />
-        <ion-button
-          class="add-source-btn"
-          fill="outline"
-          color="medium"
-          onClick={() => this.onAddSourceClick()}
-        >
-          <ion-icon slot="start" name="bookmark"></ion-icon>
-          <ion-label color="dark">Add Source</ion-label>
-        </ion-button>
-        <br />
-        <br />
-      </div>
-    );
-  }
-
   render() {
     return [
       <ion-content
@@ -582,7 +561,7 @@ export class D2Rcard {
           {this.renderItems()}
         </ion-list>
 
-        {this.canEdit && [
+        {this.data.hasSources() && [
           this.renderSourcesBorder(),
           <ion-list>
             {this.data.source?.map((md, ix) => (
@@ -593,26 +572,13 @@ export class D2Rcard {
               ></d2-src-metadata>
             ))}
           </ion-list>,
-          this.renderAddSourcesBtn(),
         ]}
-        {!this.canEdit &&
-          this.data.hasSources() && [
-            this.renderSourcesBorder(),
-            <ion-list>
-              {this.data.source?.map((md, ix) => (
-                <d2-src-metadata
-                  data={md}
-                  index={ix}
-                  canEdit={this.canEdit}
-                ></d2-src-metadata>
-              ))}
-            </ion-list>,
-          ]}
         <br />
         <br />
         <br />
         <br />
         <br />
+        <slot name="card-bottom"></slot>
         <br />
         <br />
         <br />

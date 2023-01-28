@@ -56,16 +56,6 @@ ion-fab.nav-top-back ion-fab-button {
   color           : var(--ion-color-medium-contrast);
 }
 
-ion-button.add-source-btn {
-  background  : transparent;
-  color       : currentColor;
-  --box-shadow: 0 2px 4px darkslategrey;
-}
-
-.center {
-  text-align: center;
-}
-
 ion-fab-button[color=primary] {
   --ion-color-base: #cec8c8 !important;
   color           : black;
