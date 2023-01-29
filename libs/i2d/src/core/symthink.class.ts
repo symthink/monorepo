@@ -631,19 +631,8 @@ export const CardRules = [
         disable: [],
         xtra: false,
         char: '', // e901
-        iconCls: 'ico-ques'
-    },
-    {
-        type: ARG_TYPE.Claim,
-        name: 'Claim',
-        icon: 'megaphone',
-        placeholder: 'A Policy, value or factual claim',
-        supportsPh: 'Add supporting reasoning or evidence',
-        conclPh: 'Conclusion, restate or summarize claim',
-        disable: [],
-        xtra: false,
-        char: '', // e902
-        iconCls: 'ico-clm'
+        iconCls: 'ico-ques',
+        next: ARG_TYPE.Idea
     },
     {
         type: ARG_TYPE.Idea,
@@ -655,7 +644,21 @@ export const CardRules = [
         disable: [],
         xtra: false,
         char: '', // e900
-        iconCls: 'ico-bulb'
+        iconCls: 'ico-bulb',
+        next: ARG_TYPE.Claim
+    },
+    {
+        type: ARG_TYPE.Claim,
+        name: 'Claim',
+        icon: 'megaphone',
+        placeholder: 'A Policy, value or factual claim',
+        supportsPh: 'Add supporting reasoning or evidence',
+        conclPh: 'Conclusion, restate or summarize claim',
+        disable: [],
+        xtra: false,
+        char: '', // e902
+        iconCls: 'ico-clm',
+        next: ARG_TYPE.Question
     }
 ];
 export const trailingSympunkRegExp = /[]+/g

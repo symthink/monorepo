@@ -560,9 +560,10 @@ export class D2Rcard {
         <ion-list ref={(el) => (this.listEl = el as HTMLIonListElement)}>
           {this.renderItems()}
         </ion-list>
-
+        <br />
+        <slot name="card-list-bottom"></slot>
+        {this.renderSourcesBorder()}
         {this.data.hasSources() && [
-          this.renderSourcesBorder(),
           <ion-list>
             {this.data.source?.map((md, ix) => (
               <d2-src-metadata
@@ -576,9 +577,9 @@ export class D2Rcard {
         <br />
         <br />
         <br />
-        <br />
-        <br />
         <slot name="card-bottom"></slot>
+        <br />
+        <br />
         <br />
         <br />
         <br />
