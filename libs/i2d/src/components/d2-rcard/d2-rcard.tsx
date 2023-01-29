@@ -459,58 +459,74 @@ export class D2Rcard {
   renderItems() {
     const isEditable = (itm) => !!(itm.selected && this.canEdit);
     return [
-      <ion-item
-        id={this.data.id}
-        lines="none"
-        class={{
-          shared: true,
-          selected: this.data.selected,
-          'can-edit': this.canEdit,
-          'top-item': true,
-        }}
-        onClick={(e) => this.onItemClick(this.data, e)}
+      <ion-item-sliding
+        disabled={this.disableSlideOpts(this.data)}
+        key={this.data.id}
       >
-        {isEditable(this.data) && (
-          <ion-textarea
-            onIonInput={(e) => this.onTextareaInput(e, this.data)}
-            onIonBlur={(e) => this.onTextareaBlur(e, this.data)}
-            value={this.data.getCurrentItemText()}
-            maxlength={250}
-            spellcheck={true}
-            autocapitalize="sentences"
-            autocorrect={'off'}
-            wrap={'soft'}
-            autofocus={true}
-            autoGrow={true}
-            inputmode={'text'}
-            style={{
-              'caret-color': 'currentColor',
-              height: this.selectedElHeight + '',
-            }}
-            placeholder={this.textPh(this.data)}
-          ></ion-textarea>
-        )}
-        {!isEditable(this.data) && (
-          <ion-label
-            style={{ 'max-width': 'unset' }}
-            class={{
-              'ion-text-wrap': true,
-              placeholder: !this.data.hasItemText(),
-            }}
-          >
-            {this.renderLabel(this.data.getCurrentItemText(), this.data.type) ||
-              this.textPh(this.data)}
-            {this.data.isEvent && (
-              <p>
-                <b>Date:</b> {this.data.eventDate?.toLocaleString()}
-              </p>
-            )}
-          </ion-label>
-        )}
-        {/* {this.data.selected && (
+        <ion-item
+          id={this.data.id}
+          lines="none"
+          class={{
+            shared: true,
+            selected: this.data.selected,
+            'can-edit': this.canEdit,
+            'top-item': true,
+          }}
+          onClick={(e) => this.onItemClick(this.data, e)}
+        >
+          {isEditable(this.data) && (
+            <ion-textarea
+              onIonInput={(e) => this.onTextareaInput(e, this.data)}
+              onIonBlur={(e) => this.onTextareaBlur(e, this.data)}
+              value={this.data.getCurrentItemText()}
+              maxlength={250}
+              spellcheck={true}
+              autocapitalize="sentences"
+              autocorrect={'off'}
+              wrap={'soft'}
+              autofocus={true}
+              autoGrow={true}
+              inputmode={'text'}
+              style={{
+                'caret-color': 'currentColor',
+                height: this.selectedElHeight + '',
+              }}
+              placeholder={this.textPh(this.data)}
+            ></ion-textarea>
+          )}
+          {!isEditable(this.data) && (
+            <ion-label
+              style={{ 'max-width': 'unset' }}
+              class={{
+                'ion-text-wrap': true,
+                placeholder: !this.data.hasItemText(),
+              }}
+            >
+              {this.renderLabel(
+                this.data.getCurrentItemText(),
+                this.data.type
+              ) || this.textPh(this.data)}
+              {this.data.isEvent && (
+                <p>
+                  <b>Date:</b> {this.data.eventDate?.toLocaleString()}
+                </p>
+              )}
+            </ion-label>
+          )}
+          {/* {this.data.selected && (
       <ion-icon name="create-outline" slot="end"></ion-icon>
     )} */}
-      </ion-item>,
+        </ion-item>
+        <ion-item-options side="start">
+          <ion-item-option
+            color="tertiary"
+            class="secondary-btn-theme opts-btn-slide"
+            onClick={() => this.onItemOptionsClick(this.data)}
+          >
+            <ion-icon name="ellipsis-horizontal"></ion-icon>
+          </ion-item-option>
+        </ion-item-options>
+      </ion-item-sliding>,
       this.data.hasKids() && this.renderSupportItems(),
       this.data.concl && (
         <ion-item
@@ -523,19 +539,6 @@ export class D2Rcard {
         </ion-item>
       ),
     ];
-  }
-
-  renderSourcesBorder() {
-    return (
-      <div class="sources-border">
-        <br />
-        <br />
-        <div>
-          <ion-icon size="large" name="bookmark"></ion-icon>
-        </div>
-        <hr />
-      </div>
-    );
   }
 
   render() {
@@ -562,7 +565,14 @@ export class D2Rcard {
         </ion-list>
         <br />
         <slot name="card-list-bottom"></slot>
-        {this.renderSourcesBorder()}
+        <div class="sources-border">
+          <br />
+          <br />
+          <div>
+            <ion-icon size="large" name="bookmark"></ion-icon>
+          </div>
+          <hr />
+        </div>
         {this.data.hasSources() && [
           <ion-list>
             {this.data.source?.map((md, ix) => (
@@ -574,6 +584,22 @@ export class D2Rcard {
             ))}
           </ion-list>,
         ]}
+        <ion-fab vertical="center" horizontal="center" style={{top: '300px', left: '10px'}} slot="fixed">
+          <ion-fab-button>
+            <ion-icon name="chevron-up-circle"></ion-icon>
+          </ion-fab-button>
+          <ion-fab-list side="end">
+            <ion-fab-button>
+              <ion-icon name="document"></ion-icon>
+            </ion-fab-button>
+            <ion-fab-button>
+              <ion-icon name="color-palette"></ion-icon>
+            </ion-fab-button>
+            <ion-fab-button>
+              <ion-icon name="globe"></ion-icon>
+            </ion-fab-button>
+          </ion-fab-list>
+        </ion-fab>
         <br />
         <br />
         <br />
