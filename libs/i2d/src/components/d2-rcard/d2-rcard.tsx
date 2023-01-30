@@ -1,4 +1,4 @@
-import { alertController, IonTextareaCustomEvent } from '@ionic/core';
+import { IonTextareaCustomEvent } from '@ionic/core';
 import {
   Component,
   h,
@@ -46,7 +46,7 @@ export class D2Rcard {
   @State() checkboxHidden = true;
   @State() change = false;
 
-  @Event() itemAction: EventEmitter<{ action; value; domrect?: DOMRect }>;
+  @Event() itemAction: EventEmitter<{ action; value; domrect?: DOMRect, pointerEvent?: MouseEvent|PointerEvent }>;
   @Event() docAction: EventEmitter<{ action; value }>;
 
   private listEl: HTMLIonListElement;
@@ -203,12 +203,12 @@ export class D2Rcard {
     this.itemAction.emit({ action: 'slide-opt-extend', value: item });
   }
 
-  async onItemOptionsClick(item: SymThink, evt?: MouseEvent) {
+  async onItemOptionsClick(item: SymThink, evt?: MouseEvent|PointerEvent) {
     if (evt) {
       evt.stopPropagation();
       evt.preventDefault();
     }
-    this.itemAction.emit({ action: 'item-opts-clicked', value: item });
+    this.itemAction.emit({ action: 'item-opts-clicked', value: item, pointerEvent: evt });
   }
 
   textPh(item: SymThink) {
@@ -379,13 +379,6 @@ export class D2Rcard {
               onIonSwipe={() => this.onExtendItem(item)}
             >
               <ion-item-option
-                color="tertiary"
-                class="secondary-btn-theme opts-btn-slide"
-                onClick={() => this.onItemOptionsClick(item)}
-              >
-                <ion-icon name="ellipsis-horizontal"></ion-icon>
-              </ion-item-option>
-              <ion-item-option
                 expandable
                 class="secondary-btn-theme"
                 onClick={() => this.onExtendItem(item)}
@@ -404,6 +397,13 @@ export class D2Rcard {
                 onClick={() => this.onRemoveOrTrimItem(item)}
               >
                 <ion-icon name="cut-outline"></ion-icon>
+              </ion-item-option>
+              <ion-item-option
+                color="tertiary"
+                class="secondary-btn-theme opts-btn-slide"
+                onClick={() => this.onItemOptionsClick(item)}
+              >
+                <ion-icon name="ellipsis-horizontal"></ion-icon>
               </ion-item-option>
             </ion-item-options>
           </ion-item-sliding>
@@ -442,15 +442,24 @@ export class D2Rcard {
           .replace(/[\r\n\t]+/g, ' ')
           .replace(trailingSympunkRegExp, '')
           .replace(/[\.\!\?]+$/, '') + typ.char;
-      const m = newVal.matchAll(/[^\.\!\?]*[\.\!\?]/g);
-      let nxt = m.next();
+      // const m = newVal.matchAll(/[^\.\!\?]*[\.\!\?]/g);
+      // let nxt = m.next();
+      // const sentences = [];
+      // while (!nxt.done && nxt.value?.length) {
+      //   let tmp: string = nxt.value[0];
+      //   tmp = tmp.trim();
+      //   tmp = tmp.charAt(0).toUpperCase() + tmp.slice(1);
+      //   sentences.push(tmp);
+      //   nxt = m.next();
+      // }
+      let match;
       const sentences = [];
-      while (!nxt.done && nxt.value?.length) {
-        let tmp: string = nxt.value[0];
+      const regexp = /[^\.\!\?]*[\.\!\?]/g;
+      while ((match = regexp.exec(newVal)) !== null) {
+        let tmp: string = match[0];
         tmp = tmp.trim();
         tmp = tmp.charAt(0).toUpperCase() + tmp.slice(1);
         sentences.push(tmp);
-        nxt = m.next();
       }
       item.text = sentences.join(' ');
     }
@@ -473,6 +482,14 @@ export class D2Rcard {
             'top-item': true,
           }}
           onClick={(e) => this.onItemClick(this.data, e)}
+          onMouseEnter={(evt: MouseEvent) => {
+            const e = evt.target as HTMLElement;
+            e.classList.add('item-over');
+          }}
+          onMouseLeave={(evt: MouseEvent) => {
+            const e = evt.target as HTMLElement;
+            e.classList.remove('item-over');
+          }}
         >
           {isEditable(this.data) && (
             <ion-textarea
@@ -516,8 +533,9 @@ export class D2Rcard {
           {/* {this.data.selected && (
       <ion-icon name="create-outline" slot="end"></ion-icon>
     )} */}
+        {this.canEdit && this.renderItemOptionsBtn(this.data)}
         </ion-item>
-        <ion-item-options side="start">
+        <ion-item-options side="end">
           <ion-item-option
             color="tertiary"
             class="secondary-btn-theme opts-btn-slide"
@@ -584,22 +602,6 @@ export class D2Rcard {
             ))}
           </ion-list>,
         ]}
-        <ion-fab vertical="center" horizontal="center" style={{top: '300px', left: '10px'}} slot="fixed">
-          <ion-fab-button>
-            <ion-icon name="chevron-up-circle"></ion-icon>
-          </ion-fab-button>
-          <ion-fab-list side="end">
-            <ion-fab-button>
-              <ion-icon name="document"></ion-icon>
-            </ion-fab-button>
-            <ion-fab-button>
-              <ion-icon name="color-palette"></ion-icon>
-            </ion-fab-button>
-            <ion-fab-button>
-              <ion-icon name="globe"></ion-icon>
-            </ion-fab-button>
-          </ion-fab-list>
-        </ion-fab>
         <br />
         <br />
         <br />

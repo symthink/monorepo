@@ -153,8 +153,6 @@ The parent entity of an entity (question, claim or idea) provides additional con
 
 ### Question --> Claims
 
-
-
 ### Question --> Ideas
 
 ### Question --> Questions
@@ -167,3 +165,28 @@ The parent entity of an entity (question, claim or idea) provides additional con
 ### Ideas --> Claims
 ### Ideas --> Ideas
 
+## Decision Types
+
+* Develop a list of things of a type
+    - type: Culling
+    - behavior: 
+        - After X supports added, reduce to Y
+        - ? Specify X when adding the question.
+        - Can add more supports if you can reduce below X.
+
+* List of ways to re/phrase something
+    - type: Cull & Replace: Culling down to one which would replace the parent
+
+* Choose the best option
+    - type: Multiple Choice
+
+* Which is better
+    - type: Binary Choice
+
+When you create a question, you may also add constraints for the supports.
+    - target: 1
+    - replace: true/false (only applies if target===1)
+    - type: Ideas only
+    - limit: 8
+    - priortized: true/false 
+    - bydate: Jan. 1 2024

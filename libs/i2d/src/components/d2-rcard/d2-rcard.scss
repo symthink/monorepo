@@ -279,30 +279,29 @@ ion-breadcrumb:last-child {
 
 .opts-btn {
   display           : none;
-  position: absolute;
-  right: 0px;
-  top: 2px;
-  --color: var(--ion-color-primary) !important;
-  --color-hover: var(--ion-color-primary) !important;
-  --background: rgba(var(--ion-color-secondary-rgb),0.8) !important;
-  --background-hover: rgba(var(--ion-color-secondary-rgb),0.8) !important;
+  position          : absolute;
+  right             : 0px;
+  bottom            : -3px;
+  --color           : var(--ion-color-primary) !important;
+  --color-hover     : var(--ion-color-primary) !important;
+  --background      : rgba(var(--ion-color-secondary-rgb), 0.8) !important;
+  --background-hover: rgba(var(--ion-color-secondary-rgb), 0.8) !important;
   --border-radius   : 0px;
-  height            : -webkit-fill-available;
-  min-height        : 36px;
-  max-height        : 46px;
-  min-width         : 72px;
+  height            : 45px;
+  width             : 72px;
   margin-right      : 0px;
 }
 
 @media (pointer: fine) {
   .item-over {
     --inner-padding-end: 0px;
-  
+    border-bottom      : 1px solid #cccccc;
+
     .opts-btn {
       display: block;
     }
   }
-  
+
 }
 
 @media screen and (min-width: 600px) {
