@@ -186,7 +186,7 @@ The parent entity of an entity (question, claim or idea) provides additional con
 When you create a question, you may also add constraints for the supports.
     - target: 1
     - replace: true/false (only applies if target===1)
-    - type: Ideas only
-    - limit: 8
+    - type: Ideas preferred
+    - limit: 9
     - priortized: true/false 
     - bydate: Jan. 1 2024

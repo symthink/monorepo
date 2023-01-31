@@ -468,8 +468,8 @@ export class D2Rcard {
   renderItems() {
     const isEditable = (itm) => !!(itm.selected && this.canEdit);
     return [
-      <ion-item-sliding
-        disabled={this.disableSlideOpts(this.data)}
+      <ion-item-sliding disabled={true}
+        // disabled={this.disableSlideOpts(this.data)}
         key={this.data.id}
       >
         <ion-item
@@ -482,14 +482,14 @@ export class D2Rcard {
             'top-item': true,
           }}
           onClick={(e) => this.onItemClick(this.data, e)}
-          onMouseEnter={(evt: MouseEvent) => {
-            const e = evt.target as HTMLElement;
-            e.classList.add('item-over');
-          }}
-          onMouseLeave={(evt: MouseEvent) => {
-            const e = evt.target as HTMLElement;
-            e.classList.remove('item-over');
-          }}
+          // onMouseEnter={(evt: MouseEvent) => {
+          //   const e = evt.target as HTMLElement;
+          //   e.classList.add('item-over');
+          // }}
+          // onMouseLeave={(evt: MouseEvent) => {
+          //   const e = evt.target as HTMLElement;
+          //   e.classList.remove('item-over');
+          // }}
         >
           {isEditable(this.data) && (
             <ion-textarea
@@ -602,7 +602,6 @@ export class D2Rcard {
             ))}
           </ion-list>,
         ]}
-        <br />
         <br />
         <br />
         <slot name="card-bottom"></slot>

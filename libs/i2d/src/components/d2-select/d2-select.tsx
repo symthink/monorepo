@@ -26,6 +26,7 @@ export class D2Select {
       {this.options.buttons.map((button: ActionSheetButton, ix, arr) => 
         <ion-item onClick={() => this.onItemClick(button)} lines={(ix+1 < arr.length)?'full':'none'}>
           <ion-label>{button.text}</ion-label>
+          {button.icon && <ion-icon slot="end" name={button.icon}></ion-icon>}
         </ion-item>
         )}
     </ion-list>;
