@@ -327,7 +327,9 @@ export class D2Rcard {
               onClick={(ev) => this.onSupportItemClick(item, ev)}
               onMouseEnter={(evt: MouseEvent) => {
                 const e = evt.target as HTMLElement;
-                e.classList.add('item-over');
+                if (!item.selected && this.reOrderDisabled) {
+                  e.classList.add('item-over');
+                }
               }}
               onMouseLeave={(evt: MouseEvent) => {
                 const e = evt.target as HTMLElement;
@@ -482,14 +484,16 @@ export class D2Rcard {
             'top-item': true,
           }}
           onClick={(e) => this.onItemClick(this.data, e)}
-          // onMouseEnter={(evt: MouseEvent) => {
-          //   const e = evt.target as HTMLElement;
-          //   e.classList.add('item-over');
-          // }}
-          // onMouseLeave={(evt: MouseEvent) => {
-          //   const e = evt.target as HTMLElement;
-          //   e.classList.remove('item-over');
-          // }}
+          onMouseEnter={(evt: MouseEvent) => {
+            const e = evt.target as HTMLElement;
+            if (!this.data.selected && this.reOrderDisabled) {
+              e.classList.add('item-over');
+            }
+          }}
+          onMouseLeave={(evt: MouseEvent) => {
+            const e = evt.target as HTMLElement;
+            e.classList.remove('item-over');
+          }}
         >
           {isEditable(this.data) && (
             <ion-textarea

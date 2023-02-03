@@ -1,6 +1,13 @@
 // see:  https://codepen.io/brendandougan/pen/PpEzRp
 import { modalController } from '@ionic/core';
-import { Component, h, Prop, Element } from '@stencil/core';
+import {
+  Component,
+  h,
+  Prop,
+  Element,
+  Event,
+  EventEmitter,
+} from '@stencil/core';
 import { tree, select } from 'd3';
 import { hierarchy } from 'd3-hierarchy';
 import { SymThink, SymThinkDocument } from '../../core/symthink.class';
@@ -15,7 +22,9 @@ export class D2Outline {
 
   @Prop() doc: Promise<SymThinkDocument>;
   @Prop() active: string;
-  @Prop() closeBtn = false;
+  @Prop() inModal = false;
+
+  @Event() docClose: EventEmitter<void>;
 
   margin: { left: number; right: number; top: number; bottom: number };
   width: number;
@@ -31,7 +40,9 @@ export class D2Outline {
 
   async componentWillLoad() {
     if (!this.doc) {
-      return Promise.reject(new Error('Symthink document not found. Could not render outline.'));
+      return Promise.reject(
+        new Error('Symthink document not found. Could not render outline.')
+      );
     }
     return this.doc.then((symthink) => this.convertData(symthink));
   }
@@ -44,7 +55,7 @@ export class D2Outline {
     this.createOutlineView();
 
     const func = this.getDebouncedResizeFunc();
-    if (this.closeBtn) {
+    if (this.inModal) {
       // for some reason, in the modal, el.offsetWidth is 0 at this point,
       // but calling again after a second seems to work.
       func();
@@ -67,7 +78,7 @@ export class D2Outline {
         if (el) {
           el.classList.add('highlight');
         }
-      }  
+      }
     }
   }
 
@@ -321,20 +332,26 @@ export class D2Outline {
     this.afterUpdate();
   }
 
+  onClose() {
+    if (this.inModal) {
+      modalController.dismiss();
+    } else {
+      this.docClose.emit();
+    }
+  }
+
   render() {
     return [
       <ion-header class="outline-header">
         <ion-toolbar color="secondary">
-          {this.closeBtn && (
-            <ion-buttons slot="start">
-              <ion-button
-                color="primary"
-                onClick={() => modalController.dismiss()}
-              >
-                <ion-label>Close</ion-label>
-              </ion-button>
-            </ion-buttons>
-          )}
+          <ion-buttons slot="start">
+            <ion-button
+              color="primary"
+              onClick={() => this.onClose()}
+            >
+              <ion-label>Close</ion-label>
+            </ion-button>
+          </ion-buttons>
           <ion-title>Outline View</ion-title>
         </ion-toolbar>
       </ion-header>,
