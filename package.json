@@ -1,6 +1,6 @@
 {
   "name": "symthink",
-  "version": "0.4.12",
+  "version": "0.5.0",
   "license": "MIT",
   "scripts": {
     "start:doc": "npm run clean:doc ; nx serve doc --dev",
