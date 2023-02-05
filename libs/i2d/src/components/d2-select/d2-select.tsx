@@ -3,7 +3,7 @@ import {
   ActionSheetButton,
   ActionSheetOptions,
 } from '@ionic/core/dist/types/components/action-sheet/action-sheet-interface';
-import { Component, h, Prop } from '@stencil/core';
+import { Component, h, Prop, Element } from '@stencil/core';
 
 /**
  * This component is intended to be a stand-in replacement for an actionSheet but
@@ -15,11 +15,12 @@ import { Component, h, Prop } from '@stencil/core';
   shadow: true,
 })
 export class D2Select {
+  @Element() el: HTMLElement;
   @Prop() options: ActionSheetOptions;
 
-  async onItemClick(button: ActionSheetButton) {
+  async onItemClick(button: ActionSheetButton, evt: MouseEvent|PointerEvent) {
     const popover = await popoverController.getTop();
-    popover.dismiss(null, button.role);
+    popover.dismiss(evt, button.role);
   }
 
   render() {
@@ -28,7 +29,7 @@ export class D2Select {
         {/* <ion-list-header>{this.options.header}</ion-list-header> */}
         {this.options.buttons.map((button: ActionSheetButton, ix, arr) => (
           <ion-item 
-            onClick={() => this.onItemClick(button)}
+            onClick={(evt) => this.onItemClick(button, evt)}
             lines={ix + 1 < arr.length ? 'full' : 'none'}
             onMouseEnter={(evt: MouseEvent) => {
               const e = evt.target as HTMLElement;
