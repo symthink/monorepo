@@ -23,6 +23,10 @@ export class D2Select {
     popover.dismiss(evt, button.role);
   }
 
+  useSvg(icon: string) {
+    return /\.svg$/.test(icon);
+  }
+
   render() {
     return (
       <ion-list>
@@ -41,7 +45,8 @@ export class D2Select {
             }}
           >
             <ion-label>{button.text}</ion-label>
-            {button.icon && <ion-icon slot="end" name={button.icon}></ion-icon>}
+            {this.useSvg(button.icon) && <ion-icon slot="end" src={button.icon}></ion-icon>}
+            {!this.useSvg(button.icon) && <ion-icon slot="end" name={button.icon}></ion-icon>}
           </ion-item>
         ))}
       </ion-list>
