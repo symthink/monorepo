@@ -292,7 +292,7 @@ export class D2Rcard {
     );
   }
 
-  renderLabel(txt?: string, type = ARG_TYPE.Claim) {
+  renderLabel(txt?: string) {
     if (!txt) return null;
     let label;
     if (/^[^:]+:/.test(txt)) {
@@ -372,7 +372,7 @@ export class D2Rcard {
                     placeholder: !item.hasItemText(),
                   }}
                 >
-                  {this.renderLabel(item.getSupportItemText(), item.type) ||
+                  {this.renderLabel(item.getSupportItemText()) ||
                     this.textPh(item)}
                   {!!item.concl && <div>{item.concl}</div>}
                   {item.isEvent && <p>{item.eventDate?.toLocaleString()}</p>}
@@ -529,9 +529,7 @@ export class D2Rcard {
               }}
             >
               {this.renderLabel(
-                this.data.getCurrentItemText(),
-                this.data.type
-              ) || this.textPh(this.data)}
+                this.data.getCurrentItemText()) || this.textPh(this.data)}
               {this.data.isEvent && (
                 <p>
                   <b>Date:</b> {this.data.eventDate?.toLocaleString()}
