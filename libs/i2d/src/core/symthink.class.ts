@@ -468,6 +468,18 @@ export class SymThink {
             return this.text || ' ';
         }
     }
+
+    shallowCopy() {
+        const a = {
+            t: this.text,
+            c: '',
+            s: this.hasKids() ? this.support.map(sp => sp.text): []
+        };
+        if (this.lastSupIsConcl) {
+            a.c = a.s.pop();
+        }
+        return a;
+    }
 }
 
 // a.k.a root card

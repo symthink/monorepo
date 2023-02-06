@@ -49,3 +49,7 @@ Critical Bugs:
 * https://tobiasahlin.com/spinkit/
 * https://icomoon.io/app/#/select
 * https://iconscout.com/icon/gankyil-1536609
+* https://developer.chrome.com/articles/url-protocol-handler/ - for PWAs
+    * https://developer.mozilla.org/en-US/docs/Web/Manifest/protocol_handlers - browser support at bottom
+* https://web.dev/customize-install/ - PWA Install experience
+* https://developer.chrome.com/docs/ - Dev tools
