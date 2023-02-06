@@ -57,8 +57,13 @@ export class D2Rcard {
     return this.canEdit;
   }
 
+  isTouchDevice() {
+    return (('ontouchstart' in window) ||
+      (navigator.maxTouchPoints > 0));
+  }
+
   disableSlideOpts(itm: SymThink) {
-    if (!this.canEdit) return true;
+    if (!this.canEdit || !this.isTouchDevice()) return true;
     // else can edit
     return !this.reOrderDisabled || !!(itm.selected && !itm.isKidEnabled());
   }
@@ -172,6 +177,7 @@ export class D2Rcard {
       let domrect = null;
       if (ionItem) {
         domrect = ionItem.getBoundingClientRect();
+        ionItem.classList.remove('item-over');
       }
       this.itemAction.emit({
         action: 'support-clicked',
@@ -191,6 +197,7 @@ export class D2Rcard {
     const ionItem = el.closest('ion-item');
     if (ionItem) {
       this.selectedElHeight = ionItem.offsetHeight;
+      ionItem.classList.remove('item-over');
     }
     item.select$.next(true);
   }
@@ -252,18 +259,21 @@ export class D2Rcard {
   }
 
   renderItemIcon(item: SymThink, num: number) {
-    const useConcl =
-      this.data.lastSupIsConcl && this.data.support.length === num;
-    const label = useConcl ? 'therefore' : this.data.numeric ? num : 'bullet';
+    // const useConcl =
+    //   this.data.lastSupIsConcl && this.data.support.length === num;
+    // const label = useConcl ? 'therefore' : this.data.numeric ? num : 'bullet';
+    const label = this.data.numeric ? num : 'bullet';
     if (item.url) {
       return (
         <div class="bullet-ctr">
           <ion-icon name="open-outline"></ion-icon>
         </div>
       );
-    } else if (item.isKidEnabled()) {
+    }
+    else if (item.isKidEnabled()) {
       return <d2-icon slot="start" expandable={true} label={label}></d2-icon>;
-    } else {
+    }
+    else {
       return <d2-icon slot="start" label={label}></d2-icon>;
     }
   }
@@ -290,20 +300,15 @@ export class D2Rcard {
       label = parts.shift();
       txt = parts.join(':').trim();
     }
-    txt = txt.replace(trailingSympunkRegExp, '');
-    let iconCls;
-    let cr = CardRules.find((cr) => cr.type === type);
-    if (cr) {
-      iconCls = cr.iconCls;
-    }
     return [
       !!label && <b style={{ 'font-weight': 'bold' }}>{label}:</b>,
-      ' ' + txt,
-      <span class={iconCls}></span>,
+      ' ' + txt
     ];
   }
 
   renderSupportItems() {
+    const isConcl = (num: number) => this.data.lastSupIsConcl 
+                      && this.data.support.length === num;
     const isEditable = (itm) =>
       !!(itm.selected && this.canEdit && !itm.isKidEnabled() && !itm.url);
     return (
@@ -336,7 +341,7 @@ export class D2Rcard {
                 e.classList.remove('item-over');
               }}
             >
-              {this.renderItemIcon(item, index + 1)}
+              {!isConcl(index + 1) && this.renderItemIcon(item, index + 1)}
               {isEditable(item) && (
                 <ion-textarea
                   onIonInput={(e) => this.onTextareaInput(e, item)}
@@ -470,8 +475,8 @@ export class D2Rcard {
   renderItems() {
     const isEditable = (itm) => !!(itm.selected && this.canEdit);
     return [
-      <ion-item-sliding disabled={true}
-        // disabled={this.disableSlideOpts(this.data)}
+      <ion-item-sliding
+        disabled={this.disableSlideOpts(this.data)}
         key={this.data.id}
       >
         <ion-item
@@ -486,7 +491,7 @@ export class D2Rcard {
           onClick={(e) => this.onItemClick(this.data, e)}
           onMouseEnter={(evt: MouseEvent) => {
             const e = evt.target as HTMLElement;
-            if (!this.data.selected && this.reOrderDisabled) {
+            if (!this.data.selected) {
               e.classList.add('item-over');
             }
           }}

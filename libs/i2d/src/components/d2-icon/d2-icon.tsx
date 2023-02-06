@@ -10,6 +10,23 @@ export class D2Icon {
   @Prop() expandable = false;
   @State() modified = false;
 
+
+  // TODO: try these later
+  // private circleDot = '&#x2299;';
+  // private bullet = '&#x2022;';
+  // private dingbat = [
+  //   {x: 1, circle: '&#x2780;', full: '&#x278A;'},
+  //   {x: 2, circle: '&#x2781;', full: '&#x278B;'},
+  //   {x: 3, circle: '&#x2782;', full: '&#x278C;'},
+  //   {x: 4, circle: '&#x2783;', full: '&#x278D;'},
+  //   {x: 5, circle: '&#x2784;', full: '&#x278E;'},
+  //   {x: 6, circle: '&#x2785;', full: '&#x278F;'},
+  //   {x: 7, circle: '&#x2786;', full: '&#x2790;'},
+  //   {x: 8, circle: '&#x2787;', full: '&#x2791;'},
+  //   {x: 9, circle: '&#x2788;', full: '&#x2792;'},
+  //   {x: 10, circle: '&#x2789;', full: '&#x2793;'}
+  // ];
+
   renderText() {
     let style = {};
     if (this.expandable) {

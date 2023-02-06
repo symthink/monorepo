@@ -123,7 +123,6 @@ export class SymThink {
     }
 
     onSelect() {
-        console.log('onSelect', this.text)
         if (this.hasKids()) {
             this.support.map(k => k.selected = false);
         }
