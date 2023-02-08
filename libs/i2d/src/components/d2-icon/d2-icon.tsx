@@ -10,23 +10,6 @@ export class D2Icon {
   @Prop() expandable = false;
   @State() modified = false;
 
-
-  // TODO: try these later
-  // private circleDot = '&#x2299;';
-  // private bullet = '&#x2022;';
-  // private dingbat = [
-  //   {x: 1, circle: '&#x2780;', full: '&#x278A;'},
-  //   {x: 2, circle: '&#x2781;', full: '&#x278B;'},
-  //   {x: 3, circle: '&#x2782;', full: '&#x278C;'},
-  //   {x: 4, circle: '&#x2783;', full: '&#x278D;'},
-  //   {x: 5, circle: '&#x2784;', full: '&#x278E;'},
-  //   {x: 6, circle: '&#x2785;', full: '&#x278F;'},
-  //   {x: 7, circle: '&#x2786;', full: '&#x2790;'},
-  //   {x: 8, circle: '&#x2787;', full: '&#x2791;'},
-  //   {x: 9, circle: '&#x2788;', full: '&#x2792;'},
-  //   {x: 10, circle: '&#x2789;', full: '&#x2793;'}
-  // ];
-
   renderText() {
     let style = {};
     if (this.expandable) {
@@ -72,26 +55,28 @@ export class D2Icon {
   }
 
   renderSVG() {
-    return <svg
-    version="1.1"
-    xmlns="http://www.w3.org/2000/svg"
-    x="0px"
-    y="0px"
-    viewBox="0 0 402.6 557"
-  >
-    <g style={{opacity: '0.5'}}>
-      <path
-        fill="currentColor"
-        d="M201.1,0.2L5.6,137.2c0,0-14,11.4,0,22.8c14,11.4,27.9,0,27.9,0L201.1,45.9l167.6,114.2c0,0,14,11.4,27.9,0
+    return (
+      <svg
+        version="1.1"
+        xmlns="http://www.w3.org/2000/svg"
+        x="0px"
+        y="0px"
+        viewBox="0 0 402.6 557"
+      >
+        <g style={{ opacity: '0.5' }}>
+          <path
+            fill="currentColor"
+            d="M201.1,0.2L5.6,137.2c0,0-14,11.4,0,22.8c14,11.4,27.9,0,27.9,0L201.1,45.9l167.6,114.2c0,0,14,11.4,27.9,0
 c14-11.4,0-22.8,0-22.8L201.1,0.2z"
-      />
-      <path
-        fill="currentColor"
-        d="M201.1,557l195.5-137c0,0,14-11.4,0-22.8c-14-11.4-27.9,0-27.9,0L201.1,511.3L33.5,397.1c0,0-14-11.4-27.9,0s0,22.8,0,22.8
+          />
+          <path
+            fill="currentColor"
+            d="M201.1,557l195.5-137c0,0,14-11.4,0-22.8c-14-11.4-27.9,0-27.9,0L201.1,511.3L33.5,397.1c0,0-14-11.4-27.9,0s0,22.8,0,22.8
 "
-      />
-    </g>
-  </svg>
+          />
+        </g>
+      </svg>
+    );
   }
 
   render() {

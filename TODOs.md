@@ -39,6 +39,11 @@ Critical Bugs:
 * Instead of extending SymthinkDocument with a Persistence layer store, add the persistence store as a property. e.g.
     symthink.localStor
     symthink.remoteStor
+* Consider using standard unicode characters for the Claim, Idea, Question symbolds instead of icomoon. See:
+    * https://dn-works.com/wp-content/uploads/2023/UFAS010223/Symbola.pdf
+    * https://www.fileformat.info/info/unicode/char/1f56b/browsertest.htm
+    * https://www.fileformat.info/info/unicode/char/1f4a1/browsertest.htm
+
 
 # Links
 
