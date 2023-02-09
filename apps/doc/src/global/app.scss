@@ -20,15 +20,15 @@
   font-stretch: 100%;
   src         : url(../assets/fonts/Comfortaa-VariableFont_wght.ttf);
 }
-// START: icomoon generated styles 
+// START: icomoon styles 
 @font-face {
   font-family: 'Sympunk';
-  src        : url('../assets/fonts/sympunk.eot?bgnq3');
-  src        : url('../assets/fonts/sympunk.eot?bgnq3#iefix') format('embedded-opentype'),
-    url('../assets/fonts/sympunk.ttf?bgnq3') format('truetype'),
-    url('../assets/fonts/sympunk.woff?bgnq3') format('woff'),
-    url('../assets/fonts/sympunk.svg?bgnq3#sympunk') format('svg');
-  font-weight : normal;
+  src        : url('../assets/fonts/sympunk.eot?qs3628');
+  src        : url('../assets/fonts/sympunk.eot?qs3628#iefix') format('embedded-opentype'),
+    url('../assets/fonts/sympunk.ttf?qs3628') format('truetype'),
+    url('../assets/fonts/sympunk.woff?qs3628') format('woff'),
+    url('../assets/fonts/sympunk.svg?qs3628#sympunk') format('svg');
+  font-weight : lighter;
   font-style  : normal;
   font-display: block;
 }
@@ -58,16 +58,15 @@
 }
 
 .icon-idea:before {
-  content: "\e900";
+  content: "\1f4a1";
 }
-
 .icon-question:before {
-  content: "\e901";
+  content: "\2753";
+}
+.icon-claim:before {
+  content: "\1f56b";
 }
 
-.icon-claim:before {
-  content: "\e902";
-}
 // END: icomoon
 
 
