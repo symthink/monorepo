@@ -1,9 +1,7 @@
 // export * from './components';
 export * from './core/animations';
 export * from './core/symthink.class';
-export * from './components/d2-icon/d2-icon';
 export * from './components/d2-rcard/d2-rcard';
-export * from './components/d2-byline/d2-byline';
 export * from './components/d2-head-format/d2-head-format';
 export * from './components/d2-symthink-doc/d2-symthink-doc';
 export * from './components/d2-src-metadata/d2-src-metadata';

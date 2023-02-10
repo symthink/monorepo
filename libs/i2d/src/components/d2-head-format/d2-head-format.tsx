@@ -34,8 +34,7 @@ export class D2HeadFormat {
   }
 
   isTouchDevice() {
-    return (('ontouchstart' in window) ||
-      (navigator.maxTouchPoints > 0));
+    return 'ontouchstart' in window || navigator.maxTouchPoints > 0;
   }
 
   async onItemOptionsClick(evt?: MouseEvent | PointerEvent) {
@@ -90,6 +89,7 @@ export class D2HeadFormat {
       updatedDate = dayjs(this.modified).fromNow();
     }
     let author = this.displayName ? `By ${this.displayName} on` : 'Created';
+
     return [
       <div class="by-line" slot="start">
         <i>
@@ -132,9 +132,7 @@ export class D2HeadFormat {
             <ion-item lines="none" class="ion-text-wrap by-line">
               {this.renderByLine()}
             </ion-item>
-            <ion-item-options
-              side="end"
-            >
+            <ion-item-options side="end">
               <ion-item-option
                 color="tertiary"
                 class="secondary-btn-theme opts-btn-slide"
@@ -148,19 +146,16 @@ export class D2HeadFormat {
         </ion-list>
       ),
       !this.canEdit && (
-        <span>
-          <div
-            class={{ 'doc-title': true, invisible: !!!this.symthinkDoc.label }}
-          >
-            <h1>{this.symthinkDoc.label}</h1>
-          </div>
-          <d2-byline
-            symthinkDoc={this.symthinkDoc}
-            created={this.created}
-            modified={this.modified}
-            displayName={this.displayName}
-          />
-        </span>
+        <ion-list>
+          <ion-item lines="none" class="ion-text-wrap doc-title">
+            <div class={{ invisible: !!!this.symthinkDoc.label }}>
+              <h1>{this.symthinkDoc.label}</h1>
+            </div>
+          </ion-item>
+          <ion-item lines="none" class="ion-text-wrap by-line">
+            {this.renderByLine()}
+          </ion-item>
+        </ion-list>
       ),
       this.symthinkDoc.format !== FormatEnum.Review && (
         <d2-metrics

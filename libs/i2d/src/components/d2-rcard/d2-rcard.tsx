@@ -18,6 +18,7 @@ import {
   trailingSympunkRegExp,
   ARG_TYPE,
   sympunkReplacementRegex,
+  Bullets,
 } from '../../core/symthink.class';
 // import getPercentageDifference from 'text-percentage-difference';
 
@@ -266,16 +267,17 @@ export class D2Rcard {
     const label = this.data.numeric ? num : 'bullet';
     if (item.url) {
       return (
-        <div class="bullet-ctr">
+        <div>
           <ion-icon name="open-outline"></ion-icon>
         </div>
       );
     }
-    else if (item.isKidEnabled()) {
-      return <d2-icon slot="start" expandable={true} label={label}></d2-icon>;
-    }
     else {
-      return <d2-icon slot="start" label={label}></d2-icon>;
+      const x = this.data.numeric ? num : 0;
+      const bullet = Bullets.find((b) => b.x === x);
+      const charLabel = item.isKidEnabled() ? bullet.full : bullet.circ;
+      return <span slot="start" class={{bullet: true, numbull: this.data.numeric}}>{charLabel}</span>
+      // return <d2-icon slot="start" label={label}></d2-icon>;
     }
   }
 

@@ -213,9 +213,9 @@ export class D2Metrics {
     const breakPoint = this.selected?.initBreakpoint || 0.25;
     return (
       <div class="container">
-        <d2-metric name="mindset" value={`${this.mindsetVal}`} />
         <d2-metric name="sources" value={this.sourceCnt} />
         <d2-metric name="depth" value={this.depth} />
+        <d2-metric name="mindset" value={`${this.mindsetVal}`} />
         <ion-modal
           class={this.modalClassName}
           ref={(e) => (this.modalEl = e as HTMLIonModalElement)}

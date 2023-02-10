@@ -272,19 +272,9 @@ ion-breadcrumb:last-child {
   }
 }
 
-.ico-bulb:before {
-  content: "\e900";
-  opacity: 0.6;
-}
-
-.ico-ques:before {
-  content: "\e901";
-  opacity: 0.6;
-}
-
-.ico-clm:before {
-  content: "\e902";
-  opacity: 0.6;
+.bullet {
+  margin-top: 6px;
+  margin-left: 12px;
 }
 
 .opts-btn {
