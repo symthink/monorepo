@@ -661,12 +661,12 @@ export const CardRules = [
         type: ARG_TYPE.Question,
         name: 'Question',
         svg: 'assets/icon/questmark.svg',
-        placeholder: 'As a [GROUP/ROLE], I wonder [WHO/WHAT/WHERE/WHEN/WHY/HOW]...',
-        supportsPh: 'Perhaps doing X would solve the problem',
+        placeholder: 'As a [GROUP/ROLE], I wonder [WHO/WHAT/WHERE/WHEN/WHY/HOW]...❓',
+        supportsPh: 'Perhaps doing X would solve the problem💡',
         conclPh: 'Add background context',
         disable: [],
         xtra: false,
-        char: '', // e901
+        char: '❓', // 2753
         iconCls: 'ico-ques',
         next: ARG_TYPE.Idea
     },
@@ -679,7 +679,7 @@ export const CardRules = [
         conclPh: 'Describe the problem it solves',
         disable: [],
         xtra: false,
-        char: '', // e900
+        char: '💡', // 1f4a1
         iconCls: 'ico-bulb',
         next: ARG_TYPE.Claim
     },
@@ -692,13 +692,13 @@ export const CardRules = [
         conclPh: 'Conclusion, restate or summarize claim',
         disable: [],
         xtra: false,
-        char: '', // e902
+        char: '🕫', // 1f56b
         iconCls: 'ico-clm',
         next: ARG_TYPE.Question
     }
 ];
-export const trailingSympunkRegExp = /[]+/g
-
+export const trailingSympunkRegExp = /[🕫💡❓]+/g
+export const sympunkReplacementRegex = /[^\.\!\?]*[\.\!\?🕫💡❓]/g;
 export const Bullets = [
     { x: 0, circ: '⊙', full: '⚈', circle: '&#x2299;', fulle: '&#x2688;' },
     { x: 1, circ: '➀', full: '➊', circle: '&#x2780;', fulle: '&#x278A;' },

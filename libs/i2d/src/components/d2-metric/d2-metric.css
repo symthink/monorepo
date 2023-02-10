@@ -28,20 +28,21 @@
   text-align: center;
 }
 .icon {
+  position: absolute;
   display: inline-block;
 }
 .green {
   background-color: #38a203;
 }
 .blue {
-  background-color: #08C;
-   /* rgb(3, 82, 250); */
+  background-color: #08c;
+  /* rgb(3, 82, 250); */
 }
 .orange {
   background-color: #ff6010;
 }
 .yellow {
-  background-color: #DB1;
+  background-color: #db1;
 }
 .purple {
   background-color: #af10ff;
@@ -52,7 +53,8 @@
   bottom: -1px;
 }
 ion-icon.bookmark {
-  margin-bottom: -2px;
+  margin-top: 5px;
+  margin-left: -2px;
 }
 ion-icon.qmark {
   margin-bottom: -4px;
@@ -63,6 +65,16 @@ ion-icon.megaph {
 ion-icon.bulb {
   margin-bottom: -3px;
 }
+.down-arrow {
+  margin-top: -3px;
+  margin-left: 2px;
+}
 .gankyil-symbol {
   color: white;
+  margin-top: -6px;
+  margin-left: -4px;
+}
+.gankyil-symbol:before {
+  content: '࿋';
+  font-size: 36px;
 }

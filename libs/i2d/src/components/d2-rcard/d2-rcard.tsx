@@ -17,6 +17,7 @@ import {
   StLogActionEnum,
   trailingSympunkRegExp,
   ARG_TYPE,
+  sympunkReplacementRegex,
 } from '../../core/symthink.class';
 // import getPercentageDifference from 'text-percentage-difference';
 
@@ -461,8 +462,7 @@ export class D2Rcard {
       // }
       let match;
       const sentences = [];
-      const regexp = /[^\.\!\?]*[\.\!\?]/g;
-      while ((match = regexp.exec(newVal)) !== null) {
+      while ((match = sympunkReplacementRegex.exec(newVal)) !== null) {
         let tmp: string = match[0];
         tmp = tmp.trim();
         tmp = tmp.charAt(0).toUpperCase() + tmp.slice(1);

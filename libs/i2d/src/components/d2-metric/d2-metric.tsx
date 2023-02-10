@@ -49,8 +49,8 @@ export class D2Metric {
       name: 'mindset',
       label: 'mindset',
       color: 'green',
-      icon: <span></span>,
-      // icon: <span class="gankyil-symbol"></span>,
+      // icon: <span></span>,
+      icon: <span class="icon gankyil-symbol"></span>,
     },
     {
       name: 'depth',
@@ -66,7 +66,7 @@ export class D2Metric {
       return (
         <Host onClick={this.onClick.bind(this, this.name)}>
           <span class="first">
-            {metric.icon}&nbsp;{metric.label}
+            {metric.icon}&nbsp;&nbsp;{metric.label}
           </span>
           <div class={metric.color}>
             <span class="val">{this.value}</span>
