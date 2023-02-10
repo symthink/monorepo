@@ -285,7 +285,6 @@ export class D2Rcard {
         class="opts-btn"
         slot="end"
         fill="solid"
-        shape="round"
         onClick={(evt: MouseEvent) => this.onItemOptionsClick(item, evt)}
       >
         <ion-icon slot="icon-only" name="ellipsis-horizontal"></ion-icon>
@@ -327,7 +326,8 @@ export class D2Rcard {
               class={{
                 'can-edit': this.canEdit,
                 selected: !!item.selected,
-                'item-text': true,
+                'item-text': !isConcl(index + 1),
+                'item-concl': isConcl(index + 1)
               }}
               lines="none"
               onClick={(ev) => this.onSupportItemClick(item, ev)}

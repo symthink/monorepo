@@ -1,19 +1,82 @@
 :host {
   display: block;
-  margin: 0.2em 1.5em 0em;
+  margin: 0px;
 }
-.doc-title {
+[color=tertiary] {
+  background-color: var(--ion-color-tertiary);
+  color           : var(--ion-color-tertiary-contrast);
+}
+.secondary-btn-theme {
+  --color     : black;
+  --background: linear-gradient(to bottom, #aeaeae, #d4d4d6);
+}
+ion-item.doc-title {
+  height: 68px;
+  padding: 0px 20vw;
+}
+ion-item.by-line {
+  padding: 0px 5vw;
+}
+ion-item.by-line::part(native) {
+  border-top: 1px solid #cccccc;
+}
+
+.doc-title div {
   text-align: center;
+  width: 100%;
 
   h1 {
     font-size: 32px;
     font-weight: 500;
-    border-bottom: 1px solid #cccccc;
     color: currentColor;
     min-height: 18px;
+    display: inline-block;
+    width: fit-content;
   }
 }
 .invisible {
   visibility: hidden;
   height: 8px;
+}
+ion-item {
+  --padding-start: 0px;
+  --inner-padding-end: 0px;
+}
+.by-line {
+  font-variant: petite-caps;
+  font-weight: bold;
+  opacity: 0.6;
+  color: currentColor;
+}
+.opts-btn {
+  display           : none;
+  position          : absolute;
+  right             : 0px;
+  bottom            : -3px;
+  --color           : var(--ion-color-primary) !important;
+  --color-hover     : var(--ion-color-primary) !important;
+  --background      : rgba(var(--ion-color-secondary-rgb), 0.8) !important;
+  --background-hover: rgba(var(--ion-color-secondary-rgb), 0.8) !important;
+  --border-radius   : 0px;
+  height            : 45px;
+  width             : 72px;
+  margin-right      : 0px;
+}
+
+@media (pointer: fine) {
+  .item-over {
+    --inner-padding-end: 0px;
+    border-bottom      : 1px solid #cccccc;
+
+    .opts-btn {
+      display: block;
+    }
+  }
+}
+
+@media screen and (min-width: 600px) {
+  .opts-btn-slide {
+    display: none;
+  }
+
 }

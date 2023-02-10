@@ -83,6 +83,16 @@ ion-reorder-group {
   }
 }
 
+// must revert effect of above for conclusion which sits inside of ion-reorder-group tag
+ion-item.item-concl {
+  margin-left: -10px;
+}
+@media only screen and (min-width: 600px) {
+  ion-item.item-concl {
+    margin-left: -16px;
+  }
+}
+
 ion-item.item-text {
   align-items              : flex-start;
   // --inner-padding-bottom: 10px;
@@ -301,7 +311,6 @@ ion-breadcrumb:last-child {
       display: block;
     }
   }
-
 }
 
 @media screen and (min-width: 600px) {
