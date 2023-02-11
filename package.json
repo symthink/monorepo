@@ -5,6 +5,7 @@
   "scripts": {
     "start:doc": "npm run clean:doc ; nx serve doc --dev",
     "start:editor": "npm run clean:editor ; nx serve editor --dev --verbose",
+    "start:news": "npm run clean:news ; nx serve news --dev --verbose",
     "start:fire": "firebase emulators:start --only hosting:symthink-io",
     "start:io": "npm run clean:io ; nx serve io-site --dev --verbose",
     "start:org": "npm run clean:org ; nx serve org-home --dev",
@@ -12,10 +13,12 @@
     "build:io": "npm run clean:io ; nx build io-site --dev",
     "build:doc": "npm run clean:doc ; nx build doc --dev",
     "build:editor": "npm run clean:editor ; nx build editor --dev",
+    "build:news": "npm run clean:news ; nx build news --dev",
     "build:editor:prod": "npm run clean:editor ; nx build editor",
     "build:io:prod": "npm run clean:io && nx build io-site",
     "clean": "npm run clean:editor && npm run clean:io && npm run clean:doc && npm run clean:org",
     "clean:editor": "rm apps/editor/package.json",
+    "clean:news": "rm apps/news/package.json",
     "clean:io": "rm apps/io-site/package.json",
     "clean:doc": "rm apps/doc/package.json",
     "clean:org": "rm apps/org-home/package.json",
@@ -23,12 +26,14 @@
     "save": "npm run clean ; git commit -am'wip' && git push",
     "release": "release-it",
     "release:ci": "release-it --ci",
-    "prebuild": "npm run release && node pkg-version.js",
+    "prebuild:editor": "npm run release && node prebuild-editor.js",
+    "prebuild:news": "npm run release && node prebuild-news.js",
     "copydoctoio": "mkdir apps/io-site/www/n ; mv apps/doc/www/build apps/io-site/www/n/ ; mv apps/doc/www/assets apps/io-site/www/n/",
     "deploy:org": "npm run build:org && firebase deploy --only hosting:symthink-org",
     "deploy:editor": "npm run build:editor && firebase deploy --only hosting:symthink-staging",
-    "deploy:editor:prod": "npm run prebuild && npm run build:editor:prod && firebase deploy --only hosting:symthink-app",
-    "deploy:io": "npm run build:io && npm run build:doc && npm run copydoctoio && firebase deploy --only hosting:symthink-io"
+    "deploy:editor:prod": "npm run prebuild:editor && npm run build:editor:prod && firebase deploy --only hosting:symthink-app",
+    "deploy:io": "npm run build:io && npm run build:doc && npm run copydoctoio && firebase deploy --only hosting:symthink-io",
+    "deploy:news": "npm run build:news && firebase deploy --only hosting:symthink-news"
   },
   "private": true,
   "dependencies": {

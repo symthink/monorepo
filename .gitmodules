@@ -7,3 +7,6 @@
 [submodule "apps/io-site"]
 	path = apps/io-site
 	url = https://github.com/symthink/io-site.git
+[submodule "apps/news"]
+	path = apps/news
+	url = https://github.com/symthink/news.git

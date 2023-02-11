@@ -59,3 +59,4 @@ Critical Bugs:
 * https://web.dev/customize-install/ - PWA Install experience
 * https://developer.chrome.com/docs/ - Dev tools
 * https://newsdata.io/blog/best-news-api/#:~:text=Mediastack%20is%20a%20free%2C%20simple,Global%20News%2C%20Made%20Easy - News APIs
+* https://rss.app/ - provides the client side widgets to put directly onto webpage

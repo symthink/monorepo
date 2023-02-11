@@ -10,6 +10,22 @@
     ]
   },
   "hosting": [
+    {
+      "target": "symthink-news",
+      "public": "apps/news/www",
+      "ignore": [
+        "firebase.json",
+        "**/.*",
+        "**/node_modules/**"
+      ],
+      "rewrites": [{
+        "source": "/api/**",
+        "function": "api"
+      }, {
+        "source": "/**",
+        "destination": "/index.html"
+      }]  
+    },
   {
     "target": "symthink-io",
     "public": "apps/io-site/www",
