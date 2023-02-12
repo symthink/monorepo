@@ -10,14 +10,29 @@
   --color     : black;
   --background: linear-gradient(to bottom, #aeaeae, #d4d4d6);
 }
+ion-item {
+  --padding-start: 0px;
+  --inner-padding-end: 0px;
+}
 ion-item.doc-title {
   height: 68px;
   padding: 0px 20vw;
 }
 ion-item.by-line {
   padding: 0px 5vw;
+
+  div {
+    font-variant: petite-caps;
+    font-weight: bold;
+    opacity: 0.6;
+    color: currentColor;  
+    flex: 1;
+    border-left: 4px solid var(--ion-color-medium);
+    padding: 5px;
+    margin-top: 5px;
+  }
 }
-ion-item.by-line::part(native) {
+ion-item.got-title::part(native) {
   border-top: 1px solid #cccccc;
 }
 
@@ -38,16 +53,7 @@ ion-item.by-line::part(native) {
   visibility: hidden;
   height: 8px;
 }
-ion-item {
-  --padding-start: 0px;
-  --inner-padding-end: 0px;
-}
-.by-line {
-  font-variant: petite-caps;
-  font-weight: bold;
-  opacity: 0.6;
-  color: currentColor;
-}
+
 .opts-btn {
   display           : none;
   position          : absolute;

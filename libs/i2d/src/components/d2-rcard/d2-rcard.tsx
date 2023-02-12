@@ -37,7 +37,6 @@ export class D2Rcard {
   @Prop() data: SymThinkDocument | SymThink;
   @Prop() canEdit = false;
   @Prop() notify?: Subject<string>;
-  @Prop() closeBtn = false;
   @Prop() domrect?: DOMRect;
   @Prop() reOrderDisabled = true;
   contentEl: HTMLIonContentElement;
@@ -48,7 +47,12 @@ export class D2Rcard {
   @State() checkboxHidden = true;
   @State() change = false;
 
-  @Event() itemAction: EventEmitter<{ action; value; domrect?: DOMRect, pointerEvent?: MouseEvent|PointerEvent }>;
+  @Event() itemAction: EventEmitter<{
+    action;
+    value;
+    domrect?: DOMRect;
+    pointerEvent?: MouseEvent | PointerEvent;
+  }>;
   @Event() docAction: EventEmitter<{ action; value }>;
 
   private listEl: HTMLIonListElement;
@@ -60,8 +64,7 @@ export class D2Rcard {
   }
 
   isTouchDevice() {
-    return (('ontouchstart' in window) ||
-      (navigator.maxTouchPoints > 0));
+    return 'ontouchstart' in window || navigator.maxTouchPoints > 0;
   }
 
   disableSlideOpts(itm: SymThink) {
@@ -163,7 +166,7 @@ export class D2Rcard {
     });
   }
   onSupportItemClick(item: SymThink, ev: MouseEvent | PointerEvent): void {
-    if (this.currIonTextareaEl) {
+    if (!this.canEdit || this.currIonTextareaEl) {
       return;
     }
     ev.stopPropagation();
@@ -194,6 +197,9 @@ export class D2Rcard {
   }
 
   onItemClick(item: SymThink, ev: MouseEvent | PointerEvent): void {
+    if (!this.canEdit) {
+      return;
+    }
     ev.stopPropagation();
     const el = ev.target as HTMLElement;
     const ionItem = el.closest('ion-item');
@@ -212,12 +218,16 @@ export class D2Rcard {
     this.itemAction.emit({ action: 'slide-opt-extend', value: item });
   }
 
-  async onItemOptionsClick(item: SymThink, evt?: MouseEvent|PointerEvent) {
+  async onItemOptionsClick(item: SymThink, evt?: MouseEvent | PointerEvent) {
     if (evt) {
       evt.stopPropagation();
       evt.preventDefault();
     }
-    this.itemAction.emit({ action: 'item-opts-clicked', value: item, pointerEvent: evt });
+    this.itemAction.emit({
+      action: 'item-opts-clicked',
+      value: item,
+      pointerEvent: evt,
+    });
   }
 
   textPh(item: SymThink) {
@@ -261,22 +271,21 @@ export class D2Rcard {
   }
 
   renderItemIcon(item: SymThink, num: number) {
-    // const useConcl =
-    //   this.data.lastSupIsConcl && this.data.support.length === num;
-    // const label = useConcl ? 'therefore' : this.data.numeric ? num : 'bullet';
-    const label = this.data.numeric ? num : 'bullet';
     if (item.url) {
       return (
         <div>
           <ion-icon name="open-outline"></ion-icon>
         </div>
       );
-    }
-    else {
+    } else {
       const x = this.data.numeric ? num : 0;
       const bullet = Bullets.find((b) => b.x === x);
       const charLabel = item.isKidEnabled() ? bullet.full : bullet.circ;
-      return <span slot="start" class={{bullet: true, numbull: this.data.numeric}}>{charLabel}</span>
+      return (
+        <span slot="start" class={{ bullet: true, numbull: this.data.numeric }}>
+          {charLabel}
+        </span>
+      );
       // return <d2-icon slot="start" label={label}></d2-icon>;
     }
   }
@@ -304,13 +313,13 @@ export class D2Rcard {
     }
     return [
       !!label && <b style={{ 'font-weight': 'bold' }}>{label}:</b>,
-      ' ' + txt
+      ' ' + txt,
     ];
   }
 
   renderSupportItems() {
-    const isConcl = (num: number) => this.data.lastSupIsConcl 
-                      && this.data.support.length === num;
+    const isConcl = (num: number) =>
+      this.data.lastSupIsConcl && this.data.support.length === num;
     const isEditable = (itm) =>
       !!(itm.selected && this.canEdit && !itm.isKidEnabled() && !itm.url);
     return (
@@ -329,7 +338,7 @@ export class D2Rcard {
                 'can-edit': this.canEdit,
                 selected: !!item.selected,
                 'item-text': !isConcl(index + 1),
-                'item-concl': isConcl(index + 1)
+                'item-concl': isConcl(index + 1),
               }}
               lines="none"
               onClick={(ev) => this.onSupportItemClick(item, ev)}
@@ -530,8 +539,8 @@ export class D2Rcard {
                 placeholder: !this.data.hasItemText(),
               }}
             >
-              {this.renderLabel(
-                this.data.getCurrentItemText()) || this.textPh(this.data)}
+              {this.renderLabel(this.data.getCurrentItemText()) ||
+                this.textPh(this.data)}
               {this.data.isEvent && (
                 <p>
                   <b>Date:</b> {this.data.eventDate?.toLocaleString()}
@@ -542,7 +551,7 @@ export class D2Rcard {
           {/* {this.data.selected && (
       <ion-icon name="create-outline" slot="end"></ion-icon>
     )} */}
-        {this.canEdit && this.renderItemOptionsBtn(this.data)}
+          {this.canEdit && this.renderItemOptionsBtn(this.data)}
         </ion-item>
         <ion-item-options side="end">
           <ion-item-option
@@ -592,15 +601,16 @@ export class D2Rcard {
         </ion-list>
         <br />
         <slot name="card-list-bottom"></slot>
-        <div class="sources-border">
-          <br />
-          <br />
-          <div>
-            <ion-icon size="large" name="bookmark"></ion-icon>
-          </div>
-          <hr />
-        </div>
+
         {this.data.hasSources() && [
+          <div class="sources-border">
+            <br />
+            <br />
+            <div>
+              <ion-icon size="large" name="bookmark"></ion-icon>
+            </div>
+            <hr />
+          </div>,
           <ion-list>
             {this.data.source?.map((md, ix) => (
               <d2-src-metadata

@@ -67,14 +67,14 @@ export class D2HeadFormat {
     const year = dayjs(this.modified).format('YYYY');
     if (src) {
       return (
-        <div class="by-line">
+        <div>
           {this.displayName || 'Created'} ({year}). [Symthink&nbsp;of{' '}
           <i>{src.title}</i>, by&nbsp;{src.author}]. {src.publisher}
         </div>
       );
     } else {
       return (
-        <div class="by-line">
+        <div>
           {this.displayName || 'Created'} ({year}). [Symthink&nbsp;of{' '}
           <i>_Source_</i>, by&nbsp;_Author_]. _Publisher_
         </div>
@@ -91,21 +91,23 @@ export class D2HeadFormat {
     let author = this.displayName ? `By ${this.displayName} on` : 'Created';
 
     return [
-      <div class="by-line" slot="start">
+      <div>
         <i>
-          {author}&nbsp;{createdDate}
+          {author} {createdDate}
         </i>
       </div>,
-      <div class="by-line" slot="end">
-        <i>{!!updatedDate && <span>Updated {updatedDate}</span>}</i>
+      <div>
+        <i>{!!updatedDate && 'Updated ' + updatedDate}</i>
       </div>,
     ];
   }
 
   renderByLine() {
     if (this.symthinkDoc.format === FormatEnum.Review) {
+      console.log('review byline')
       return this.renderReviewByLine();
     } else {
+      console.log('default byline')
       return this.renderDefaultByLine();
     }
   }
@@ -129,7 +131,7 @@ export class D2HeadFormat {
             </div>
           </ion-item>
           <ion-item-sliding disabled={!this.isTouchDevice()}>
-            <ion-item lines="none" class="ion-text-wrap by-line">
+            <ion-item lines="none" class="by-line">
               {this.renderByLine()}
             </ion-item>
             <ion-item-options side="end">
@@ -147,12 +149,12 @@ export class D2HeadFormat {
       ),
       !this.canEdit && (
         <ion-list>
-          <ion-item lines="none" class="ion-text-wrap doc-title">
-            <div class={{ invisible: !!!this.symthinkDoc.label }}>
+          {this.symthinkDoc.label && <ion-item lines="none" class="ion-text-wrap doc-title">
+            <div>
               <h1>{this.symthinkDoc.label}</h1>
             </div>
-          </ion-item>
-          <ion-item lines="none" class="ion-text-wrap by-line">
+          </ion-item>}
+          <ion-item lines="none" class={{'by-line':true, 'got-title': !!this.symthinkDoc.label}}>
             {this.renderByLine()}
           </ion-item>
         </ion-list>
