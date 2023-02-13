@@ -16,7 +16,6 @@ import {
   CardRules,
   StLogActionEnum,
   trailingSympunkRegExp,
-  ARG_TYPE,
   sympunkReplacementRegex,
   Bullets,
 } from '../../core/symthink.class';
@@ -502,7 +501,7 @@ export class D2Rcard {
           onClick={(e) => this.onItemClick(this.data, e)}
           onMouseEnter={(evt: MouseEvent) => {
             const e = evt.target as HTMLElement;
-            if (!this.data.selected) {
+            if (this.canEdit && !this.data.selected) {
               e.classList.add('item-over');
             }
           }}
