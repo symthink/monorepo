@@ -609,6 +609,7 @@ export class D2Rcard {
               <ion-icon size="large" name="bookmark"></ion-icon>
             </div>
             <hr />
+            <br /><br />
           </div>,
           <ion-list>
             {this.data.source?.map((md, ix) => (

@@ -64,7 +64,7 @@ export class D2HeadFormat {
 
   renderReviewByLine() {
     const src = this.symthinkDoc.source && this.symthinkDoc.source[0];
-    const year = dayjs(this.modified).format('YYYY');
+    const year = dayjs(this.created).format('YYYY');
     if (src) {
       return (
         <div>
@@ -91,13 +91,14 @@ export class D2HeadFormat {
     let author = this.displayName ? `By ${this.displayName} on` : 'Created';
 
     return [
-      <div>
+      <div class="leftbar">
         <i>
           {author} {createdDate}
         </i>
       </div>,
-      <div>
-        <i>{!!updatedDate && 'Updated ' + updatedDate}</i>
+      <div class="leftbar">
+        {!!updatedDate && <i>Updated {updatedDate}</i>}
+        {!updatedDate && <i>No updates yet</i>}
       </div>,
     ];
   }

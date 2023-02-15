@@ -27,7 +27,6 @@ ion-item.by-line {
     opacity: 0.6;
     color: currentColor;  
     flex: 1;
-    border-left: 4px solid var(--ion-color-medium);
     padding: 5px;
     margin-top: 5px;
   }
@@ -35,7 +34,9 @@ ion-item.by-line {
 ion-item.got-title::part(native) {
   border-top: 1px solid #cccccc;
 }
-
+.leftbar {
+  border-left: 4px solid var(--ion-color-medium);
+}
 .doc-title div {
   text-align: center;
   width: 100%;

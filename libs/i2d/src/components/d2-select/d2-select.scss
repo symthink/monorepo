@@ -1,7 +1,6 @@
 :host {
   display: block;
-  --popover-item-bgcolor: blue;
 }
-.item-hover::part(native) {
-  background-color: var(--popover-item-bgcolor);
+ion-item:hover {
+  --background: var(--ion-color-step-100);
 }

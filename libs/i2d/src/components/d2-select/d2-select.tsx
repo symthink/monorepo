@@ -20,7 +20,7 @@ export class D2Select {
 
   async onItemClick(button: ActionSheetButton, evt: MouseEvent|PointerEvent) {
     const popover = await popoverController.getTop();
-    popover.dismiss(evt, button.role);
+    popover.dismiss(button.data, button.role);
   }
 
   useSvg(icon: string) {
@@ -35,14 +35,6 @@ export class D2Select {
           <ion-item 
             onClick={(evt) => this.onItemClick(button, evt)}
             lines={ix + 1 < arr.length ? 'full' : 'none'}
-            onMouseEnter={(evt: MouseEvent) => {
-              const e = evt.target as HTMLElement;
-              e.classList.add('item-hover');
-            }}
-            onMouseLeave={(evt: MouseEvent) => {
-              const e = evt.target as HTMLElement;
-              e.classList.remove('item-hover');
-            }}
           >
             <ion-label>{button.text}</ion-label>
             {this.useSvg(button.icon) && <ion-icon slot="end" src={button.icon}></ion-icon>}
