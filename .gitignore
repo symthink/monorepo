@@ -114,3 +114,6 @@ apps/*/package.json
 libs/*/package.json
 
 secret.md
+
+Dockerfile
+nginx.conf

@@ -211,7 +211,6 @@
             "configPath": "apps/news/stencil.config.ts",
             "outputPath": "apps/news",
             "serve": true,
-            "port": 3334,
             "watch": true
           },
           "configurations": {
