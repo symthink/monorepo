@@ -62,3 +62,5 @@ Critical Bugs:
 * https://rss.app/ - provides the client side widgets to put directly onto webpage
 * https://www.wired.com/story/best-rss-feed-readers/ 
 * https://blog.apilayer.com/10-best-google-news-api-alternatives-for-2022/#What_Is_Google_News_API
+* https://rapidapi.com/wirefreethought/api/geodb-cities/pricing
+* https://developers.google.com/maps/documentation/javascript/local-context/samples/neighborhood
