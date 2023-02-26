@@ -243,7 +243,8 @@ export class D2Rcard {
   supportsPh(item: SymThink) {
     const info = CardRules.find((itm) => itm.type === item.type);
     if (info) {
-      return info.supportsPh;
+      return info.placeholder;
+      // return info.supportsPh;
     }
     return '';
   }
@@ -251,7 +252,8 @@ export class D2Rcard {
   conclPh(item: SymThink) {
     const info = CardRules.find((itm) => itm.type === item.type);
     if (info) {
-      return info.conclPh;
+      return info.placeholder;
+      // return info.conclPh;
     }
     return '';
   }
