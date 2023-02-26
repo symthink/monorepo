@@ -27,25 +27,27 @@
 
 ion-chip {
   --background: var(--ion-color-step-250);
+  font-weight: bold;
+  &.sources .circle {
+    border: 2px solid #ff6010;
+  }
+  &.depth .circle {
+    border: 2px solid #38a203;
+  }
+  &.mindset .circle {
+    border: 2px solid #af10ff;
+  }
   .circle {
-    border-radius: 50%;
-    width: 6px;
+    border-radius: 0% 45% 45% 0%;
+    width: 15px;
     height: 6px;
-    padding: 10px;
-    background: var(--ion-color-step-850);
+    padding: 11px;
+    background: var(--ion-color-step-800);
     color: var(--ion-color-step-50);
     text-align: center;
     font: 16px Arial, sans-serif;
     margin-right: -11px;
     line-height: 8px;
-  }
-  &.sources .circle {
-    border: 3px solid #ff6010;
-  }
-  &.depth .circle {
-    border: 3px solid #38a203;
-  }
-  &.mindset .circle {
-    border: 3px solid #af10ff;
+    border-left: 1px solid black !important;
   }
 }

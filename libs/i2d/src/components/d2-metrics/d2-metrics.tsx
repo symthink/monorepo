@@ -221,15 +221,15 @@ export class D2Metrics {
         <d2-metric name="depth" value={this.depth} />
         <d2-metric name="mindset" value={`${this.mindsetVal}`} /> */}
         <ion-chip class="metric sources">
-          <ion-label>Sources&nbsp;&nbsp;</ion-label>
+          <ion-label>Sources&nbsp;</ion-label>
           <div class="circle">{this.sourceCnt}</div>
         </ion-chip>
         <ion-chip class="metric depth">
-          <ion-label>Depth&nbsp;&nbsp;</ion-label>
+          <ion-label>Depth&nbsp;</ion-label>
           <div class="circle">{this.depth}</div>
         </ion-chip>
         <ion-chip class="metric mindset">
-          <ion-label>Mindset&nbsp;&nbsp;</ion-label>
+          <ion-label>Mindset&nbsp;</ion-label>
           <div class="circle">{`0`}</div>
         </ion-chip>
         <ion-modal

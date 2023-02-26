@@ -204,7 +204,7 @@ export class D2Rcard {
       ionItem.classList.remove('item-over');
     }
     item.select$.next(true);
-    if (!this.data.isRoot) {
+    if (!this.data.isRoot && !this.canEdit) {
       this.docAction.emit({
         action: 'go-back',
         value: item
@@ -598,7 +598,7 @@ export class D2Rcard {
         </ion-fab>
         <slot name="card-top"></slot>
         <br />
-        {!this.data.isRoot && <div class="back-arrow">⟵</div>}
+        {(!this.data.isRoot && !this.canEdit) && <div class="back-arrow">⟵</div>}
         
         <ion-list ref={(el) => (this.listEl = el as HTMLIonListElement)}>
           {this.renderItems()}
