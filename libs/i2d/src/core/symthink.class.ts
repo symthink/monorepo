@@ -660,7 +660,7 @@ export const CardRules = [
     {
         type: ARG_TYPE.Question,
         name: 'Question',
-        svg: 'assets/icon/questmark.svg',
+        svg: '/assets/icon/questmark.svg',
         placeholder: 'As a [GROUP/ROLE], I wonder [WHO/WHAT/WHERE/WHEN/WHY/HOW]...❓',
         supportsPh: 'Perhaps doing X would solve the problem💡',
         conclPh: 'Add background context',

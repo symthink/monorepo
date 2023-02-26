@@ -292,6 +292,16 @@ ion-breadcrumb:last-child {
   margin-right      : 0px;
 }
 
+.back-arrow {
+  display: block;
+  position: absolute;
+  z-index: 10000;
+  left: 20px;
+  margin-top: -16px;
+  font-size: 30px !important;
+  color: var(--ion-color-tertiary);
+}
+
 @media (pointer: fine) {
   .item-over {
     --inner-padding-end: 0px;

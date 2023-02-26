@@ -165,7 +165,7 @@ export class D2Rcard {
     });
   }
   onSupportItemClick(item: SymThink, ev: MouseEvent | PointerEvent): void {
-    if (!this.canEdit || this.currIonTextareaEl) {
+    if (this.currIonTextareaEl) {
       return;
     }
     ev.stopPropagation();
@@ -196,9 +196,6 @@ export class D2Rcard {
   }
 
   onItemClick(item: SymThink, ev: MouseEvent | PointerEvent): void {
-    if (!this.canEdit) {
-      return;
-    }
     ev.stopPropagation();
     const el = ev.target as HTMLElement;
     const ionItem = el.closest('ion-item');
@@ -207,6 +204,12 @@ export class D2Rcard {
       ionItem.classList.remove('item-over');
     }
     item.select$.next(true);
+    if (!this.data.isRoot) {
+      this.docAction.emit({
+        action: 'go-back',
+        value: item
+      });  
+    }
   }
 
   async onRemoveOrTrimItem(item: SymThink) {
@@ -595,6 +598,8 @@ export class D2Rcard {
         </ion-fab>
         <slot name="card-top"></slot>
         <br />
+        {!this.data.isRoot && <div class="back-arrow">⟵</div>}
+        
         <ion-list ref={(el) => (this.listEl = el as HTMLIonListElement)}>
           {this.renderItems()}
         </ion-list>

@@ -24,3 +24,28 @@
 .symbol {
   float: right;
 }
+
+ion-chip {
+  --background: var(--ion-color-step-250);
+  .circle {
+    border-radius: 50%;
+    width: 6px;
+    height: 6px;
+    padding: 10px;
+    background: var(--ion-color-step-850);
+    color: var(--ion-color-step-50);
+    text-align: center;
+    font: 16px Arial, sans-serif;
+    margin-right: -11px;
+    line-height: 8px;
+  }
+  &.sources .circle {
+    border: 3px solid #ff6010;
+  }
+  &.depth .circle {
+    border: 3px solid #38a203;
+  }
+  &.mindset .circle {
+    border: 3px solid #af10ff;
+  }
+}

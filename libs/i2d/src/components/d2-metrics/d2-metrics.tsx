@@ -71,7 +71,10 @@ export class D2Metrics {
       name: 'sources',
       info: () => (
         <div>
-          <p>This badge displays the total sources cited for this symthink document.</p>
+          <p>
+            This badge displays the total sources cited for this symthink
+            document.
+          </p>
         </div>
       ),
     },
@@ -137,7 +140,8 @@ export class D2Metrics {
       info: () => (
         <div>
           <p>
-            This badge displays the deepest level of any of your extended bullet points or numbers.
+            This badge displays the deepest level of any of your extended bullet
+            points or numbers.
           </p>
         </div>
       ),
@@ -213,9 +217,21 @@ export class D2Metrics {
     const breakPoint = this.selected?.initBreakpoint || 0.25;
     return (
       <div class="container">
-        <d2-metric name="sources" value={this.sourceCnt} />
+        {/* <d2-metric name="sources" value={this.sourceCnt} />
         <d2-metric name="depth" value={this.depth} />
-        <d2-metric name="mindset" value={`${this.mindsetVal}`} />
+        <d2-metric name="mindset" value={`${this.mindsetVal}`} /> */}
+        <ion-chip class="metric sources">
+          <ion-label>Sources&nbsp;&nbsp;</ion-label>
+          <div class="circle">{this.sourceCnt}</div>
+        </ion-chip>
+        <ion-chip class="metric depth">
+          <ion-label>Depth&nbsp;&nbsp;</ion-label>
+          <div class="circle">{this.depth}</div>
+        </ion-chip>
+        <ion-chip class="metric mindset">
+          <ion-label>Mindset&nbsp;&nbsp;</ion-label>
+          <div class="circle">{`0`}</div>
+        </ion-chip>
         <ion-modal
           class={this.modalClassName}
           ref={(e) => (this.modalEl = e as HTMLIonModalElement)}
