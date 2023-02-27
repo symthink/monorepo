@@ -1,7 +1,6 @@
 {
-
   "functions": {
-    "source": "../symthink-functions/functions",
+    "source": "backend/functions",
     "ignore": [
       "node_modules",
       ".git",
@@ -18,68 +17,28 @@
         "**/.*",
         "**/node_modules/**"
       ],
-      "rewrites": [{
-        "source": "/api/**",
-        "function": "api"
-      }, {
-        "source": "/**",
-        "destination": "/index.html"
-      }]  
+      "rewrites": [
+        {
+          "source": "/api/**",
+          "function": "api"
+        },
+        {
+          "source": "/**",
+          "destination": "/index.html"
+        }
+      ]
+    }
+  ],
+  "emulators": {
+    "auth": {
+      "port": 9099
     },
-  {
-    "target": "symthink-io",
-    "public": "apps/io-site/www",
-    "ignore": [
-      "firebase.json",
-      "**/.*",
-      "**/node_modules/**"
-    ],
-    "rewrites": [{
-      "source": "!/n/@(js|css|ttf|svg)/**",
-      "function": "n"
-    },{
-      "source": "/**",
-      "destination": "/index.html"
-    }]
-  }, 
-  {
-    "target": "symthink-staging",
-    "public": "apps/editor/www",
-    "ignore": [
-      "firebase.json",
-      "**/.*",
-      "**/node_modules/**"
-    ],
-    "rewrites": [{
-      "source": "/api/**",
-      "function": "api"
-    }, {
-      "source": "/**",
-      "destination": "/index.html"
-    }]
-  },
-  {
-    "target": "symthink-app",
-    "public": "apps/editor/www",
-    "ignore": [
-      "firebase.json",
-      "**/.*",
-      "**/node_modules/**"
-    ],
-    "rewrites": [{
-      "source": "/api/**",
-      "function": "api"
-    }, {
-      "source": "/**",
-      "destination": "/index.html"
-    }]
-  }, {
-    "target": "symthink-org",
-    "public": "apps/org-home/www",
-    "ignore": [
-      "firebase.json",
-      "**/.*",
-      "**/node_modules/**"
-    ]
-  }]
+    "functions": {
+      "port": 5001
+    },
+    "ui": {
+      "enabled": true
+    },
+    "singleProjectMode": true
+  }
 }
