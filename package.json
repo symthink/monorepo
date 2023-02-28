@@ -34,7 +34,7 @@
     "deploy:editor:prod": "npm run prebuild:editor && npm run build:editor:prod && firebase deploy --only hosting:symthink-app",
     "deploy:io": "npm run build:io && npm run build:doc && npm run copydoctoio && firebase deploy --only hosting:symthink-io",
     "deploy:news": "npm run build:news && firebase deploy --only hosting:symthink-news",
-    "emulate": "firebase emulators:start"
+    "emulate": "npm run build --prefix backend/functions && firebase emulators:start"
   },
   "private": true,
   "dependencies": {
