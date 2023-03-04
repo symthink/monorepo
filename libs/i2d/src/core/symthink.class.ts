@@ -65,6 +65,8 @@ export interface ISymThinkDocument extends ISymThink {
     $chemaver?: number;
     orphans?: ISymThink[];
     format?: FormatEnum;
+    createdTime?: number;
+    creator?: string;
 }
 
 export enum StLogActionEnum {
@@ -511,24 +513,24 @@ export class SymThinkDocument extends SymThink {
     $chemaver: number;
     // I think not used
     // $activePath: BehaviorSubject<SymThink[]>;
-    orphans: ISymThink[];
+    orphans: ISymThink[] = [];
     log$: Subject<{ action: number, ts: number }>;
     format: FormatEnum = FormatEnum.Default;
     page$ = new Subject<string[]>();
+    createdTime: number;
+    creator: string;
+
+    // timestamp
+    get modifiedTime() {
+        return this.lastmod * 1000;
+    }
 
     get title() {
         return this.label || this.text;
     }
 
     constructor(key?: string) {
-        let id = key;
-        if (!id) {
-            id = Math.random().toString(36).substring(2, 9);
-        }
-        super(id);
-        this.$chemaver = (key) ? undefined : SCHEMA_VERSION;
-        // console.log('constructor(%s) this.$chemaver=%s',key, this.$chemaver);
-        this.orphans = [];
+        super(key);
     }
 
     load(arg: ISymThinkDocument) {
@@ -536,6 +538,10 @@ export class SymThinkDocument extends SymThink {
         this.$chemaver = arg.$chemaver || SCHEMA_VERSION;
         this.orphans = arg.orphans || [];
         this.format = arg.format;
+        this.createdTime = arg.createdTime || (new Date()).getTime();
+        if (arg.creator) {
+            this.creator = arg.creator;
+        }
         if (arg.$chemaver < SCHEMA_VERSION) {
             console.log('Schema migrate from %s to %s', arg.$chemaver, SCHEMA_VERSION);
         }
@@ -551,6 +557,8 @@ export class SymThinkDocument extends SymThink {
             id: this.id,
             $chemaver: SCHEMA_VERSION,
             format: this.format || FormatEnum.Default,
+            createdTime: this.createdTime,
+            creator: this.creator,
             type: this.type,
             text: this.text,
             concl: this.concl,
@@ -559,7 +567,7 @@ export class SymThinkDocument extends SymThink {
             source: undefined,
             orphans: this.orphans,
             lastmod: this.lastmod,
-            eventDate: this.eventDate ? Math.floor(this.eventDate.getTime() / 1000) : undefined
+            eventDate: this.eventDate ? Math.floor(this.eventDate.getTime() / 1000) : undefined,
         };
         if (this.source) {
             o.source = this.source.map(s => {

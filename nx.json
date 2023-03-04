@@ -26,6 +26,9 @@
   "affected": {
     "defaultBase": "master"
   },
+  "cli": {
+    "defaultCollection": "@nxext/stencil"
+  },
   "generators": {
     "@nrwl/web:application": {
       "style": "scss",

@@ -276,6 +276,52 @@
           }
         }
       }
+    },
+    "symthink": {
+      "root": "apps/symthink",
+      "sourceRoot": "apps/symthink/src",
+      "projectType": "application",
+      "generators": {
+        "@nxext/stencil:component": {
+          "style": "scss"
+        }
+      },
+      "tags": [],
+      "targets": {
+        "build": {
+          "executor": "@nxext/stencil:build",
+          "outputs": ["{options.outputPath}"],
+          "options": {
+            "projectType": "application",
+            "tsConfig": "apps/symthink/tsconfig.app.json",
+            "configPath": "apps/symthink/stencil.config.ts",
+            "outputPath": "apps/symthink"
+          },
+          "configurations": {
+            "production": {
+              "dev": false,
+              "prod": true
+            }
+          }
+        },
+        "serve": {
+          "executor": "@nxext/stencil:serve",
+          "outputs": ["{options.outputPath}"],
+          "options": {
+            "projectType": "application",
+            "tsConfig": "apps/symthink/tsconfig.app.json",
+            "configPath": "apps/symthink/stencil.config.ts",
+            "outputPath": "apps/symthink"
+          }
+        },
+        "lint": {
+          "executor": "@nrwl/linter:eslint",
+          "outputs": ["{options.outputFile}"],
+          "options": {
+            "lintFilePatterns": ["apps/symthink/**/*.{ts,tsx}"]
+          }
+        }
+      }
     }
   },
   "$schema": "./node_modules/nx/schemas/workspace-schema.json"

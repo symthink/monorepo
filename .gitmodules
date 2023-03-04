@@ -13,3 +13,6 @@
 [submodule "backend/functions"]
 	path = backend/functions
 	url = https://github.com/symthink/functions.git
+[submodule "apps/symthink"]
+	path = apps/symthink
+	url = https://github.com/symthink/symthink.git
