@@ -114,10 +114,12 @@ export class SymThink {
 
     constructor(id: string, parent?: SymThink) {
         // make read-only after first set
+        const theId = id || Math.random().toString(36).substring(2, 9);
         Object.defineProperty(this, 'id', {
             writable: false,
-            value: id
+            value: theId
         });
+        console.log('init:', this.id)
         if (parent) {
             this.parent = parent;
         }

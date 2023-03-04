@@ -73,6 +73,7 @@ export class D2Rcard {
   }
 
   componentWillLoad() {
+    console.log('canEdit', this.canEdit)
     if (this.notify) {
       this.notify.subscribe((a) => this.onNotificationReceived(a));
     }
