@@ -582,6 +582,18 @@ export class D2Rcard {
     ];
   }
 
+  renderSourcesDivider() {
+    return (<div class="sources-border">
+    <br />
+    <br />
+    <div>
+      <ion-icon size="large" name="bookmark"></ion-icon>
+    </div>
+    <hr />
+    <br /><br />
+  </div>);
+  }
+
   render() {
     return [
       <ion-content
@@ -610,15 +622,7 @@ export class D2Rcard {
         <slot name="card-list-bottom"></slot>
 
         {this.data.hasSources() && [
-          <div class="sources-border">
-            <br />
-            <br />
-            <div>
-              <ion-icon size="large" name="bookmark"></ion-icon>
-            </div>
-            <hr />
-            <br /><br />
-          </div>,
+          this.renderSourcesDivider(),
           <ion-list>
             {this.data.source?.map((md, ix) => (
               <d2-src-metadata
@@ -629,8 +633,7 @@ export class D2Rcard {
             ))}
           </ion-list>,
         ]}
-        <br />
-        <br />
+        {(!this.data.hasSources() && this.canEdit) && this.renderSourcesDivider()}
         <slot name="card-bottom"></slot>
         <br />
         <br />

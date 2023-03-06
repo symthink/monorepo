@@ -91,12 +91,12 @@ export class D2HeadFormat {
     let author = this.displayName ? `By ${this.displayName} on` : 'Created';
 
     return [
-      <div class="leftbar">
+      <div>
         <i>
           {author} {createdDate}
         </i>
       </div>,
-      <div class="leftbar">
+      <div>
         {!!updatedDate && <i>Updated {updatedDate}</i>}
         {!updatedDate && <i>No updates yet</i>}
       </div>,
@@ -105,11 +105,9 @@ export class D2HeadFormat {
 
   renderByLine() {
     if (this.symthinkDoc.format === FormatEnum.Review) {
-      console.log('review byline')
-      return this.renderReviewByLine();
+      return <div class="flx-row">{this.renderReviewByLine()}</div>;
     } else {
-      console.log('default byline')
-      return this.renderDefaultByLine();
+      return <div class="flx-row">{this.renderDefaultByLine()}</div>;
     }
   }
 

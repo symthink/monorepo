@@ -31,6 +31,14 @@
           "destination": "/index.html"
         }
       ]
+    }, {
+      "target": "symthink-org",
+      "public": "apps/org-home/www",
+      "ignore": [
+        "firebase.json",
+        "**/.*",
+        "**/node_modules/**"
+      ]
     }
   ],
   "emulators": {

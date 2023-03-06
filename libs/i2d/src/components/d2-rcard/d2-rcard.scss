@@ -83,6 +83,7 @@ ion-reorder-group {
 ion-item.item-concl {
   margin-left: -10px;
 }
+
 @media only screen and (min-width: 600px) {
   ion-item.item-concl {
     margin-left: -16px;
@@ -249,33 +250,33 @@ ion-breadcrumb:last-child {
 }
 
 .sources-border {
+  padding: 0px 20px 0px 20px;
+
   ion-icon {
-    color: #c8c7cc;
-    ;
+    color     : #c8c7cc;
     background: var(--background);
   }
 
   >div {
-    width     : 40px;
     margin    : 0px auto 0px;
     text-align: center;
   }
 
   hr {
     border-top: 2px solid #c8c7cc;
-    width     : 90%;
     margin-top: -23px;
   }
 }
 
 .bullet {
-  margin-top: 6px;
+  margin-top : 6px;
   margin-left: 12px;
 }
 
 .opts-btn {
   display           : none;
   position          : absolute;
+  z-index           : 10000;
   right             : 0px;
   bottom            : -3px;
   --color           : var(--ion-color-primary) !important;
@@ -289,13 +290,13 @@ ion-breadcrumb:last-child {
 }
 
 .back-arrow {
-  display: block;
-  position: absolute;
-  z-index: 10000;
-  left: 20px;
+  display   : block;
+  position  : absolute;
+  z-index   : 10000;
+  left      : 20px;
   margin-top: -16px;
-  font-size: 30px !important;
-  color: var(--ion-color-tertiary);
+  font-size : 30px !important;
+  color     : var(--ion-color-tertiary);
 }
 
 @media (pointer: fine) {

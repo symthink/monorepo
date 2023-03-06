@@ -28,6 +28,8 @@
 ion-chip {
   --background: var(--ion-color-step-250);
   font-weight: bold;
+  margin-bottom: 20px;
+  
   &.sources .circle {
     border: 2px solid #ff6010;
   }
