@@ -21,7 +21,7 @@ export class D2HeadFormat {
   @Prop() canEdit = false;
   @Prop() refresh?: Subject<any | void>;
   @State() changed = false;
-  @Event() itemAction: EventEmitter<{
+  @Event() docAction: EventEmitter<{
     action;
     value;
     pointerEvent?: MouseEvent | PointerEvent;
@@ -33,33 +33,12 @@ export class D2HeadFormat {
     }
   }
 
-  isTouchDevice() {
-    return 'ontouchstart' in window || navigator.maxTouchPoints > 0;
-  }
-
-  async onItemOptionsClick(evt?: MouseEvent | PointerEvent) {
-    if (evt) {
-      evt.stopPropagation();
-      evt.preventDefault();
-    }
-    this.itemAction.emit({
-      action: 'item-head-opts-clicked',
-      value: null,
-      pointerEvent: evt,
+  onTitleChange(e: CustomEvent) {
+    this.symthinkDoc.label = e.detail.value;
+    this.docAction.emit({
+      action: 'doc-title-change',
+      value: null
     });
-  }
-
-  renderItemOptionsBtn() {
-    return (
-      <ion-button
-        class="opts-btn"
-        slot="end"
-        fill="solid"
-        onClick={(evt: MouseEvent) => this.onItemOptionsClick(evt)}
-      >
-        <ion-icon slot="icon-only" name="ellipsis-horizontal"></ion-icon>
-      </ion-button>
-    );
   }
 
   renderReviewByLine() {
@@ -113,51 +92,29 @@ export class D2HeadFormat {
 
   render() {
     return [
-      this.canEdit && (
-        <ion-list
-          onMouseEnter={(evt: MouseEvent) => {
-            const e = evt.target as HTMLElement;
-            e.classList.add('item-over');
-          }}
-          onMouseLeave={(evt: MouseEvent) => {
-            const e = evt.target as HTMLElement;
-            e.classList.remove('item-over');
-          }}
-        >
-          <ion-item lines="none" class="ion-text-wrap doc-title">
+      <ion-list>
+        <ion-item lines="none" class="ion-text-center doc-title">
+          {!this.canEdit && (
             <div class={{ invisible: !!!this.symthinkDoc.label }}>
               <h1>{this.symthinkDoc.label}</h1>
             </div>
-          </ion-item>
-          <ion-item-sliding disabled={!this.isTouchDevice()}>
-            <ion-item lines="none" class="by-line">
-              {this.renderByLine()}
-            </ion-item>
-            <ion-item-options side="end">
-              <ion-item-option
-                color="tertiary"
-                class="secondary-btn-theme opts-btn-slide"
-                onClick={() => this.onItemOptionsClick()}
-              >
-                <ion-icon name="ellipsis-horizontal"></ion-icon>
-              </ion-item-option>
-            </ion-item-options>
-          </ion-item-sliding>
-          {this.renderItemOptionsBtn()}
-        </ion-list>
-      ),
-      !this.canEdit && (
-        <ion-list>
-          {this.symthinkDoc.label && <ion-item lines="none" class="ion-text-wrap doc-title">
-            <div>
-              <h1>{this.symthinkDoc.label}</h1>
-            </div>
-          </ion-item>}
-          <ion-item lines="none" class={{'by-line':true, 'got-title': !!this.symthinkDoc.label}}>
-            {this.renderByLine()}
-          </ion-item>
-        </ion-list>
-      ),
+          )}
+          {this.canEdit && (
+            <ion-input debounce="400" onIonChange={(e) => this.onTitleChange(e)}
+              placeholder="Enter title"
+              value={this.symthinkDoc.label}
+            ></ion-input>
+          )}
+        </ion-item>
+
+        <ion-item
+          lines="none"
+          class={{ 'by-line': true, 'got-title': !!this.symthinkDoc.label }}
+        >
+          {this.renderByLine()}
+        </ion-item>
+      </ion-list>,
+
       this.symthinkDoc.format !== FormatEnum.Review && (
         <d2-metrics
           symthinkDoc={this.symthinkDoc}

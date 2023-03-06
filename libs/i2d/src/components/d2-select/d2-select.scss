@@ -4,3 +4,9 @@
 ion-item:hover {
   --background: var(--ion-color-step-100);
 }
+ion-list-header {
+  background: var(--ion-color-step-50);
+  font-size: 1.3em;
+  padding-bottom: 7px;
+  margin-top: -7px;
+}

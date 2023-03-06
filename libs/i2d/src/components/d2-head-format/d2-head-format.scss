@@ -90,6 +90,12 @@ ion-item.got-title::part(native) {
   margin-right      : 0px;
 }
 
+ion-input {
+  font-size: 2em !important;
+  text-align: center;
+  margin: 10px 0px 0px 0px;
+}
+
 @media (pointer: fine) {
   .item-over {
     --inner-padding-end: 0px;
