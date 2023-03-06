@@ -9,11 +9,7 @@
   --ion-item-background: var(--ion-background-color);
 }
 
-// for ipad and desktop maybe
-// ion-content::part(scroll) {
-//   max-width: 600px;
-//   margin: auto !important;
-// }
+
 ion-fab.nav-top-back ion-fab-button {
   --background: linear-gradient(to bottom, #aeaeae, #d4d4d6);
   --color     : black;
