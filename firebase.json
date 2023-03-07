@@ -23,8 +23,8 @@
           "function": "api"
         },
         {
-          "source": "/devapi/**",
-          "function": "api"
+          "source": "/embed",
+          "destination": "/embed"
         },
         {
           "source": "/**",

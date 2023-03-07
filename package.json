@@ -33,6 +33,7 @@
     "prebuild:news": "npm run release && node prebuild-news.js",
     "prebuild:symthink": "node prebuild-symthink.js",
     "copydoctoio": "mkdir apps/io-site/www/n ; mv apps/doc/www/build apps/io-site/www/n/ ; mv apps/doc/www/assets apps/io-site/www/n/",
+    "postbuild:news": "mkdir apps/news/www/embed ; cp -fa apps/symthink/www/* apps/news/www/embed",
     "deploy:org": "npm run build:org && firebase deploy --only hosting:symthink-org",
     "deploy:editor": "npm run build:editor && firebase deploy --only hosting:symthink-staging",
     "deploy:editor:prod": "npm run prebuild:editor && npm run build:editor:prod && firebase deploy --only hosting:symthink-app",
