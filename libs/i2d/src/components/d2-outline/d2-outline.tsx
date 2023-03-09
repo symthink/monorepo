@@ -20,7 +20,7 @@ import { SymThink, SymThinkDocument } from '../../core/symthink.class';
 export class D2Outline {
   @Element() el: HTMLElement;
 
-  @Prop() doc: Promise<SymThinkDocument>;
+  @Prop() doc: SymThinkDocument;
   @Prop() active: string;
   @Prop() inModal = false;
 
@@ -44,7 +44,7 @@ export class D2Outline {
         new Error('Symthink document not found. Could not render outline.')
       );
     }
-    return this.doc.then((symthink) => this.convertData(symthink));
+    this.convertData(this.doc);
   }
 
   async componentWillUpdate() {
