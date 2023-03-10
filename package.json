@@ -15,7 +15,7 @@
     "build:doc": "npm run clean:doc ; nx build doc --dev",
     "build:editor": "npm run clean:editor ; nx build editor --dev",
     "build:symthink": "npm run clean:symthink ; nx build symthink --dev",
-    "build:news": "npm run clean:news ; nx build news --dev",
+    "build:news": "npm run clean:news ; nx build news --dev ; npm run postbuild:news",
     "build:editor:prod": "npm run clean:editor ; nx build editor",
     "build:io:prod": "npm run clean:io && nx build io-site",
     "clean": "npm run clean:editor && npm run clean:io && npm run clean:doc && npm run clean:org",
