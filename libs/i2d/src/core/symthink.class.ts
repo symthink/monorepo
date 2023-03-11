@@ -67,6 +67,8 @@ export interface ISymThinkDocument extends ISymThink {
     format?: FormatEnum;
     createdTime?: number;
     creator?: string;
+    uid?: string;
+    timestamp?: any;
 }
 
 export enum StLogActionEnum {
@@ -119,7 +121,6 @@ export class SymThink {
             writable: false,
             value: theId
         });
-        console.log('init:', this.id)
         if (parent) {
             this.parent = parent;
         }
@@ -521,6 +522,8 @@ export class SymThinkDocument extends SymThink {
     page$ = new Subject<string[]>();
     createdTime: number;
     creator: string;
+    uid: string;
+    timestamp: any;
 
     // timestamp
     get modifiedTime() {
@@ -557,6 +560,8 @@ export class SymThinkDocument extends SymThink {
     getRaw(deep = true): ISymThinkDocument {
         const o: ISymThinkDocument = {
             id: this.id,
+            uid: this.uid,
+            timestamp: this.timestamp,
             $chemaver: SCHEMA_VERSION,
             format: this.format || FormatEnum.Default,
             createdTime: this.createdTime,
