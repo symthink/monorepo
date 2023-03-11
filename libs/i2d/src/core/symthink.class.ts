@@ -544,6 +544,7 @@ export class SymThinkDocument extends SymThink {
         this.orphans = arg.orphans || [];
         this.format = arg.format;
         this.createdTime = arg.createdTime || (new Date()).getTime();
+        this.uid = arg.uid;
         if (arg.creator) {
             this.creator = arg.creator;
         }
