@@ -28,7 +28,7 @@
     "gen": "nx g @nxext/stencil:component",
     "save": "npm run clean ; git commit -am'wip' && git push",
     "release": "release-it",
-    "release:ci": "release-it --ci ; npm run clean ; git commit -am'version update' && git push",
+    "release:ci": "release-it --ci ; npm run clean ; git commit -am'version update' ; git push",
     "prebuild:editor": "npm run release && node prebuild-editor.js",
     "prebuild:news": "node prebuild-news.js",
     "prebuild:symthink": "node prebuild-symthink.js",
@@ -38,7 +38,7 @@
     "deploy:editor": "npm run build:editor && firebase deploy --only hosting:symthink-staging",
     "deploy:editor:prod": "npm run prebuild:editor && npm run build:editor:prod && firebase deploy --only hosting:symthink-app",
     "deploy:io": "npm run build:io && npm run build:doc && npm run copydoctoio && firebase deploy --only hosting:symthink-io",
-    "deploy:news": "npm run release:ci && npm run build:news && firebase deploy --only hosting:symthink-news",
+    "deploy:news": "npm run release:ci ; npm run build:news && firebase deploy --only hosting:symthink-news",
     "emulate": "npm run build --prefix backend/functions && firebase emulators:start --inspect-functions"
   },
   "private": true,
