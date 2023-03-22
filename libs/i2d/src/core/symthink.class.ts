@@ -69,6 +69,9 @@ export interface ISymThinkDocument extends ISymThink {
     creator?: string;
     uid?: string;
     timestamp?: any;
+
+    // metadata only for function onCreate copy to stmeta collection
+    emails?: string[];
 }
 
 export enum StLogActionEnum {
