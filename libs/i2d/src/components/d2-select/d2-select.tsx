@@ -27,6 +27,16 @@ export class D2Select {
     return /\.svg$/.test(icon);
   }
 
+  renderIcon(btn: ActionSheetButton) {
+    if (btn.icon) {
+      if (this.useSvg(btn.icon)) {
+        return (<ion-icon slot="end" src={btn.icon}></ion-icon>);
+      } else {
+        return (<ion-icon slot="end" name={btn.icon}></ion-icon>);
+      }
+    }
+  }
+
   render() {
     return (
       <ion-list>
@@ -37,8 +47,7 @@ export class D2Select {
             lines={ix + 1 < arr.length ? 'full' : 'none'}
           >
             <ion-label>{button.text}</ion-label>
-            {this.useSvg(button.icon) && <ion-icon slot="end" src={button.icon}></ion-icon>}
-            {!this.useSvg(button.icon) && <ion-icon slot="end" name={button.icon}></ion-icon>}
+            {this.renderIcon(button)}
           </ion-item>
         ))}
       </ion-list>
