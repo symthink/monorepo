@@ -40,13 +40,13 @@ export class D2Select {
   render() {
     return (
       <ion-list>
-        <ion-list-header>{this.options.header}</ion-list-header>
+        {this.options.header && <ion-list-header>{this.options.header}</ion-list-header>}
         {this.options.buttons.map((button: ActionSheetButton, ix, arr) => (
           <ion-item 
             onClick={(evt) => this.onItemClick(button, evt)}
             lines={ix + 1 < arr.length ? 'full' : 'none'}
           >
-            <ion-label>{button.text}</ion-label>
+            <ion-label color={button.role==='destructive'?'danger':undefined}>{button.text}</ion-label>
             {this.renderIcon(button)}
           </ion-item>
         ))}

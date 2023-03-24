@@ -10,3 +10,7 @@ ion-list-header {
   padding-bottom: 7px;
   margin-top: -7px;
 }
+[color=danger] {
+  color           : var(--ion-color-danger) !important;
+  font-weight: bold;
+}
