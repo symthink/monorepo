@@ -526,11 +526,16 @@ export class SymThinkDocument extends SymThink {
     createdTime: number;
     creator: string;
     uid: string;
-    timestamp: any;
+    timestamp: {seconds: number, nanoseconds: number};
 
-    // timestamp
+    // return milliseconds
     get modifiedTime() {
-        return this.lastmod * 1000;
+        if (this.timestamp && this.timestamp.seconds) {
+            return this.timestamp.seconds * 1000;
+        } else if (this.lastmod) {
+            return this.lastmod * 1000;
+        }
+        return null;
     }
 
     get title() {
