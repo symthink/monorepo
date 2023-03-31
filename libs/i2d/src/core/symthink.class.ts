@@ -67,7 +67,7 @@ export interface ISymThinkDocument extends ISymThink {
     format?: FormatEnum;
     createdTime?: number;
     creator?: string;
-    uid?: string;
+    uid?: string; // collection/{uid} - firestore document ID
     timestamp?: any;
 
     // metadata only for function onCreate copy to stmeta collection
