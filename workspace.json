@@ -179,6 +179,8 @@
       "root": "apps/news",
       "sourceRoot": "apps/news/src",
       "projectType": "application",
+      "e2eTestRunner": "none",
+      "unitTestRunner": "none",
       "generators": {
         "@nxext/stencil:component": {
           "style": "scss"

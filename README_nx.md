@@ -244,3 +244,4 @@ PSymThink: has persistence in a cloud or local collection
 * https://icons.getbootstrap.com/
 * https://icon-sets.iconify.design/
 * [Adding authorized redirect URIs](https://console.cloud.google.com/apis/credentials/oauthclient/836033477453-9d1q872r0m755pvjmo49u4cea95v04bp.apps.googleusercontent.com?project=symthink-io)
+* https://nxext.dev/docs/stencil/executors.html
