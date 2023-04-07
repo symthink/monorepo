@@ -6,11 +6,15 @@
 
 ## TLDR; Get Started
 
+First, install [https://firebase.google.com/docs/emulator-suite/install_and_configure](Firebase local emulators) for: Authentication, Firestore and Functions. Contact the repo owner to ensure you have access to the submodules you need.  Then...
+
 ```sh
 git clone https://github.com/symthink/monorepo.git
 cd monorepo
-npm install
-npm run start:doc
+git submodule update --init --recursive
+npm run emulate
+npm install --legacy-peer-deps
+npm run start:news
 ```
 
 ---
