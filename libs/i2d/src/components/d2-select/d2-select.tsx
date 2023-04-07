@@ -18,7 +18,7 @@ export class D2Select {
   @Element() el: HTMLElement;
   @Prop() options: ActionSheetOptions;
 
-  async onItemClick(button: ActionSheetButton, evt: MouseEvent|PointerEvent) {
+  async onItemClick(button: ActionSheetButton, _evt: MouseEvent|PointerEvent) {
     const popover = await popoverController.getTop();
     popover.dismiss(button.data, button.role);
   }
