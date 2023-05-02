@@ -44,7 +44,7 @@
   },
   "devDependencies": {
     "@capacitor/cli": "^4.6.2",
-    "@ionic/core": "^7.0.2",
+    "@ionic/core": "^7.0.4",
     "@nrwl/cli": "15.5.3",
     "@nrwl/eslint-plugin-nx": "15.5.3",
     "@nrwl/jest": "^15.8.3",
