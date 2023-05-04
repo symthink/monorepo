@@ -3,7 +3,7 @@
   "version": "0.6.68",
   "license": "MIT",
   "scripts": {
-    "start:news": "npm run clean:news ; nx serve news --dev --verbose",
+    "start:news": "npm run clean:news ; npm run prebuild:news ; nx serve news --dev --verbose",
     "start:symthink": "npm run clean:symthink ; nx serve symthink --dev --verbose",
     "start:org": "npm run clean:org ; nx serve org-home --dev",
     "build:org": "npm run clean:org ; nx build org-home --dev",
