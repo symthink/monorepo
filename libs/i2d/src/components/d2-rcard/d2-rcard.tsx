@@ -18,6 +18,7 @@ import {
   trailingSympunkRegExp,
   sympunkReplacementRegex,
   Bullets,
+  ARG_TYPE,
 } from '../../core/symthink.class';
 // import getPercentageDifference from 'text-percentage-difference';
 
@@ -459,6 +460,9 @@ export class D2Rcard {
 
   onTextareaBlur(evt: IonTextareaCustomEvent<any>, item) {
     const ta = evt.target as HTMLIonTextareaElement;
+    if (item.type === ARG_TYPE.Statement) {
+      return item.text = ta.value;
+    }
     const typ = CardRules.find((r) => r.type === item.type);
     if (typ && ta && ta.value && ta.value.length) {
       let newVal =

@@ -29,6 +29,7 @@ export enum ARG_TYPE {
     Idea = 'IDA',
     Event = 'EVT',
     SourceList = 'SRC',
+    Statement = 'STM'
 }
 
 export interface ISource {
@@ -719,7 +720,20 @@ export const CardRules = [
         xtra: false,
         char: '🕫', // 1f56b
         iconCls: 'ico-clm',
-        next: ARG_TYPE.Question
+        next: ARG_TYPE.Claim
+    },
+    {
+        type: ARG_TYPE.Statement,
+        name: 'Item',
+        icon: 'asdf',
+        placeholder: 'Enter an item',
+        supportsPh: '',
+        conclPh: '',
+        disable: [],
+        xtra: false,
+        char: '',
+        iconCls: null,
+        next: ARG_TYPE.Statement       
     }
 ];
 export const trailingSympunkRegExp = /[🕫💡❓]+/g
