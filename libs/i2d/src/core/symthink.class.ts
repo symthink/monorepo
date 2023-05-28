@@ -406,7 +406,8 @@ export class SymThink {
         return this.getRaw(false);
     }
     removeChild(card: SymThink): SymThink {
-        const index = this.support.findIndex(c => c === card);
+        const index = this.support.findIndex(c => c.id === card.id);
+        console.log('index', index)
         if (index !== -1) {
             this.logAction(StLogActionEnum.REMOVE_CHILD);
             return this.support.splice(index, 1)[0];
@@ -426,7 +427,22 @@ export class SymThink {
         }
         return false;
     }
-
+    orphanizeKids() {
+        const baseCard = this.getRoot();
+        let child = this.support.pop();
+        let did = false;
+        while (child) {
+            const orphan = child.getRaw(true);
+            const expirationDate = new Date();
+            orphan.expires = expirationDate.setDate(expirationDate.getDate() + 7);
+            baseCard.orphans.push(orphan);
+            did = true;
+            child = this.support.pop();
+        }
+        if (did) {
+            this.logAction(StLogActionEnum.MAKE_ORPHAN);
+        }
+    }
     adoptOrphan(id: string) {
         const baseCard = this.getRoot();
         const orphanX = baseCard.orphans.findIndex(o => o.id === id);
@@ -434,6 +450,7 @@ export class SymThink {
             this.logAction(StLogActionEnum.ADOPT_ORPHAN);
             const orphan = baseCard.orphans.splice(orphanX, orphanX + 1)[0];
             delete orphan.id; // to generate new id
+            this.enableKids();
             return this.addChild(orphan);
         }
     }
@@ -725,7 +742,7 @@ export const CardRules = [
     {
         type: ARG_TYPE.Statement,
         name: 'Item',
-        icon: 'asdf',
+        icon: '_spacer_',
         placeholder: 'Enter an item',
         supportsPh: '',
         conclPh: '',

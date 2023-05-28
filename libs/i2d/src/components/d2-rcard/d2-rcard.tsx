@@ -74,7 +74,7 @@ export class D2Rcard {
   }
 
   componentWillLoad() {
-    console.log('canEdit', this.canEdit)
+    console.log('canEdit', this.canEdit);
     if (this.notify) {
       this.notify.subscribe((a) => this.onNotificationReceived(a));
     }
@@ -209,8 +209,8 @@ export class D2Rcard {
     if (!this.data.isRoot && !this.canEdit) {
       this.docAction.emit({
         action: 'go-back',
-        value: item
-      });  
+        value: item,
+      });
     }
   }
 
@@ -394,6 +394,9 @@ export class D2Rcard {
                     this.textPh(item)}
                   {!!item.concl && <div>{item.concl}</div>}
                   {item.isEvent && <p>{item.eventDate?.toLocaleString()}</p>}
+                  {item.type === ARG_TYPE.Question && (
+                    <div><ion-badge color="warn">{item.countDecendents(ARG_TYPE.Idea)}</ion-badge></div>
+                  )}
                 </ion-label>
               )}
               {this.canEdit && this.renderItemOptionsBtn(item)}
@@ -459,17 +462,20 @@ export class D2Rcard {
   }
 
   onTextareaBlur(evt: IonTextareaCustomEvent<any>, item) {
+    console.log('onTextareaBlur()', item.type);
     const ta = evt.target as HTMLIonTextareaElement;
     if (item.type === ARG_TYPE.Statement) {
-      return item.text = ta.value;
+      return (item.text = ta.value);
     }
     const typ = CardRules.find((r) => r.type === item.type);
+    console.log('type: ', typ.name);
     if (typ && ta && ta.value && ta.value.length) {
       let newVal =
         ta.value
           .replace(/[\r\n\t]+/g, ' ')
           .replace(trailingSympunkRegExp, '')
           .replace(/[\.\!\?]+$/, '') + typ.char;
+      console.log('Icon added: ', newVal);
       // const m = newVal.matchAll(/[^\.\!\?]*[\.\!\?]/g);
       // let nxt = m.next();
       // const sentences = [];
@@ -587,15 +593,18 @@ export class D2Rcard {
   }
 
   renderSourcesDivider() {
-    return (<div class="sources-border">
-    <br />
-    <br />
-    <div>
-      <ion-icon size="large" name="bookmark"></ion-icon>
-    </div>
-    <hr />
-    <br /><br />
-  </div>);
+    return (
+      <div class="sources-border">
+        <br />
+        <br />
+        <div>
+          <ion-icon size="large" name="bookmark"></ion-icon>
+        </div>
+        <hr />
+        <br />
+        <br />
+      </div>
+    );
   }
 
   render() {
@@ -617,8 +626,8 @@ export class D2Rcard {
         </ion-fab>
         <slot name="card-top"></slot>
         <br />
-        {(!this.data.isRoot && !this.canEdit) && <div class="back-arrow">⟵</div>}
-        
+        {!this.data.isRoot && !this.canEdit && <div class="back-arrow">⟵</div>}
+
         <ion-list ref={(el) => (this.listEl = el as HTMLIonListElement)}>
           {this.renderItems()}
         </ion-list>
@@ -637,7 +646,7 @@ export class D2Rcard {
             ))}
           </ion-list>,
         ]}
-        {(!this.data.hasSources() && this.canEdit) && this.renderSourcesDivider()}
+        {!this.data.hasSources() && this.canEdit && this.renderSourcesDivider()}
         <slot name="card-bottom"></slot>
         <br />
         <br />
