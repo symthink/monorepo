@@ -581,6 +581,7 @@ export class SymThinkDocument extends SymThink {
     }
 
     load(arg: ISymThinkDocument) {
+        console.log('load', arg)
         // console.log('load() arg.$chemaver',arg.$chemaver)
         this.$chemaver = arg.$chemaver || SCHEMA_VERSION;
         this.orphans = arg.orphans || [];
@@ -593,6 +594,9 @@ export class SymThinkDocument extends SymThink {
         }
         if (arg.$chemaver < SCHEMA_VERSION) {
             console.log('Schema migrate from %s to %s', arg.$chemaver, SCHEMA_VERSION);
+        }
+        if (arg.decisions) {
+            this.decisions = arg.decisions;
         }
         this.apply(arg);
     }

@@ -213,6 +213,13 @@ export class D2Metrics {
     this.modalEl.onDidDismiss().then(() => (this.modalIsOpen = false));
   }
 
+  get decisionCnt() {
+    if (this.symthinkDoc.decisions.length) {
+      return this.symthinkDoc.decisions.length;
+    }
+    return 0;
+  }
+
   render() {
     const breakPoint = this.selected?.initBreakpoint || 0.25;
     return (
@@ -230,7 +237,7 @@ export class D2Metrics {
         </ion-chip>
         <ion-chip class="metric mindset">
           <ion-label>Mindset&nbsp;</ion-label>
-          <div class="circle">{`0`}</div>
+          <div class="circle">{this.decisionCnt}</div>
         </ion-chip>
         <ion-modal
           class={this.modalClassName}
