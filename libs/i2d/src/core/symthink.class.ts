@@ -61,6 +61,7 @@ export interface ISymThink {
     eventDate?: number; // UTC timestamp for Events only
     selected?: boolean;
     numeric?: boolean; // if true, use numbers instead of bullets for support icons
+    decision?: IDecision;
 }
 export interface ISymThinkDocument extends ISymThink {
     $chemaver?: number;
@@ -70,11 +71,20 @@ export interface ISymThinkDocument extends ISymThink {
     creator?: string;
     uid?: string; // collection/{uid} - firestore document ID
     timestamp?: any;
+    decisions?: IDecision[];
 
     // metadata only for function onCreate copy to stmeta collection
     emails?: string[];
 }
-
+export interface IDecision {
+    ts: string; // ISO timestamp
+    scope: string; // admin level or null
+    uri?: string; // if scoped, then point to location of symthink decision in scope
+    // Later add props for e.g:
+    // type?: string; // 
+    // dueDate?: string;
+    // subscriptions?: ...
+}
 export enum StLogActionEnum {
     ADD_CHILD = 1,
     REMOVE_CHILD = 2,
@@ -117,6 +127,7 @@ export class SymThink {
     select$ = new Subject<boolean>();
     selected = false;
     numeric = false;
+    decision: IDecision;
 
     constructor(id: string, parent?: SymThink) {
         // make read-only after first set
@@ -191,6 +202,9 @@ export class SymThink {
         }
         if (arg.numeric) {
             this.numeric = arg.numeric;
+        }
+        if (arg.decision) {
+            this.decision = arg.decision;
         }
     }
 
@@ -317,6 +331,7 @@ export class SymThink {
             eventDate: this.eventDate ? Math.floor(this.eventDate.getTime() / 1000) : undefined,
             support: undefined,
             source: undefined,
+            decision: this.decision ? {...this.decision} : null
         };
         if (this.source) {
             o.source = this.source.map(s => {
@@ -545,6 +560,7 @@ export class SymThinkDocument extends SymThink {
     creator: string;
     uid: string;
     timestamp: {seconds: number, nanoseconds: number};
+    decisions: IDecision[];
 
     // return milliseconds
     get modifiedTime() {
@@ -603,6 +619,7 @@ export class SymThinkDocument extends SymThink {
             orphans: this.orphans,
             lastmod: this.lastmod,
             eventDate: this.eventDate ? Math.floor(this.eventDate.getTime() / 1000) : undefined,
+            decisions: this.decisions ? [...this.decisions]: null
         };
         if (this.source) {
             o.source = this.source.map(s => {
