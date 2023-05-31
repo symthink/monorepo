@@ -214,7 +214,7 @@ export class D2Metrics {
   }
 
   get decisionCnt() {
-    if (this.symthinkDoc.decisions.length) {
+    if (this.symthinkDoc.decisions?.length) {
       return this.symthinkDoc.decisions.length;
     }
     return 0;
