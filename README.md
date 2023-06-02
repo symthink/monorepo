@@ -64,6 +64,11 @@ There are two primary ways to help:
 
 If you have questions, concerns, bug reports, etc, please file an issue in this repository's Issue Tracker.
 
+## Resources
+
+* https://github.com/mappmechanic/awesome-stenciljs#individual-components
+
+
 ---
 
 ## Open source licensing info
