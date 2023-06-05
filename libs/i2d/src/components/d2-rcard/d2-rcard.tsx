@@ -392,7 +392,6 @@ export class D2Rcard {
                 >
                   {this.renderLabel(item.getSupportItemText()) ||
                     this.textPh(item)}
-                  {!!item.concl && <div>{item.concl}</div>}
                   {item.isEvent && <p>{item.eventDate?.toLocaleString()}</p>}
                   {item.type === ARG_TYPE.Question && (
                     <div><ion-badge color="warn">{item.countDecendents(ARG_TYPE.Idea)}</ion-badge></div>
@@ -579,16 +578,6 @@ export class D2Rcard {
         </ion-item-options>
       </ion-item-sliding>,
       this.data.hasKids() && this.renderSupportItems(),
-      this.data.concl && (
-        <ion-item
-          id={this.data.id + '-concl'}
-          class={{ 'can-edit': this.canEdit, selected: this.data.selected }}
-          onClick={(e) => this.onItemClick(this.data, e)}
-          lines="none"
-        >
-          <ion-label class="ion-text-wrap">{this.data.concl}</ion-label>
-        </ion-item>
-      ),
     ];
   }
 

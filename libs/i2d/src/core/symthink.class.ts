@@ -54,7 +54,6 @@ export interface ISymThink {
     url?: string;
     support?: ISymThink[];
     source?: ISource[];
-    concl?: string;
     lastSupIsConcl?: boolean;
     expires?: number; // for orphans only
     lastmod?: number;
@@ -62,13 +61,14 @@ export interface ISymThink {
     selected?: boolean;
     numeric?: boolean; // if true, use numbers instead of bullets for support icons
     decision?: IDecision;
+    createdTime?: number;
+    creator?: string;
+    creatorId?: string;
 }
 export interface ISymThinkDocument extends ISymThink {
     $chemaver?: number;
     orphans?: ISymThink[];
     format?: FormatEnum;
-    createdTime?: number;
-    creator?: string;
     uid?: string; // collection/{uid} - firestore document ID
     timestamp?: any;
     decisions?: IDecision[];
@@ -76,6 +76,7 @@ export interface ISymThinkDocument extends ISymThink {
     // metadata only for function onCreate copy to stmeta collection
     emails?: string[];
 }
+
 export interface IDecision {
     ts: string; // ISO timestamp
     scope: string; // admin level or null
@@ -83,7 +84,7 @@ export interface IDecision {
     // Later add props for e.g:
     // type?: string; // 
     // dueDate?: string;
-    // subscriptions?: ...
+    subscription?: string;// "|" separated path of: userId/symthinkDocId/nodeId
 }
 export enum StLogActionEnum {
     ADD_CHILD = 1,
@@ -121,13 +122,15 @@ export class SymThink {
     active = false;
     lastmod: number;
     lastSupIsConcl = false;
-    concl: string; // for Claims only ?
     eventDate: Date; // for Events only
     sup$ = new Subject<boolean>();// true = for adding child, false for removing
     select$ = new Subject<boolean>();
     selected = false;
     numeric = false;
     decision: IDecision;
+    createdTime: number;
+    creator: string; // display name
+    creatorId: string;
 
     constructor(id: string, parent?: SymThink) {
         // make read-only after first set
@@ -163,21 +166,16 @@ export class SymThink {
 
     apply(arg: ISymThink) {
         this.selected = arg.selected || false;
-        if (arg.type) {
-            this.type = arg.type;
-        }
-        if (arg.label) {
-            this.label = arg.label;
-        }
-        if (arg.text) {
-            this.text = arg.text;
-        }
-        if (arg.lastSupIsConcl !== undefined) {
-            this.lastSupIsConcl = !!arg.lastSupIsConcl;
-        }
-        if (arg.lastmod) {
-            this.lastmod = arg.lastmod;
-        }
+        this.type = arg.type || undefined;
+        this.label = arg.label || undefined;
+        this.text = arg.text || undefined;
+        this.numeric = arg.numeric || undefined;
+        this.decision = arg.decision || undefined;
+        this.createdTime = arg.createdTime || (new Date()).getTime();
+        this.creator = arg.creator || undefined;
+        this.creatorId = arg.creatorId || undefined;
+        this.lastSupIsConcl = arg.lastSupIsConcl || undefined;
+        this.lastmod = arg.lastmod || undefined;
         if (arg.eventDate) {
             try {
                 this.eventDate = new Date(arg.eventDate * 1000);
@@ -199,12 +197,6 @@ export class SymThink {
         }
         if (arg.url) {
             try { this.url = new URL(arg.url) } catch (e) { }
-        }
-        if (arg.numeric) {
-            this.numeric = arg.numeric;
-        }
-        if (arg.decision) {
-            this.decision = arg.decision;
         }
     }
 
@@ -314,10 +306,6 @@ export class SymThink {
         if (card.hasKids()) {
             card.support.map(s => IDs.push(s.id));
         }
-        // while (card.parent) {
-        //     IDs.unshift(card.id);
-        //     card = card.parent;
-        // }
         IDs.unshift(card.id);
         return IDs;
     }
@@ -326,12 +314,17 @@ export class SymThink {
             id: this.id,
             type: this.type,
             text: this.text,
-            concl: this.concl,
             label: this.label,
             eventDate: this.eventDate ? Math.floor(this.eventDate.getTime() / 1000) : undefined,
             support: undefined,
             source: undefined,
-            decision: this.decision ? {...this.decision} : null
+            decision: this.decision ? { ...this.decision } : null,
+            createdTime: this.createdTime || undefined,
+            creator: this.creator || undefined,
+            creatorId: this.creatorId || undefined,
+            lastSupIsConcl: this.lastSupIsConcl || undefined,
+            numeric: this.numeric || undefined,
+            url: this.url ? this.url.toString() : undefined,
         };
         if (this.source) {
             o.source = this.source.map(s => {
@@ -340,15 +333,6 @@ export class SymThink {
                 try { cp.date = s.date.toString() } catch (e) { }
                 return cp;
             });
-        }
-        if (this.lastSupIsConcl !== undefined) {
-            o.lastSupIsConcl = this.lastSupIsConcl;
-        }
-        if (this.numeric !== undefined) {
-            o.numeric = this.numeric;
-        }
-        if (this.url) {
-            o.url = this.url.toString();
         }
         if (deep && this.support) {
             o.support = this.support.map((a) => a.getRaw(a.hasKids()));
@@ -514,7 +498,7 @@ export class SymThink {
             t: this.text,
             c: '',
             n: this.numeric,
-            s: this.hasKids() ? this.support.map(sp => sp.text): []
+            s: this.hasKids() ? this.support.map(sp => sp.text) : []
         };
         if (this.lastSupIsConcl) {
             a.c = a.s.pop();
@@ -532,7 +516,7 @@ export class SymThink {
             }
             if (this.numeric) {
                 for (let x = 0; x < bullts.length; x++) {
-                    const b = Bullets.find((b) => x+1 === b.x);
+                    const b = Bullets.find((b) => x + 1 === b.x);
                     bullts[x] = `${b.full} ${bullts[x]}`;
                 }
             } else {
@@ -545,6 +529,19 @@ export class SymThink {
 ${bullts.join('\n')}
 ${conclusion}`;
     }
+
+    // Disabled/overwrites any children
+    subscribe(doc: SymThinkDocument) {
+        if (!doc.url) {
+            throw new Error('Cannot link doc without a url.');
+        }
+        this.support = undefined;
+        this.text = doc.text;
+        this.url = doc.url;
+        this.createdTime = doc.createdTime;
+        this.creator = doc.creator;
+        this.creatorId = doc.creatorId;
+    }
 }
 
 // a.k.a root card
@@ -556,11 +553,43 @@ export class SymThinkDocument extends SymThink {
     log$: Subject<{ action: number, ts: number }>;
     format: FormatEnum = FormatEnum.Default;
     page$ = new Subject<string[]>();
-    createdTime: number;
-    creator: string;
     uid: string;
-    timestamp: {seconds: number, nanoseconds: number};
+    timestamp: { seconds: number, nanoseconds: number };
+    // eg. worldview doc will have many decisions on supports and we 
+    // want to store a record of those decisions after completion
     decisions: IDecision[];
+
+    // do this on the doc being subscribed to by another doc (the subscriber)
+    addSubscriber(userUID: string, originDocUID: string, originNodeId: string) {
+        const subscrID = `${userUID}/${originDocUID}/${originNodeId}`;
+        if (this.decision.subscription) {
+            const subs = this.decision.subscription.split('|');
+            subs.push(subscrID);
+            this.decision.subscription = subs.join('|');
+        } else {
+            this.decision.subscription = subscrID;
+        }
+    }
+
+    // finding the subscribing item in the original doc
+    getSubscriber(doc: SymThinkDocument) {
+        if (this.decision?.subscription) {
+            try {
+                const subscriptions = this.decision.subscription.split('|');
+                let id = null;
+                for (let sub of subscriptions) {
+                    const [_uid, docUid, itmId] = sub.split('/');
+                    if (docUid === doc.uid) {
+                        id = itmId;
+                        break;
+                    }
+                }
+                return doc.find((c) => c.id === id);
+            } catch (e) {
+                console.warn('getSubscriber()', e);
+            }
+        }
+    }
 
     // return milliseconds
     get modifiedTime() {
@@ -581,17 +610,13 @@ export class SymThinkDocument extends SymThink {
     }
 
     load(arg: ISymThinkDocument) {
-        console.log('load', arg)
+        // console.log('load', arg)
         // console.log('load() arg.$chemaver',arg.$chemaver)
         this.$chemaver = arg.$chemaver || SCHEMA_VERSION;
         this.orphans = arg.orphans || [];
         this.format = arg.format;
-        this.createdTime = arg.createdTime || (new Date()).getTime();
         this.uid = arg.uid;
         this.timestamp = arg.timestamp;
-        if (arg.creator) {
-            this.creator = arg.creator;
-        }
         if (arg.$chemaver < SCHEMA_VERSION) {
             console.log('Schema migrate from %s to %s', arg.$chemaver, SCHEMA_VERSION);
         }
@@ -601,55 +626,23 @@ export class SymThinkDocument extends SymThink {
         this.apply(arg);
     }
 
+    getRawDoc(): ISymThinkDocument {
+        const o: ISymThinkDocument = this.getRaw(true);
+        o.$chemaver = SCHEMA_VERSION;
+        o.format = this.format || FormatEnum.Default;
+        o.orphans = this.orphans;
+        o.decisions = this.decisions ? [...this.decisions] : null;
+        o.uid = this.uid;
+        o.timestamp = this.timestamp;
+        return o;
+    }
+
     enableLog(logger: any) {
         this.log$ = logger;
     }
 
-    getRaw(deep = true): ISymThinkDocument {
-        const o: ISymThinkDocument = {
-            id: this.id,
-            uid: this.uid,
-            timestamp: this.timestamp,
-            $chemaver: SCHEMA_VERSION,
-            format: this.format || FormatEnum.Default,
-            createdTime: this.createdTime,
-            creator: this.creator,
-            type: this.type,
-            text: this.text,
-            concl: this.concl,
-            label: this.label,
-            support: undefined,
-            source: undefined,
-            orphans: this.orphans,
-            lastmod: this.lastmod,
-            eventDate: this.eventDate ? Math.floor(this.eventDate.getTime() / 1000) : undefined,
-            decisions: this.decisions ? [...this.decisions]: null
-        };
-        if (this.source) {
-            o.source = this.source.map(s => {
-                const cp = { ...s } as any;
-                try { cp.url = s.url.toString() } catch (e) { }
-                try { cp.date = s.date.toString() } catch (e) { }
-                return cp;
-            });
-        }
-        if (this.lastSupIsConcl !== undefined) {
-            o.lastSupIsConcl = this.lastSupIsConcl;
-        }
-        if (this.numeric !== undefined) {
-            o.numeric = this.numeric;
-        }
-        if (this.url) {
-            o.url = this.url.toString();
-        }
-        if (deep && this.support) {
-            o.support = this.support.map((a) => a.getRaw());
-        }
-        return o;
-    }
-
     toString() {
-        const raw = this.getRaw();
+        const raw = this.getRawDoc();
         return JSON.stringify(raw);
     }
 
@@ -692,6 +685,7 @@ export class SymThinkDocument extends SymThink {
     getTotalSources(): number {
         return this.countSources();
     }
+
     // getAllSources(): ISources[] {
     //     const start = this.source || [];
     //     const rs = this.support.reduce((prevVal, currVal, x, supp) => {
@@ -771,7 +765,7 @@ export const CardRules = [
         xtra: false,
         char: '',
         iconCls: null,
-        next: ARG_TYPE.Statement       
+        next: ARG_TYPE.Statement
     }
 ];
 export const trailingSympunkRegExp = /[🕫💡❓]+/g
@@ -788,4 +782,4 @@ export const Bullets = [
     { x: 8, circ: '➇', full: '➑', circle: '&#x2787;', fulle: '&#x2791;' },
     { x: 9, circ: '➈', full: '➒', circle: '&#x2788;', fulle: '&#x2792;' },
     { x: 10, circ: '➉', full: '➓', circle: '&#x2789;', fulle: '&#x2793;' },
-  ];
+];
