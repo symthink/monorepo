@@ -125,6 +125,7 @@ export class SymThink {
     eventDate: Date; // for Events only
     sup$ = new Subject<boolean>();// true = for adding child, false for removing
     select$ = new Subject<boolean>();
+    mod$ = new Subject<void>();
     selected = false;
     numeric = false;
     decision: IDecision;
@@ -174,7 +175,7 @@ export class SymThink {
         this.createdTime = arg.createdTime || (new Date()).getTime();
         this.creator = arg.creator || undefined;
         this.creatorId = arg.creatorId || undefined;
-        this.lastSupIsConcl = arg.lastSupIsConcl || undefined;
+        this.lastSupIsConcl = !!arg.lastSupIsConcl;
         this.lastmod = arg.lastmod || undefined;
         if (arg.eventDate) {
             try {
@@ -195,8 +196,8 @@ export class SymThink {
                 return cp;
             });
         }
-        if (arg.url) {
-            try { this.url = new URL(arg.url) } catch (e) { }
+        if (arg.url) {            
+            try { this.url = new URL(arg.url) } catch (e) { console.log('Invalid URL:', e) }
         }
     }
 
@@ -322,7 +323,7 @@ export class SymThink {
             createdTime: this.createdTime || undefined,
             creator: this.creator || undefined,
             creatorId: this.creatorId || undefined,
-            lastSupIsConcl: this.lastSupIsConcl || undefined,
+            lastSupIsConcl: !!this.lastSupIsConcl,
             numeric: this.numeric || undefined,
             url: this.url ? this.url.toString() : undefined,
         };
@@ -533,6 +534,7 @@ ${conclusion}`;
     // Disabled/overwrites any children
     subscribe(doc: SymThinkDocument) {
         if (!doc.url) {
+            console.debug(doc);
             throw new Error('Cannot link doc without a url.');
         }
         this.support = undefined;
@@ -541,6 +543,10 @@ ${conclusion}`;
         this.createdTime = doc.createdTime;
         this.creator = doc.creator;
         this.creatorId = doc.creatorId;
+        // d2-rcard is represented by the parent
+        if (this.parent) {
+            this.parent.mod$.next();
+        }
     }
 }
 

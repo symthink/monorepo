@@ -58,6 +58,7 @@ export class D2Rcard {
   private listEl: HTMLIonListElement;
   private currIonTextareaEl: HTMLIonTextareaElement;
   private selectedElHeight: number = 50;
+  private logEvt$: Subject<StLogActionEnum> = new Subject();
 
   get showMoreOptions(): boolean {
     return this.canEdit;
@@ -74,13 +75,18 @@ export class D2Rcard {
   }
 
   componentWillLoad() {
-    console.log('canEdit', this.canEdit);
+    // console.log('canEdit', this.canEdit);
     if (this.notify) {
       this.notify.subscribe((a) => this.onNotificationReceived(a));
     }
     if (this.data) {
       if (this.data.select$) {
-        this.data.select$.subscribe(() => {
+        this.data.select$.subscribe(() => this.change = !this.change);
+      }
+      if (this.data.mod$) {
+        console.log('subscribe to mod$')
+        this.data.mod$.subscribe(() => {
+          console.log('subcriber triggered');
           this.change = !this.change;
         });
       }
@@ -173,7 +179,9 @@ export class D2Rcard {
     ev.stopPropagation();
     // get coordinates of item clicked
     if (item.url) {
-      window.location.assign(item.url);
+      console.log('item clicked: ', item);
+      this.itemAction.emit({ action: 'subcription-clicked', value: item.url });
+      // window.location.assign(item.url);
     } else if (item.isKidEnabled()) {
       const ionItem = ev
         .composedPath()
@@ -277,24 +285,16 @@ export class D2Rcard {
   }
 
   renderItemIcon(item: SymThink, num: number) {
-    if (item.url) {
-      return (
-        <div>
-          <ion-icon name="open-outline"></ion-icon>
-        </div>
-      );
-    } else {
-      const x = this.data.numeric ? num : 0;
-      const bullet = Bullets.find((b) => b.x === x);
-      const charLabel = item.isKidEnabled() ? bullet.full : bullet.circ;
-      return (
-        <span slot="start" class={{ bullet: true, numbull: this.data.numeric }}>
-          {charLabel}
-        </span>
-      );
-      // return <d2-icon slot="start" label={label}></d2-icon>;
-    }
-  }
+    const x = this.data.numeric ? num : 0;
+    const bullet = Bullets.find((b) => b.x === x);
+    const charLabel = item.isKidEnabled() ? bullet.full : bullet.circ;
+    return (
+      <span slot="start" class={{ bullet: true, numbull: this.data.numeric }}>
+        {charLabel}
+      </span>
+    );
+    // return <d2-icon slot="start" label={label}></d2-icon>;
+}
 
   renderItemOptionsBtn(item: SymThink) {
     return (
@@ -326,7 +326,7 @@ export class D2Rcard {
   renderSupportItems() {
     const isConcl = (num: number) =>
       this.data.lastSupIsConcl && this.data.support.length === num;
-    const isEditable = (itm) =>
+    const isEditable = (itm: SymThink) =>
       !!(itm.selected && this.canEdit && !itm.isKidEnabled() && !itm.url);
     return (
       <ion-reorder-group
@@ -393,8 +393,8 @@ export class D2Rcard {
                   {this.renderLabel(item.getSupportItemText()) ||
                     this.textPh(item)}
                   {item.isEvent && <p>{item.eventDate?.toLocaleString()}</p>}
-                  {item.type === ARG_TYPE.Question && (
-                    <div><ion-badge color="warn">{item.countDecendents(ARG_TYPE.Idea)}</ion-badge></div>
+                  {!!item.url && (
+                    <div><ion-icon size="small" color="primary" name="notifications-outline"></ion-icon>&nbsp;5 days left&nbsp;&#x2666;&nbsp;Silver Spring</div>
                   )}
                 </ion-label>
               )}
@@ -597,6 +597,7 @@ export class D2Rcard {
   }
 
   render() {
+    console.log('render() rcard')
     return [
       <ion-content
         fullscreen={true}
