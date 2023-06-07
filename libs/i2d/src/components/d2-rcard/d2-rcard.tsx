@@ -81,10 +81,10 @@ export class D2Rcard {
     }
     if (this.data) {
       if (this.data.select$) {
-        this.data.select$.subscribe(() => this.change = !this.change);
+        this.data.select$.subscribe(() => (this.change = !this.change));
       }
       if (this.data.mod$) {
-        console.log('subscribe to mod$')
+        console.log('subscribe to mod$');
         this.data.mod$.subscribe(() => {
           console.log('subcriber triggered');
           this.change = !this.change;
@@ -179,7 +179,6 @@ export class D2Rcard {
     ev.stopPropagation();
     // get coordinates of item clicked
     if (item.url) {
-      console.log('item clicked: ', item);
       this.itemAction.emit({ action: 'subcription-clicked', value: item.url });
       // window.location.assign(item.url);
     } else if (item.isKidEnabled()) {
@@ -294,7 +293,7 @@ export class D2Rcard {
       </span>
     );
     // return <d2-icon slot="start" label={label}></d2-icon>;
-}
+  }
 
   renderItemOptionsBtn(item: SymThink) {
     return (
@@ -321,6 +320,40 @@ export class D2Rcard {
       !!label && <b style={{ 'font-weight': 'bold' }}>{label}:</b>,
       ' ' + txt,
     ];
+  }
+
+  renderSubscrLine(itm: SymThink) {
+    let place = '';
+    let titleCase = (s) =>
+      s.replace(/\w\S*/g, (txt) => {
+        return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
+      });
+    if (itm.url?.host === 'collection.fs') {
+      //  /levels/metadata/administrativeArea2/country=us-state=md-county=montgomery/symthink/jHlYkxo4VBXPdNVlqliF
+      try {
+        const p = itm.url.pathname.split('/');
+        p.pop();
+        p.pop();
+        const a = p.pop();
+        const b = a.split('-').pop();
+        const c = b.split('=');
+        place = titleCase(c[0]) + ': ' + titleCase(c[1]);
+      } catch (e) {
+        console.warn(e);
+      }
+    }
+    return (
+      <div>
+        <ion-icon
+          size="small"
+          color="primary"
+          name="notifications-outline"
+        ></ion-icon>
+        &nbsp;5 days left&nbsp;
+        <ion-icon size="small" color="primary" name="earth-outline"></ion-icon>
+        &nbsp;{place}
+      </div>
+    );
   }
 
   renderSupportItems() {
@@ -393,9 +426,7 @@ export class D2Rcard {
                   {this.renderLabel(item.getSupportItemText()) ||
                     this.textPh(item)}
                   {item.isEvent && <p>{item.eventDate?.toLocaleString()}</p>}
-                  {!!item.url && (
-                    <div><ion-icon size="small" color="primary" name="notifications-outline"></ion-icon>&nbsp;5 days left&nbsp;&#x2666;&nbsp;Silver Spring</div>
-                  )}
+                  {!!item.url && this.renderSubscrLine(item)}
                 </ion-label>
               )}
               {this.canEdit && this.renderItemOptionsBtn(item)}
@@ -581,8 +612,9 @@ export class D2Rcard {
     ];
   }
 
-  renderSourcesDivider() {
-    return (
+  renderSources() {
+    const srcList = this.data.getShowableSources();
+    return [
       <div class="sources-border">
         <br />
         <br />
@@ -592,12 +624,21 @@ export class D2Rcard {
         <hr />
         <br />
         <br />
-      </div>
-    );
+      </div>,
+      <ion-list>
+        {srcList?.map((md, ix) => (
+          <d2-src-metadata
+            data={md.src}
+            index={ix}
+            canEdit={this.canEdit}
+          ></d2-src-metadata>
+        ))}
+      </ion-list>,
+    ];
   }
 
   render() {
-    console.log('render() rcard')
+    console.log('render() rcard');
     return [
       <ion-content
         fullscreen={true}
@@ -624,19 +665,7 @@ export class D2Rcard {
         <br />
         <slot name="card-list-bottom"></slot>
 
-        {this.data.hasSources() && [
-          this.renderSourcesDivider(),
-          <ion-list>
-            {this.data.source?.map((md, ix) => (
-              <d2-src-metadata
-                data={md}
-                index={ix}
-                canEdit={this.canEdit}
-              ></d2-src-metadata>
-            ))}
-          </ion-list>,
-        ]}
-        {!this.data.hasSources() && this.canEdit && this.renderSourcesDivider()}
+        {this.data.hasSources() && this.renderSources()}
         <slot name="card-bottom"></slot>
         <br />
         <br />

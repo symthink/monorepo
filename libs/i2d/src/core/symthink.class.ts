@@ -235,6 +235,33 @@ export class SymThink {
         this.logAction(StLogActionEnum.ADD_SOURCE);
     }
 
+    getShowableSources(): {id: string, src: ISource}[] {
+        const srcList = [];
+        if (this.hasSources()) {
+            const lst = [...this.source].map((src) => {
+                return {
+                    id: this.id,
+                    src: src 
+                };
+            }); 
+            srcList.concat(lst);   
+        }
+        if (this.hasKids()) {
+            this.support.forEach((s) => {
+                if (s.hasSources()) {
+                    const list = [...s.source].map((sc) => {
+                        return {
+                            id: s.id,
+                            src: sc 
+                        };
+                    });
+                    srcList.concat(list);
+                }
+            });
+        }
+        return srcList
+    }
+
     hasKids(): boolean {
         return !!(this.support && this.support.length);
     }
@@ -543,6 +570,7 @@ ${conclusion}`;
         this.createdTime = doc.createdTime;
         this.creator = doc.creator;
         this.creatorId = doc.creatorId;
+        this.decision = doc.decision;
         // d2-rcard is represented by the parent
         if (this.parent) {
             this.parent.mod$.next();
