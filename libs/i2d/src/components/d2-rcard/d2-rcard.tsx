@@ -84,9 +84,7 @@ export class D2Rcard {
         this.data.select$.subscribe(() => (this.change = !this.change));
       }
       if (this.data.mod$) {
-        console.log('subscribe to mod$');
         this.data.mod$.subscribe(() => {
-          console.log('subcriber triggered');
           this.change = !this.change;
         });
       }
@@ -323,8 +321,8 @@ export class D2Rcard {
   }
 
   renderSubscrLine(itm: SymThink) {
-    let place = '';
-    let titleCase = (s) =>
+    let place = 'Municipality';
+    let titleCase = (s: string) =>
       s.replace(/\w\S*/g, (txt) => {
         return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
       });
@@ -337,7 +335,9 @@ export class D2Rcard {
         const a = p.pop();
         const b = a.split('-').pop();
         const c = b.split('=');
-        place = titleCase(c[0]) + ': ' + titleCase(c[1]);
+        if (c.length === 2) {
+          place = titleCase(c[0]) + ': ' + titleCase(c[1]);
+        }
       } catch (e) {
         console.warn(e);
       }
