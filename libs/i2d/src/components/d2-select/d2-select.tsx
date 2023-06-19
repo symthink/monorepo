@@ -30,9 +30,9 @@ export class D2Select {
   renderIcon(btn: ActionSheetButton) {
     if (btn.icon) {
       if (this.useSvg(btn.icon)) {
-        return (<ion-icon slot="end" src={btn.icon}></ion-icon>);
+        return (<ion-icon color={btn.role==='destructive'?'danger':undefined} slot="end" src={btn.icon}></ion-icon>);
       } else {
-        return (<ion-icon slot="end" name={btn.icon}></ion-icon>);
+        return (<ion-icon color={btn.role==='destructive'?'danger':undefined} slot="end" name={btn.icon}></ion-icon>);
       }
     }
   }
