@@ -93,7 +93,7 @@ export class D2HeadFormat {
   render() {
     return [
       <ion-list>
-        <ion-item lines="none" class="ion-text-center doc-title">
+        {/* <ion-item lines="none" class="ion-text-center doc-title">
           {!this.canEdit && (
             <div class={{ invisible: !!!this.symthinkDoc.label }}>
               <h1>{this.symthinkDoc.label}</h1>
@@ -105,11 +105,11 @@ export class D2HeadFormat {
               value={this.symthinkDoc.label}
             ></ion-input>
           )}
-        </ion-item>
+        </ion-item> */}
 
         <ion-item
           lines="none"
-          class={{ 'by-line': true, 'got-title': !!this.symthinkDoc.label }}
+          class={{ 'by-line': true, 'got-title': false }}
         >
           {this.renderByLine()}
         </ion-item>
