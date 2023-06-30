@@ -236,15 +236,14 @@ export class SymThink {
     }
 
     getShowableSources(): {id: string, src: ISource}[] {
-        const srcList = [];
+        let srcList = [];
         if (this.hasSources()) {
-            const lst = [...this.source].map((src) => {
+            srcList = [...this.source].map((src) => {
                 return {
                     id: this.id,
                     src: src 
                 };
             }); 
-            srcList.concat(lst);   
         }
         if (this.hasKids()) {
             this.support.forEach((s) => {
@@ -354,6 +353,7 @@ export class SymThink {
             numeric: this.numeric || undefined,
             url: this.url ? this.url.toString() : undefined,
         };
+        console.log('source', this.source)
         if (this.source) {
             o.source = this.source.map(s => {
                 const cp = { ...s } as any;
@@ -361,6 +361,7 @@ export class SymThink {
                 try { cp.date = s.date.toString() } catch (e) { }
                 return cp;
             });
+            console.log('o.source', o.source)
         }
         if (deep && this.support) {
             o.support = this.support.map((a) => a.getRaw(a.hasKids()));
@@ -786,12 +787,12 @@ export const CardRules = [
         xtra: false,
         char: '🕫', // 1f56b
         iconCls: 'ico-clm',
-        next: ARG_TYPE.Claim
+        next: ARG_TYPE.Question
     },
     {
         type: ARG_TYPE.Statement,
-        name: 'Item',
-        icon: '_spacer_',
+        name: 'any text',
+        icon: 'create-outline',
         placeholder: 'Enter an item',
         supportsPh: '',
         conclPh: '',
