@@ -41,7 +41,7 @@ ion-chip {
   }
   .circle {
     border-radius: 0% 45% 45% 0%;
-    width: 15px;
+    min-width: 15px;
     height: 6px;
     padding: 11px;
     background: var(--ion-color-step-800);

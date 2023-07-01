@@ -158,12 +158,11 @@ export class D2Metrics {
 
   calculate() {
     this.st = this.symthinkDoc.getTotalsByType();
-    this.totalNodes = this.st.claimCnt + this.st.questionCnt + this.st.ideaCnt;
     this.targetMargin = Math.round(this.totalNodes * 0.08 * 10) / 10;
     this.sourceCnt = this.symthinkDoc.getTotalSources();
     const a = this.symthinkDoc.getDepth();
     this.depth = a.dep;
-
+    this.totalNodes = this.symthinkDoc.getTotalNodes();
     const avg = this.totalNodes / 3;
     this.clmMargin = this.st.claimCnt - avg;
     this.idaMargin = this.st.ideaCnt - avg;
@@ -233,7 +232,7 @@ export class D2Metrics {
         </ion-chip>
         <ion-chip class="metric depth">
           <ion-label>Depth&nbsp;</ion-label>
-          <div class="circle">{this.depth}</div>
+          <div class="circle">{this.totalNodes}-{this.depth}</div>
         </ion-chip>
         <ion-chip class="metric mindset">
           <ion-label>Mindset&nbsp;</ion-label>
