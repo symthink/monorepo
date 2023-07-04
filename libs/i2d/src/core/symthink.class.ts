@@ -353,7 +353,6 @@ export class SymThink {
             numeric: this.numeric || undefined,
             url: this.url ? this.url.toString() : undefined,
         };
-        console.log('source', this.source)
         if (this.source) {
             o.source = this.source.map(s => {
                 const cp = { ...s } as any;
@@ -576,6 +575,24 @@ ${conclusion}`;
         if (this.parent) {
             this.parent.mod$.next();
         }
+    }
+
+    decide() {
+        const first = this.support.shift();
+        this.text = first.text;
+        this.type = first.type;
+        this.orphanizeKids();
+        this.support = first.support;
+        if (this.decision) {
+            const decision = {...this.decision};
+            const root = this.getRoot();
+            if (!root.decisions) {
+                root.decisions = [];
+            }
+            root.decisions.push(decision);    
+            delete this.decision;
+        }
+        this.mod$.next();
     }
 }
 

@@ -68,7 +68,7 @@ export class D2Metrics {
 
   list: IMetricInfo[] = [
     {
-      name: 'sources',
+      name: 'Sources',
       info: () => (
         <div>
           <p>
@@ -79,69 +79,35 @@ export class D2Metrics {
       ),
     },
     {
-      name: 'mindset',
+      name: 'Mindset',
       icon: <span class="gankyil-symbol"></span>,
       initBreakpoint: 0.6,
       info: () => (
         <div>
           <p>
-            This badge displays your most dominant mindset in this symthink,
-            or,&nbsp;<b></b>&nbsp;if you achieve the target range below,
-            indicating a close balance between a curious, confident and creative
-            mindset.
+            This badge measures the number of times you have iterated through
+            the steps of: Question &gt; Idea &gt; Claim, in process of
+            developing this symthink document.
           </p>
-
-          <ion-list>
-            <ion-item lines="none">
-              <ion-label style={{ 'text-align': 'right' }}>
-                Target: {this.target} +/- {this.targetMargin}
-              </ion-label>
-            </ion-item>
-            <ion-item>
-              <ion-text slot="start">{this.queChar}</ion-text>
-              <ion-label>
-                <div style={{ float: 'right' }}>
-                  {this.getMargin(this.queMargin)}
-                </div>
-                Curious
-              </ion-label>
-              <ion-text slot="end">{this.st.questionCnt}</ion-text>
-            </ion-item>
-            <ion-item>
-              <ion-text slot="start">{this.clmChar}</ion-text>
-              <ion-label>
-                <div style={{ float: 'right' }}>
-                  {this.getMargin(this.clmMargin)}
-                </div>
-                Confident
-              </ion-label>
-              <ion-text slot="end">{this.st.claimCnt}</ion-text>
-            </ion-item>
-            <ion-item lines="full">
-              <ion-text slot="start">{this.idaChar}</ion-text>
-              <ion-label>
-                <div style={{ float: 'right' }}>
-                  {this.getMargin(this.idaMargin)}
-                </div>
-                Creative
-              </ion-label>
-              <ion-text slot="end">{this.st.ideaCnt}</ion-text>
-            </ion-item>
-            <ion-item lines="none">
-              <ion-label class="ion-text-right">Total items: </ion-label>
-              <ion-text slot="end">{this.totalNodes}</ion-text>
-            </ion-item>
-          </ion-list>
+          <p>
+            The steps can be accomplished independently or by posting a question
+            to a region to solicit ideas & claims from others in that region. If
+            done independently, you simply add your own ideas under a question,
+            then claims under the ideas as needed. Then sort your ideas with
+            your first choice at the top. And finally, on the question, you
+            select the option "Decision" to promote the top idea.
+          </p>
         </div>
       ),
     },
     {
-      name: 'depth',
+      name: 'Depth',
       info: () => (
         <div>
           <p>
-            This badge displays the deepest level of any of your extended bullet
-            points or numbers.
+            This badge displays the total statements of any type and the deepest
+            level of any of your extended bullet points or numbers.
+            <pre>TOTAL-DEPTH</pre>
           </p>
         </div>
       ),
@@ -192,9 +158,17 @@ export class D2Metrics {
     this.modified = !this.modified;
   }
 
-  @Listen('metricClick')
-  async onMetricClick(evt: CustomEvent) {
-    const metric = evt.detail;
+  // @Listen('metricClick')
+  // async onMetricClick(evt: CustomEvent) {
+  //   console.log('onMetricClick', evt.detail);
+  //   const metric = evt.detail.value;
+  //   const met = this.list.find((m) => m.name === metric);
+  //   if (met) {
+  //     this.selected = met;
+  //     this.modalIsOpen = true;
+  //   }
+  // }
+  async onMetricClick(metric: string) {
     const met = this.list.find((m) => m.name === metric);
     if (met) {
       this.selected = met;
@@ -220,21 +194,32 @@ export class D2Metrics {
   }
 
   render() {
-    const breakPoint = this.selected?.initBreakpoint || 0.25;
+    const breakPoint = this.selected?.initBreakpoint || 0.6;
     return (
       <div class="container">
         {/* <d2-metric name="sources" value={this.sourceCnt} />
         <d2-metric name="depth" value={this.depth} />
         <d2-metric name="mindset" value={`${this.mindsetVal}`} /> */}
-        <ion-chip class="metric sources">
+        <ion-chip
+          class="metric sources"
+          onClick={() => this.onMetricClick('Sources')}
+        >
           <ion-label>Sources&nbsp;</ion-label>
           <div class="circle">{this.sourceCnt}</div>
         </ion-chip>
-        <ion-chip class="metric depth">
+        <ion-chip
+          class="metric depth"
+          onClick={() => this.onMetricClick('Depth')}
+        >
           <ion-label>Depth&nbsp;</ion-label>
-          <div class="circle">{this.totalNodes}-{this.depth}</div>
+          <div class="circle">
+            {this.totalNodes}-{this.depth}
+          </div>
         </ion-chip>
-        <ion-chip class="metric mindset">
+        <ion-chip
+          class="metric mindset"
+          onClick={() => this.onMetricClick('Mindset')}
+        >
           <ion-label>Mindset&nbsp;</ion-label>
           <div class="circle">{this.decisionCnt}</div>
         </ion-chip>
@@ -246,7 +231,7 @@ export class D2Metrics {
           breakpoints={[0, 0.25, 0.6, 0.8]}
         >
           <ion-header>
-            <ion-toolbar>
+            <ion-toolbar color="light">
               <ion-title>{this.selected?.name}</ion-title>
             </ion-toolbar>
           </ion-header>

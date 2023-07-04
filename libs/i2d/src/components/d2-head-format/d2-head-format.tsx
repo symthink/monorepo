@@ -118,6 +118,7 @@ export class D2HeadFormat {
       this.symthinkDoc.format !== FormatEnum.Review && (
         <d2-metrics
           symthinkDoc={this.symthinkDoc}
+          refresh={this.refresh}
           modalClassName="modal-sheet sym-text"
         />
       ),

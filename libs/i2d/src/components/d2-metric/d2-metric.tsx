@@ -27,6 +27,7 @@ export class D2Metric {
   @Event() metricClick: EventEmitter<string>;
 
   async onClick(metric: string) {
+    console.log('onClick metric', metric);
     this.metricClick.emit(metric);
   }
 
@@ -64,12 +65,14 @@ export class D2Metric {
     const metric = this.list.find((m) => this.name === m.name);
     if (metric) {
       return (
-        <Host onClick={this.onClick.bind(this, this.name)}>
-          <span class="first">
-            {metric.icon}&nbsp;&nbsp;{metric.label}
-          </span>
-          <div class={metric.color}>
-            <span class="val">{this.value}</span>
+        <Host>
+          <div onClick={this.onClick.bind(this, this.name)}>
+            <span class="first">
+              {metric.icon}&nbsp;&nbsp;{metric.label}
+            </span>
+            <div class={metric.color}>
+              <span class="val">{this.value}</span>
+            </div>
           </div>
         </Host>
       );
