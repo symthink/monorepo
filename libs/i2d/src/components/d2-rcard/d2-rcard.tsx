@@ -398,7 +398,7 @@ export class D2Rcard {
                   onIonInput={(e) => this.onTextareaInput(e, item)}
                   onIonBlur={(e) => this.onTextareaBlur(e, item)}
                   value={item.text}
-                  maxlength={250}
+                  maxlength={280}
                   spellcheck={true}
                   autocapitalize="sentences"
                   autocorrect={'off'}
@@ -561,7 +561,7 @@ export class D2Rcard {
               onIonInput={(e) => this.onTextareaInput(e, this.data)}
               onIonBlur={(e) => this.onTextareaBlur(e, this.data)}
               value={this.data.getCurrentItemText()}
-              maxlength={250}
+              maxlength={280}
               spellcheck={true}
               autocapitalize="sentences"
               autocorrect={'off'}
