@@ -67,6 +67,7 @@ If you have questions, concerns, bug reports, etc, please file an issue in this 
 ## Resources
 
 * https://github.com/mappmechanic/awesome-stenciljs#individual-components
+* https://web.dev/payments/
 
 
 ---
