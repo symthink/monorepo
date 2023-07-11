@@ -1,12 +1,14 @@
 :host {
-  display              : block;
-  height               : 100%;
-  font-family          : var(--ion-font-family);
-  font-size            : var(--font-size, 20px) !important;
-  font-weight          : var(--font-weight, 300);
-  letter-spacing       : var(--letter-spacing, normal);
-  --fab-visibility     : var(--visibility);
-  --ion-item-background: var(--ion-background-color);
+  display                 : block;
+  height                  : 100%;
+  font-family             : var(--ion-font-family);
+  font-size               : 1.125rem;
+  line-height             : 1.5rem;
+  // font-size            : var(--font-size, 20px);
+  font-weight             : var(--font-weight, 300);
+  letter-spacing          : var(--letter-spacing, normal);
+  --fab-visibility        : var(--visibility);
+  --ion-item-background   : var(--ion-background-color);
 }
 
 
@@ -112,17 +114,17 @@ ion-item.item-text {
   }
 }
 
-ion-label {
-  line-height: 1.8em !important;
+// fix for ionic fixed size on wrap
+ion-label.ion-text-wrap {
+  font-size  : inherit !important;
+  line-height: inherit !important;
 }
-
 
 ion-textarea {
   textarea {
-    line-height: 1.8em;
-
-    height    : auto;
-    min-height: 65px;
+    line-height: inherit;
+    height     : auto;
+    min-height : 65px;
   }
 }
 
@@ -199,6 +201,7 @@ ion-textarea {
 .sym-text * {
   font-family   : var(--ion-font-family);
   font-size     : var(--font-size, 1.125rem);
+  line-height   : 1.5rem;
   font-weight   : var(--font-weight, 300);
   letter-spacing: var(--letter-spacing, normal);
 }
@@ -273,7 +276,7 @@ ion-breadcrumb:last-child {
 }
 
 .bullet {
-  margin-top : 6px;
+  margin-top : 0px;
   margin-left: 12px;
 }
 

@@ -492,20 +492,17 @@ export class D2Rcard {
   }
 
   onTextareaBlur(evt: IonTextareaCustomEvent<any>, item) {
-    console.log('onTextareaBlur()', item.type);
     const ta = evt.target as HTMLIonTextareaElement;
     if (item.type === ARG_TYPE.Statement) {
       return (item.text = ta.value);
     }
     const typ = CardRules.find((r) => r.type === item.type);
-    console.log('type: ', typ.name);
     if (typ && ta && ta.value && ta.value.length) {
       let newVal =
         ta.value
           .replace(/[\r\n\t]+/g, ' ')
           .replace(trailingSympunkRegExp, '')
           .replace(/[\.\!\?]+$/, '') + typ.char;
-      console.log('Icon added: ', newVal);
       // const m = newVal.matchAll(/[^\.\!\?]*[\.\!\?]/g);
       // let nxt = m.next();
       // const sentences = [];
