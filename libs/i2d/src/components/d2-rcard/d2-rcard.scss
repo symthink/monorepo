@@ -323,3 +323,9 @@ ion-breadcrumb:last-child {
   }
 
 }
+.item-subscript {
+  display: flex;
+  justify-content: flex-end;
+  color: inherit !important;
+  margin-right: 1em !important;
+}

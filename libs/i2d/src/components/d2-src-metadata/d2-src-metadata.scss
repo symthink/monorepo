@@ -10,6 +10,7 @@ ion-label * {
   color: rgb(var(--ion-text-color-rgb, 0, 0, 0))!important;
 }
 ion-label {
+  margin-top: 0px !important;
   h2 {
     font-weight: bold!important;
   }

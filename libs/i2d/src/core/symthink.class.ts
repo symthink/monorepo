@@ -238,23 +238,23 @@ export class SymThink {
     getShowableSources(): {id: string, src: ISource}[] {
         let srcList = [];
         if (this.hasSources()) {
-            srcList = [...this.source].map((src) => {
+            srcList = this.source.map((src) => {
                 return {
                     id: this.id,
-                    src: src 
+                    src: {...src} 
                 };
             }); 
         }
         if (this.hasKids()) {
             this.support.forEach((s) => {
                 if (s.hasSources()) {
-                    const list = [...s.source].map((sc) => {
+                    const list = s.source.map((sc) => {
                         return {
                             id: s.id,
-                            src: sc 
+                            src: {...sc} 
                         };
                     });
-                    srcList.concat(list);
+                    srcList = srcList.concat(list);
                 }
             });
         }
@@ -360,7 +360,6 @@ export class SymThink {
                 try { cp.date = s.date.toString() } catch (e) { }
                 return cp;
             });
-            console.log('o.source', o.source)
         }
         if (deep && this.support) {
             o.support = this.support.map((a) => a.getRaw(a.hasKids()));

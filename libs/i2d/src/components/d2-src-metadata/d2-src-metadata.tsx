@@ -25,7 +25,7 @@ export class D2SrcMetadata {
   renderLabel() {
     return (
       <ion-label class="ion-text-wrap">
-      <h2>{this.data.title}</h2>
+      <h2><a href={this.data.url.toString()} target="_blank">{this.data.title}</a></h2>
       {this.data.author && <p>By {this.data.author}
       {this.data.date && [ ' on ',
         dayjs(this.data.date).format('MMM D, YYYY')
@@ -41,14 +41,9 @@ export class D2SrcMetadata {
     if (this.canEdit) {
       return (
         <ion-item-sliding>
-          <ion-item class="align-icon-start"
-            onClick={() => this.onSourceClick()}
-          >
+          <ion-item class="align-icon-start">
+            <div slot="start">{(this.index+1)}.</div>
             {this.renderLabel()}
-            <ion-icon slot="end"
-                size="small"
-                name="open-outline"
-              ></ion-icon>
           </ion-item>
           <ion-item-options side="end" onIonSwipe={() => this.onDeleteClick()}>
             <ion-item-option color="danger" expandable onClick={() => this.onDeleteClick()}>

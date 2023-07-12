@@ -19,6 +19,7 @@ import {
   sympunkReplacementRegex,
   Bullets,
   ARG_TYPE,
+  ISource,
 } from '../../core/symthink.class';
 // import getPercentageDifference from 'text-percentage-difference';
 
@@ -58,7 +59,8 @@ export class D2Rcard {
   private listEl: HTMLIonListElement;
   private currIonTextareaEl: HTMLIonTextareaElement;
   private selectedElHeight: number = 50;
-  private logEvt$: Subject<StLogActionEnum> = new Subject();
+  private sourcList: { id: string; src: ISource }[];
+  // private logEvt$: Subject<StLogActionEnum> = new Subject();
 
   get showMoreOptions(): boolean {
     return this.canEdit;
@@ -88,6 +90,8 @@ export class D2Rcard {
           this.change = !this.change;
         });
       }
+      this.sourcList = this.data.getShowableSources();
+      console.log('sourcList')
     }
   }
   componentDidLoad() {
@@ -361,6 +365,15 @@ export class D2Rcard {
       this.data.lastSupIsConcl && this.data.support.length === num;
     const isEditable = (itm: SymThink) =>
       !!(itm.selected && this.canEdit && !itm.isKidEnabled() && !itm.url);
+    let supSrcListX = [];
+    this.data.support.forEach((sup) => {
+      if (sup.hasSources()) {
+        supSrcListX = this.sourcList.reduce((acc, curr, i) => {
+          if (curr.id === sup.id) acc.push(i+1);
+          return acc;
+        }, []);
+      }
+    });
     return (
       <ion-reorder-group
         onIonItemReorder={(e) => this.reorderItems(e)}
@@ -427,6 +440,11 @@ export class D2Rcard {
                     this.textPh(item)}
                   {item.isEvent && <p>{item.eventDate?.toLocaleString()}</p>}
                   {!!item.url && this.renderSubscrLine(item)}
+                  {!!supSrcListX.length && (
+                    <p class="item-subscript">
+                      <ion-icon name="bookmark" size="small"></ion-icon>&nbsp;{supSrcListX.join(',')}
+                    </p>
+                  )}
                 </ion-label>
               )}
               {this.canEdit && this.renderItemOptionsBtn(item)}
@@ -527,6 +545,11 @@ export class D2Rcard {
 
   renderItems() {
     const isEditable = (itm) => !!(itm.selected && this.canEdit);
+    const srcListX = this.sourcList.reduce((acc, curr, i) => {
+      if (curr.id === this.data.id) acc.push(i+1);
+      return acc;
+    }, []);
+    console.log('* srcListX: ', srcListX);
     return [
       <ion-item-sliding
         disabled={this.disableSlideOpts(this.data)}
@@ -586,6 +609,11 @@ export class D2Rcard {
               {this.data.isEvent && (
                 <p>
                   <b>Date:</b> {this.data.eventDate?.toLocaleString()}
+                </p>
+              )}
+              {!!srcListX.length && (
+                <p class="item-subscript">
+                  <ion-icon name="bookmark" size="small"></ion-icon>&nbsp;{srcListX.join(',')}
                 </p>
               )}
             </ion-label>
