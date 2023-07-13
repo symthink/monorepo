@@ -9,6 +9,8 @@ import dayjs from 'dayjs';
 })
 export class D2SrcMetadata {
   @Prop() data: ISource;
+  @Prop() listNo: number;
+  @Prop() stid: string;
   @Prop() index: number;
   @Prop() canEdit = false;
 
@@ -19,7 +21,7 @@ export class D2SrcMetadata {
   }
 
   onDeleteClick() {
-    this.itemAction.emit({action: 'delete-source', value: this.index})
+    this.itemAction.emit({action: 'delete-source', value: {stid: this.stid, index: this.index}})
   }
 
   renderLabel() {
@@ -42,7 +44,7 @@ export class D2SrcMetadata {
       return (
         <ion-item-sliding>
           <ion-item class="align-icon-start">
-            <div slot="start">{(this.index+1)}.</div>
+            <div slot="start">{(this.listNo)}.</div>
             {this.renderLabel()}
           </ion-item>
           <ion-item-options side="end" onIonSwipe={() => this.onDeleteClick()}>

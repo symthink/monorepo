@@ -3,6 +3,7 @@ import {
   SymThinkDocument,
   CardRules,
   ARG_TYPE,
+  StLogActionEnum,
 } from '../../core/symthink.class';
 import { Subject } from 'rxjs';
 
@@ -118,6 +119,20 @@ export class D2Metrics {
   componentWillLoad() {
     if (this.refresh) {
       this.refresh.subscribe(() => (this.modified = !this.modified));
+    }
+    if (this.symthinkDoc.mod$) {
+      this.symthinkDoc.mod$.subscribe(() => {
+        this.calculate();
+        this.modified = !this.modified;
+      });
+      if (this.symthinkDoc.log$) {
+        this.symthinkDoc.log$.subscribe((a) => {
+          if (a.action === StLogActionEnum.ADD_SOURCE) {
+            this.calculate();
+            this.modified = !this.modified;
+          }
+        });
+      }
     }
     this.calculate();
   }

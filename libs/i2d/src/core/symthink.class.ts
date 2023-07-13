@@ -95,6 +95,7 @@ export enum StLogActionEnum {
     EDIT = 6,
     EDIT2 = 7,
     ADD_SOURCE = 8,
+    RM_SOURCE = 9,
 }
 // TODO: use typedocs w/mermaidjs plugin to express relationships between these interfaces
 // see: https://www.npmjs.com/package/typedoc-plugin-mermaid
@@ -232,15 +233,17 @@ export class SymThink {
         }
         this.source.push(src);
         // this.enableKids();  ???
+        this.mod$.next();
         this.logAction(StLogActionEnum.ADD_SOURCE);
     }
 
-    getShowableSources(): {id: string, src: ISource}[] {
+    getShowableSources(): {id: string, index: number; src: ISource}[] {
         let srcList = [];
         if (this.hasSources()) {
-            srcList = this.source.map((src) => {
+            srcList = this.source.map((src, x) => {
                 return {
                     id: this.id,
+                    index: x,
                     src: {...src} 
                 };
             }); 
@@ -248,9 +251,10 @@ export class SymThink {
         if (this.hasKids()) {
             this.support.forEach((s) => {
                 if (s.hasSources()) {
-                    const list = s.source.map((sc) => {
+                    const list = s.source.map((sc, x) => {
                         return {
                             id: s.id,
+                            index: x,
                             src: {...sc} 
                         };
                     });
@@ -592,6 +596,17 @@ ${conclusion}`;
             delete this.decision;
         }
         this.mod$.next();
+    }
+
+    rmChildSource(stid: string, index: number) {
+        const st = this.find((s) => s.id === stid);
+        if (st && st.source && st.source[index]) {
+          st.source.splice(index, 1);
+          this.mod$.next();
+          this.logAction(StLogActionEnum.RM_SOURCE);
+          return true;
+        }
+        return false;
     }
 }
 

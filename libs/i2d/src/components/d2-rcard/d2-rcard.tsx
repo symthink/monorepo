@@ -59,7 +59,7 @@ export class D2Rcard {
   private listEl: HTMLIonListElement;
   private currIonTextareaEl: HTMLIonTextareaElement;
   private selectedElHeight: number = 50;
-  private sourcList: { id: string; src: ISource }[];
+  private sourcList: { id: string; index: number; src: ISource }[];
   // private logEvt$: Subject<StLogActionEnum> = new Subject();
 
   get showMoreOptions(): boolean {
@@ -87,18 +87,19 @@ export class D2Rcard {
       }
       if (this.data.mod$) {
         this.data.mod$.subscribe(() => {
+          console.log('st mod$ triggered')
+          this.sourcList = this.data.getShowableSources();
           this.change = !this.change;
         });
       }
       this.sourcList = this.data.getShowableSources();
       this.data.getRoot().log$.subscribe((a: {action: StLogActionEnum, ts: number}) => {
-        console.log('action:', a)
         if (a.action === StLogActionEnum.ADD_SOURCE) {
-          console.log('got it ***')
+          console.log('ADD_SOURCE event received in rcard, trigger re-render')
+          this.sourcList = this.data.getShowableSources();
           this.change = !this.change;
         }
       });
-      console.log('sourcList')
     }
   }
   componentDidLoad() {
@@ -645,7 +646,7 @@ export class D2Rcard {
   }
 
   renderSources() {
-    const srcList = this.data.getShowableSources();
+    console.log('renderSources()', this.sourcList)
     return [
       <div class="sources-border">
         <br />
@@ -658,10 +659,12 @@ export class D2Rcard {
         <br />
       </div>,
       <ion-list>
-        {srcList?.map((md, ix) => (
+        {this.sourcList?.map((md, ix) => (
           <d2-src-metadata
             data={md.src}
-            index={ix}
+            stid={md.id}
+            listNo={ix + 1}
+            index={md.index}
             canEdit={this.canEdit}
           ></d2-src-metadata>
         ))}
@@ -670,7 +673,6 @@ export class D2Rcard {
   }
 
   render() {
-    console.log('render() rcard');
     return [
       <ion-content
         fullscreen={true}
@@ -697,7 +699,7 @@ export class D2Rcard {
         <br />
         <slot name="card-list-bottom"></slot>
 
-        {this.data.hasSources() && this.renderSources()}
+        {!!this.sourcList?.length && this.renderSources()}
         <slot name="card-bottom"></slot>
         <br />
         <br />
