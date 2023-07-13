@@ -91,6 +91,13 @@ export class D2Rcard {
         });
       }
       this.sourcList = this.data.getShowableSources();
+      this.data.getRoot().log$.subscribe((a: {action: StLogActionEnum, ts: number}) => {
+        console.log('action:', a)
+        if (a.action === StLogActionEnum.ADD_SOURCE) {
+          console.log('got it ***')
+          this.change = !this.change;
+        }
+      });
       console.log('sourcList')
     }
   }
@@ -365,13 +372,14 @@ export class D2Rcard {
       this.data.lastSupIsConcl && this.data.support.length === num;
     const isEditable = (itm: SymThink) =>
       !!(itm.selected && this.canEdit && !itm.isKidEnabled() && !itm.url);
-    let supSrcListX = [];
-    this.data.support.forEach((sup) => {
+    let supSrcList = this.data.support.map((sup) => {
       if (sup.hasSources()) {
-        supSrcListX = this.sourcList.reduce((acc, curr, i) => {
+        return this.sourcList.reduce((acc, curr, i) => {
           if (curr.id === sup.id) acc.push(i+1);
           return acc;
         }, []);
+      } else {
+        return null;
       }
     });
     return (
@@ -440,9 +448,9 @@ export class D2Rcard {
                     this.textPh(item)}
                   {item.isEvent && <p>{item.eventDate?.toLocaleString()}</p>}
                   {!!item.url && this.renderSubscrLine(item)}
-                  {!!supSrcListX.length && (
+                  {(!!supSrcList[index] && !!supSrcList[index].length) && (
                     <p class="item-subscript">
-                      <ion-icon name="bookmark" size="small"></ion-icon>&nbsp;{supSrcListX.join(',')}
+                      <ion-icon name="bookmark" size="small"></ion-icon>&nbsp;{supSrcList[index].join(',')}
                     </p>
                   )}
                 </ion-label>
@@ -549,7 +557,6 @@ export class D2Rcard {
       if (curr.id === this.data.id) acc.push(i+1);
       return acc;
     }, []);
-    console.log('* srcListX: ', srcListX);
     return [
       <ion-item-sliding
         disabled={this.disableSlideOpts(this.data)}

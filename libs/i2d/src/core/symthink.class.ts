@@ -688,8 +688,8 @@ export class SymThinkDocument extends SymThink {
         return o;
     }
 
-    enableLog(logger: any) {
-        this.log$ = logger;
+    enableLog(logger?: any) {
+        this.log$ = logger || new Subject();
     }
 
     toString() {
