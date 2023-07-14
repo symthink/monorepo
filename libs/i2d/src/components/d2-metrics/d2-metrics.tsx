@@ -29,43 +29,43 @@ export class D2Metrics {
   @State() modified = false;
   @State() modalIsOpen = false;
 
-  st: { questionCnt: number; claimCnt: number; ideaCnt: number };
-  sourceCnt: number;
-  depth: number;
-  totalNodes: number;
   selected: IMetricInfo;
-  queMargin: number;
-  clmMargin: number;
-  idaMargin: number;
-  target: number;
-  targetMargin: number;
-  mindsetVal: string;
-  queChar: string;
-  clmChar: string;
-  idaChar: string;
+  sourceCnt: number;
+  totalNodes: number;
+  // st: { questionCnt: number; claimCnt: number; ideaCnt: number };
+  // depth: number;
+  // queMargin: number;
+  // clmMargin: number;
+  // idaMargin: number;
+  // target: number;
+  // targetMargin: number;
+  // mindsetVal: string;
+  // queChar: string;
+  // clmChar: string;
+  // idaChar: string;
 
-  get questionCnt() {
-    return this.st?.questionCnt;
-  }
+  // get questionCnt() {
+  //   return this.st?.questionCnt;
+  // }
 
-  get claimCnt() {
-    return this.st?.claimCnt;
-  }
+  // get claimCnt() {
+  //   return this.st?.claimCnt;
+  // }
 
-  get ideaCnt() {
-    return this.st?.ideaCnt;
-  }
+  // get ideaCnt() {
+  //   return this.st?.ideaCnt;
+  // }
 
-  getMargin(value: number) {
-    const absVal = Math.abs(value);
-    if (absVal > this.targetMargin) {
-      return (
-        <span style={{ color: 'red' }}>{value > 0 ? '+' + value : value}</span>
-      );
-    } else {
-      return <span style={{ color: 'green' }}>{value}</span>;
-    }
-  }
+  // getMargin(value: number) {
+  //   const absVal = Math.abs(value);
+  //   if (absVal > this.targetMargin) {
+  //     return (
+  //       <span style={{ color: 'red' }}>{value > 0 ? '+' + value : value}</span>
+  //     );
+  //   } else {
+  //     return <span style={{ color: 'green' }}>{value}</span>;
+  //   }
+  // }
 
   list: IMetricInfo[] = [
     {
@@ -123,13 +123,11 @@ export class D2Metrics {
     if (this.symthinkDoc.mod$) {
       this.symthinkDoc.mod$.subscribe(() => {
         this.calculate();
-        this.modified = !this.modified;
       });
       if (this.symthinkDoc.log$) {
         this.symthinkDoc.log$.subscribe((a) => {
           if (a.action === StLogActionEnum.ADD_SOURCE) {
             this.calculate();
-            this.modified = !this.modified;
           }
         });
       }
@@ -138,37 +136,37 @@ export class D2Metrics {
   }
 
   calculate() {
-    this.st = this.symthinkDoc.getTotalsByType();
-    this.targetMargin = Math.round(this.totalNodes * 0.08 * 10) / 10;
     this.sourceCnt = this.symthinkDoc.getTotalSources();
-    const a = this.symthinkDoc.getDepth();
-    this.depth = a.dep;
     this.totalNodes = this.symthinkDoc.getTotalNodes();
-    const avg = this.totalNodes / 3;
-    this.clmMargin = this.st.claimCnt - avg;
-    this.idaMargin = this.st.ideaCnt - avg;
-    this.queMargin = this.st.questionCnt - avg;
-    this.clmMargin = Math.round(this.clmMargin * 10) / 10;
-    this.idaMargin = Math.round(this.idaMargin * 10) / 10;
-    this.queMargin = Math.round(this.queMargin * 10) / 10;
-    this.target = Math.round(avg * 100) / 100; // 2 decimal float
-    this.queChar = CardRules.find((cr) => cr.type === ARG_TYPE.Question).char;
-    this.clmChar = CardRules.find((cr) => cr.type === ARG_TYPE.Claim).char;
-    this.idaChar = CardRules.find((cr) => cr.type === ARG_TYPE.Idea).char;
+    // this.st = this.symthinkDoc.getTotalsByType();
+    // this.targetMargin = Math.round(this.totalNodes * 0.08 * 10) / 10;
+    // const a = this.symthinkDoc.getDepth();
+    // this.depth = a.dep;
+    // const avg = this.totalNodes / 3;
+    // this.clmMargin = this.st.claimCnt - avg;
+    // this.idaMargin = this.st.ideaCnt - avg;
+    // this.queMargin = this.st.questionCnt - avg;
+    // this.clmMargin = Math.round(this.clmMargin * 10) / 10;
+    // this.idaMargin = Math.round(this.idaMargin * 10) / 10;
+    // this.queMargin = Math.round(this.queMargin * 10) / 10;
+    // this.target = Math.round(avg * 100) / 100; // 2 decimal float
+    // this.queChar = CardRules.find((cr) => cr.type === ARG_TYPE.Question).char;
+    // this.clmChar = CardRules.find((cr) => cr.type === ARG_TYPE.Claim).char;
+    // this.idaChar = CardRules.find((cr) => cr.type === ARG_TYPE.Idea).char;
 
-    this.mindsetVal = '';
-    if (this.queMargin > this.targetMargin) {
-      this.mindsetVal += this.queChar;
-    }
-    if (this.clmMargin > this.targetMargin) {
-      this.mindsetVal += this.clmChar;
-    }
-    if (this.idaMargin > this.targetMargin) {
-      this.mindsetVal += this.idaChar;
-    }
-    if (!this.mindsetVal) {
-      this.mindsetVal = ''; // Gankyll symbol
-    }
+    // this.mindsetVal = '';
+    // if (this.queMargin > this.targetMargin) {
+    //   this.mindsetVal += this.queChar;
+    // }
+    // if (this.clmMargin > this.targetMargin) {
+    //   this.mindsetVal += this.clmChar;
+    // }
+    // if (this.idaMargin > this.targetMargin) {
+    //   this.mindsetVal += this.idaChar;
+    // }
+    // if (!this.mindsetVal) {
+    //   this.mindsetVal = ''; // Gankyll symbol
+    // }
 
     this.modified = !this.modified;
   }
@@ -192,12 +190,12 @@ export class D2Metrics {
   }
 
   componentDidRender() {
-    this.modalEl.removeEventListener('ionModalWillPresent', () =>
-      this.calculate()
-    );
-    this.modalEl.addEventListener('ionModalWillPresent', () =>
-      this.calculate()
-    );
+    // this.modalEl.removeEventListener('ionModalWillPresent', () =>
+    //   this.calculate()
+    // );
+    // this.modalEl.addEventListener('ionModalWillPresent', () =>
+    //   this.calculate()
+    // );
     this.modalEl.onDidDismiss().then(() => (this.modalIsOpen = false));
   }
 
@@ -216,21 +214,19 @@ export class D2Metrics {
         <d2-metric name="depth" value={this.depth} />
         <d2-metric name="mindset" value={`${this.mindsetVal}`} /> */}
         <ion-chip
+          class="metric depth"
+          onClick={() => this.onMetricClick('Depth')}
+        >
+          <ion-label>Items&nbsp;</ion-label>
+          <div class="circle">{this.totalNodes}</div>
+        </ion-chip>
+        <ion-chip
           class="metric sources"
           onClick={() => this.onMetricClick('Sources')}
         >
           <ion-label>Sources&nbsp;</ion-label>
           <div class="circle">{this.sourceCnt}</div>
-        </ion-chip>
-        <ion-chip
-          class="metric depth"
-          onClick={() => this.onMetricClick('Depth')}
-        >
-          <ion-label>Depth&nbsp;</ion-label>
-          <div class="circle">
-            {this.totalNodes}-{this.depth}
-          </div>
-        </ion-chip>
+        </ion-chip>{' '}
         <ion-chip
           class="metric mindset"
           onClick={() => this.onMetricClick('Mindset')}
