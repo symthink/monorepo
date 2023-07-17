@@ -15,7 +15,7 @@
     "gen": "nx g @nxext/stencil:component",
     "save": "npm run clean ; git commit -am'wip' && git push",
     "release": "release-it",
-    "release:ci": "release-it --ci ; npm run clean ; git commit -am'version update' ; git push",
+    "release:ci": "release-it --ci ; npm run clean:news ; ./gca",
     "prebuild:news": "node prebuild-news.js",
     "prebuild:symthink": "node prebuild-symthink.js",
     "postbuild:news": "mkdir apps/news/www/embed ; cp -fa apps/symthink/www/* apps/news/www/embed",
