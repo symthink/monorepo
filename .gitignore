@@ -109,6 +109,7 @@ testem.log
 Thumbs.db
 
 apps/*/www
+apps/*/dist-www
 apps/*/dist
 apps/*/package.json
 libs/*/package.json

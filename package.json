@@ -10,7 +10,7 @@
     "build:symthink": "npm run clean:symthink ; nx build symthink --dev",
     "build:news": "npm run clean:news ; npm run prebuild:news ; nx build news --dev ; npm run postbuild:news",
     "build:news:prod": "npm run clean:news ; npm run prebuild:news ; nx build news ; npm run postbuild:news ; node apps/news/build-sw.mjs",
-    "clean:news": "rm apps/news/package.json ; rm -r apps/news/www",
+    "clean:news": "rm apps/news/package.json ; rm -r apps/news/dist-www/*",
     "clean:symthink": "rm apps/symthink/package.json",
     "clean:org": "rm apps/org-home/package.json",
     "gen": "nx g @nxext/stencil:component",
@@ -19,7 +19,7 @@
     "release:ci": "release-it --ci ; npm run clean:news ; ./gca",
     "prebuild:news": "node prebuild-news.js",
     "prebuild:symthink": "node prebuild-symthink.js",
-    "postbuild:news": "mkdir apps/news/www/embed ; cp -fa apps/symthink/www/* apps/news/www/embed",
+    "postbuild:news": "mkdir apps/news/dist-www/embed ; cp -fa apps/symthink/www/* apps/news/dist-www/embed",
     "deploy:org": "npm run build:org && firebase deploy --only hosting:symthink-org",
     "deploy:news": "npm run release:ci ; npm run build:news:prod && firebase deploy --only hosting:symthink-news",
     "emulate": "npm run build --prefix backend/functions && firebase emulators:start --inspect-functions"
