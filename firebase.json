@@ -11,7 +11,7 @@
   "hosting": [
     {
       "target": "symthink-news",
-      "public": "apps/news/www",
+      "public": "apps/news/dist-www",
       "ignore": [
         "firebase.json",
         "**/.*",
