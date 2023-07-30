@@ -21,7 +21,7 @@
     "prebuild:symthink": "node prebuild-symthink.js",
     "postbuild:news": "mkdir apps/news/dist-www/embed ; cp -fa apps/symthink/www/* apps/news/dist-www/embed",
     "deploy:org": "npm run build:org && firebase deploy --only hosting:symthink-org",
-    "deploy:news": "npm run release:ci ; npm run build:news:prod && firebase deploy --only hosting:symthink",
+    "deploy:news": "npm run release:ci ; npm run build:news:prod && firebase deploy --only hosting:symthink-news-test",
     "deploy:news:prod": "npm run release:ci ; npm run build:news:prod && firebase deploy --only hosting:symthink-news",
     "emulate": "npm run build --prefix backend/functions && firebase emulators:start --inspect-functions"
   },
