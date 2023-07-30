@@ -33,7 +33,7 @@
       ]
     },
     {
-      "target": "symthink",
+      "target": "symthink-news-test",
       "public": "apps/news/dist-www",
       "ignore": [
         "firebase.json",

@@ -5,9 +5,6 @@
   "targets": {
     "symthink-io": {
       "hosting": {
-        "symthink-app": [
-          "symthink"
-        ],
         "symthink-staging": [
           "symthink-staging"
         ],
@@ -19,6 +16,9 @@
         ],
         "symthink-news": [
           "symthink-news"
+        ],
+        "symthink-news-test": [
+          "symthink"
         ]
       }
     }
