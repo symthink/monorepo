@@ -73,8 +73,7 @@ export class D2Metrics {
       info: () => (
         <div>
           <p>
-            This badge displays the total sources cited for this symthink
-            document.
+            This badge displays the total sources cited in this document.
           </p>
         </div>
       ),
@@ -88,7 +87,7 @@ export class D2Metrics {
           <p>
             This badge measures the number of times you have iterated through
             the steps of: Question &gt; Idea &gt; Claim, in process of
-            developing this symthink document.
+            developing this document.
           </p>
           <p>
             The steps can be accomplished independently or by posting a question
@@ -96,7 +95,8 @@ export class D2Metrics {
             done independently, you simply add your own ideas under a question,
             then claims under the ideas as needed. Then sort your ideas with
             your first choice at the top. And finally, on the question, you
-            select the option "Decision" to promote the top idea.
+            select the option "Decision" to promote the top idea, which then
+            replaces the question.
           </p>
         </div>
       ),
