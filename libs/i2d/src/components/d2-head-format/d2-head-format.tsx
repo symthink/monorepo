@@ -107,13 +107,15 @@ export class D2HeadFormat {
           )}
         </ion-item> */}
 
-        <ion-item
+        {/* <ion-item
           lines="none"
           class={{ 'by-line': true, 'got-title': false }}
         >
           {this.renderByLine()}
-        </ion-item>
+        </ion-item> */}
+        
       </ion-list>,
+      <br />,
 
       this.symthinkDoc.format !== FormatEnum.Review && (
         <d2-metrics

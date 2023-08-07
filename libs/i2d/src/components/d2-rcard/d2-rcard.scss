@@ -181,7 +181,9 @@ ion-textarea {
 .selected {
   --background: var(--selected-item);
 }
-
+.selected textarea {
+  caret-color: currentColor !important;
+}
 .animatable {
   position: absolute;
   z-index : 10000;
