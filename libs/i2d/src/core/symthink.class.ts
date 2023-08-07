@@ -1,6 +1,7 @@
 import { Subject } from 'rxjs';
 
 const SCHEMA_VERSION = 1;// current
+export const MAX_KIDS = 20;
 
 export enum REF_LABEL {
     Person = 'Person',
@@ -274,7 +275,7 @@ export class SymThink {
     }
 
     maxKids(): boolean {
-        return this.support?.length >= 9;
+        return this.support?.length >= MAX_KIDS;
     }
 
     enableKids(): boolean {
