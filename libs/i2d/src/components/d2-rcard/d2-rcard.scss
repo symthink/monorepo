@@ -180,6 +180,7 @@ ion-textarea {
 
 .selected {
   --background: var(--selected-item);
+  border-left: 2px solid var(--ion-color-primary);
 }
 .selected textarea {
   caret-color: currentColor !important;
