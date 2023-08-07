@@ -102,13 +102,11 @@ export class D2Metrics {
       ),
     },
     {
-      name: 'Depth',
+      name: 'Size',
       info: () => (
         <div>
           <p>
-            This badge displays the total statements of any type and the deepest
-            level of any of your extended bullet points or numbers.
-            <pre>TOTAL-DEPTH</pre>
+            This badge displays the total statements of any type in this document.
           </p>
         </div>
       ),
@@ -215,9 +213,9 @@ export class D2Metrics {
         <d2-metric name="mindset" value={`${this.mindsetVal}`} /> */}
         <ion-chip
           class="metric depth"
-          onClick={() => this.onMetricClick('Depth')}
+          onClick={() => this.onMetricClick('Size')}
         >
-          <ion-label>Items&nbsp;</ion-label>
+          <ion-label>Size&nbsp;</ion-label>
           <div class="circle">{this.totalNodes}</div>
         </ion-chip>
         <ion-chip
