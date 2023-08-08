@@ -24,6 +24,14 @@ export class D2SrcMetadata {
     this.itemAction.emit({action: 'delete-source', value: {stid: this.stid, index: this.index}})
   }
 
+  isValid(s: string) {
+    if (s) {
+      const a = new RegExp('[\\\\+*?\\[\\^\\]$(){}=!<>|:]', 'g');
+      return !a.test(s);  
+    }
+    return false;
+  }
+
   renderLabel() {
     return (
       <ion-label class="ion-text-wrap">
@@ -33,8 +41,8 @@ export class D2SrcMetadata {
         dayjs(this.data.date).format('MMM D, YYYY')
       ]}
       </p>}
-      {this.data.publisher && <p>Publisher: {this.data.publisher}</p>}
-      {this.data.description && <p>{this.data.description}</p>}
+      {this.isValid(this.data.publisher) && <p>Publisher: {this.data.publisher}</p>}
+      {this.data.url?.hostname && <p>{this.data.url.hostname}</p>}
     </ion-label>
     );
   }
