@@ -86,7 +86,7 @@ export class D2Metrics {
         <div>
           <p>
             This badge measures the number of times you have iterated through
-            the steps of: Question &gt; Idea &gt; Claim, in process of
+            the steps of: Question &gt; Idea &gt; Claim, in the process of
             developing this document.
           </p>
           <p>
