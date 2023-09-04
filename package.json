@@ -9,7 +9,7 @@
     "build:org": "npm run clean:org ; nx build org-home --dev",
     "build:symthink": "npm run clean:symthink ; nx build symthink --dev",
     "build:news": "npm run clean:news ; npm run prebuild:news ; nx build news --dev ; npm run postbuild:news",
-    "build:news:prod": "npm run clean:news ; npm run prebuild:news ; nx build news ; npm run postbuild:news ; node apps/news/build-sw.mjs",
+    "build:news:prod": "npm run clean:news ; npm run release ; npm run prebuild:news ; nx build news ; npm run postbuild:news ; node apps/news/build-sw.mjs",
     "clean:news": "rm apps/news/package.json ; rm -r apps/news/dist-www/*",
     "clean:symthink": "rm apps/symthink/package.json",
     "clean:org": "rm apps/org-home/package.json",
