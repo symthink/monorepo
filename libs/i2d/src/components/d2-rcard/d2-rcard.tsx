@@ -486,7 +486,7 @@ export class D2Rcard {
               <ion-item-option
                 color="tertiary"
                 class="secondary-btn-theme opts-btn-slide"
-                onClick={() => this.onItemOptionsClick(item)}
+                onClick={(e) => this.onItemOptionsClick(item, e)}
               >
                 <ion-icon name="ellipsis-horizontal"></ion-icon>
               </ion-item-option>
@@ -635,7 +635,7 @@ export class D2Rcard {
           <ion-item-option
             color="tertiary"
             class="secondary-btn-theme opts-btn-slide"
-            onClick={() => this.onItemOptionsClick(this.data)}
+            onClick={(e) => this.onItemOptionsClick(this.data, e)}
           >
             <ion-icon name="ellipsis-horizontal"></ion-icon>
           </ion-item-option>
