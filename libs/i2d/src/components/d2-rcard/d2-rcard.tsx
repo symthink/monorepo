@@ -474,17 +474,10 @@ export class D2Rcard {
 
             <ion-item-options
               side="end"
-              onIonSwipe={() => this.onRemoveOrTrimItem(item)}
+              onIonSwipe={() => this.onItemOptionsClick(item)}
             >
               <ion-item-option
                 expandable
-                class="secondary-btn-theme"
-                onClick={() => this.onRemoveOrTrimItem(item)}
-              >
-                <ion-icon name="cut-outline"></ion-icon>
-              </ion-item-option>
-              <ion-item-option
-                color="tertiary"
                 class="secondary-btn-theme opts-btn-slide"
                 onClick={(e) => this.onItemOptionsClick(item, e)}
               >
