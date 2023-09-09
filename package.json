@@ -1,6 +1,6 @@
 {
   "name": "symthink",
-  "version": "0.6.184",
+  "version": "0.6.185",
   "license": "MIT",
   "scripts": {
     "start:news": "npm run build:news ; nx serve news --dev --verbose",
