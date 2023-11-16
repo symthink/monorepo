@@ -116,5 +116,6 @@ libs/*/package.json
 
 secret.md
 
-firebase-all.json
-gca
+/firebase-all.json
+/gca
+/data.json
