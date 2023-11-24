@@ -20,7 +20,7 @@
       "rewrites": [
         {
           "source": "/api/**",
-          "function": "api"
+          "function": "api1"
         },
         {
           "source": "/embed",
@@ -43,7 +43,7 @@
       "rewrites": [
         {
           "source": "/api/**",
-          "function": "api"
+          "function": "api2"
         },
         {
           "source": "/embed",
