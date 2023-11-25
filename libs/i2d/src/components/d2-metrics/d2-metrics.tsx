@@ -1,8 +1,6 @@
-import { Component, h, JSX, Prop, Listen, State } from '@stencil/core';
+import { Component, h, JSX, Prop, State } from '@stencil/core';
 import {
   SymThinkDocument,
-  CardRules,
-  ARG_TYPE,
   StLogActionEnum,
 } from '../../core/symthink.class';
 import { Subject } from 'rxjs';
