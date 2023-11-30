@@ -12,11 +12,7 @@
     {
       "target": "symthink-news",
       "public": "apps/news/dist-www",
-      "ignore": [
-        "firebase.json",
-        "**/.*",
-        "**/node_modules/**"
-      ],
+      "ignore": ["firebase.json", "**/.*", "**/node_modules/**"],
       "rewrites": [
         {
           "source": "/api/**",
@@ -35,11 +31,7 @@
     {
       "target": "symthink-news-test",
       "public": "apps/news/dist-www",
-      "ignore": [
-        "firebase.json",
-        "**/.*",
-        "**/node_modules/**"
-      ],
+      "ignore": ["firebase.json", "**/.*", "**/node_modules/**"],
       "rewrites": [
         {
           "source": "/api/**",
@@ -54,14 +46,11 @@
           "destination": "/index.html"
         }
       ]
-    }, {
+    },
+    {
       "target": "symthink-org",
       "public": "apps/org-home/www",
-      "ignore": [
-        "firebase.json",
-        "**/.*",
-        "**/node_modules/**"
-      ]
+      "ignore": ["firebase.json", "**/.*", "**/node_modules/**"]
     }
   ],
   "emulators": {
@@ -80,6 +69,9 @@
     },
     "hosting": {
       "port": 6001
-    }
+    },
+    "pubsub": {
+      "port": 8085
+    }  
   }
 }
