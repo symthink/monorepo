@@ -6,7 +6,8 @@
       ".git",
       "firebase-debug.log",
       "firebase-debug.*.log"
-    ]
+    ],
+    "postdeploy": "./backend/functions/post-deploy.sh"
   },
   "hosting": [
     {
