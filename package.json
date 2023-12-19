@@ -23,6 +23,7 @@
     "deploy:org": "npm run build:org && firebase deploy --only hosting:symthink-org",
     "deploy:news": "npm run release:ci ; npm run build:news:prod && firebase deploy --only hosting:symthink-news-test",
     "deploy:news:prod": "npm run release:ci ; npm run build:news:prod && firebase deploy --only hosting:symthink-news",
+    "deploy:func": "firebase deploy --project symthink-io --only functions",
     "emulate": "npm run build --prefix backend/functions && firebase emulators:start --inspect-functions",
     "emulate:debug": "npm run build --prefix backend/functions && firebase emulators:start --debug"
   },
