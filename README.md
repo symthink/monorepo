@@ -69,6 +69,8 @@ If you have questions, concerns, bug reports, etc, please file an issue in this 
 * https://github.com/mappmechanic/awesome-stenciljs#individual-components
 * https://web.dev/payments/
 * https://www.crossref.org/documentation/cited-by/retrieve-citations/
+* https://github.com/ageitgey/node-unfluff , cherrio or puppeteer?
+
 
 ---
 
