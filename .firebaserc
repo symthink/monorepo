@@ -1,6 +1,8 @@
 {
   "projects": {
-    "default": "symthink-io"
+    "default": "symthink-io",
+    "dev": "symthink-io",
+    "prod": "symthink-io"
   },
   "targets": {
     "symthink-io": {
