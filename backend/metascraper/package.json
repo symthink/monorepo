@@ -1,0 +1,16 @@
+{
+  "name": "citation-scraper",
+  "version": "1.0.0",
+  "description": "A utility to scrape citation metadata from news, blog or other media sites.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no tests specified\" && exit 0"
+  },
+  "keywords": [],
+  "author": "Thomas W. Ford",
+  "license": "MIT",
+  "dependencies": {
+    "body-parser": "^1.18.2",
+    "express": "^4.16.2"
+  }
+}
