@@ -16,17 +16,19 @@ const metascraper = require('metascraper')([
     require('metascraper-youtube')(),
     require('metascraper-amazon')(),
     require('metascraper-url')(),
-    
+    require('metascraper-image')(),
 ]);
 
 
 module.exports = async (event, context) => {
     // IEvent: body, headers, method, query, path
+
     let url;
     let output = 'citation scraper default output';
     if (event.method === 'GET' && event.query.url) {
         try {
-            url = new URL(event.query.url);
+            const decodedUrl = decodeURIComponent(event.query.url);
+            url = new URL(decodedUrl);
             const browserless = require('browserless')();
             const getContent = async url => {
                 const browserContext = browserless.createContext()

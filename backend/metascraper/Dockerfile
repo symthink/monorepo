@@ -67,13 +67,14 @@ WORKDIR /home/app/
 ENV cgi_headers="true"
 ENV fprocess="node index.js"
 ENV mode="http"
-ENV upstream_url="http://127.0.0.1:3000"
+ENV upstream_url="http://0.0.0.0:3000"
 
 ENV exec_timeout="10s"
 ENV write_timeout="15s"
 ENV read_timeout="15s"
 
 ENV prefix_logs="false"
+ENV cloudrun_api_key="ee50c903-8dfa-4b20-8797-0c98b3b4d5dc"
 
 EXPOSE 3000
 

@@ -117,6 +117,10 @@ const middleware = async (req, res) => {
     const fnEvent = new FunctionEvent(req);
     const fnContext = new FunctionContext(cb);
 
+    if (!fnEvent.query.svcKey || fnEvent.query.svcKey !== process.env.cloudrun_api_key) {
+        return res.status(403).send('Public access forbidden');
+    }
+
     Promise.resolve(handler(fnEvent, fnContext, cb))
     .then(res => {
         if(!fnContext.cbCalled) {
@@ -138,6 +142,6 @@ app.options('/*', middleware);
 const port = process.env.http_port || 3000;
 
 app.listen(port, () => {
-    console.log(`node18 listening on port: ${port}`)
+    console.log(`node21 listening on port: ${port}`)
 });
 
