@@ -325,6 +325,23 @@ export class SymThink {
         }
         return undefined;
     }
+    extractByType(type: ARG_TYPE) {
+        console.log('extractByType()', type)
+        const list = [];
+        if (this.type === type) {
+            list.push({
+                id: this.id,
+                text: this.text
+            });
+        }
+        if (this.hasKids()) {
+            for (let card of this.support) {
+                const lst = card.extractByType(type);
+                list.push(...lst);
+            }
+        }    
+        return list;
+    }
     getRoot() {
         let card: SymThink = this;
         while (card.parent) {
