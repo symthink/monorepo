@@ -39,6 +39,10 @@
           "function": "api3"
         },
         {
+          "source": "/api/**",
+          "destination": "https://localhost:3008/**"          
+        },
+        {
           "source": "/embed",
           "destination": "/embed"
         },
