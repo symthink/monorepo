@@ -27,10 +27,11 @@ services:
   api:
     build:
       context: ./serverside/symthink-api/
+      target: development
+    volumes:
+      - ./serverside/symthink-api:/usr/src/app
     environment:
-      NODE_ENV: production
-      MONGODB_USERNAME: symthink_user
-      MONGODB_PASSWORD: $MONGO_SYMTHINK_PWD
+      NODE_ENV: development
       MONGODB_URL: mongodb://symthink_user:${MONGO_SYMTHINK_PWD}@mongo:27017/symthink
       META_SCRAPER_HOST: http://metascraper
     ports:
