@@ -42,17 +42,18 @@ services:
   nginx:
     build:
       context: .
+      target: development
     volumes:
      - ./apps/news/dist-www:/usr/share/nginx/html
     ports:
      - 80:80
 
-  metascraper:
-    image: meta-scraper
-    # build:
-    #   context: ./serverside/metascraper
-    ports:
-      - 3001:3000
+  # metascraper:
+  #   image: meta-scraper
+  #   # build:
+  #   #   context: ./serverside/metascraper
+  #   ports:
+  #     - 3001:3000
 
 volumes:
   mongo-data:
