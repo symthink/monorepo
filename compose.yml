@@ -33,7 +33,12 @@ services:
     environment:
       NODE_ENV: development
       MONGODB_URL: mongodb://symthink_user:${MONGO_SYMTHINK_PWD}@mongo:27017/symthink
-      META_SCRAPER_HOST: http://metascraper
+      META_SCRAPER_HOST: http://host.docker.internal:3001
+      META_SCRAPER_KEY: $META_SCRAPER_KEY
+      RAPID_API_KEY: $RAPID_API_KEY
+      GOOGLE_API_KEY: $GOOGLE_API_KEY
+      SCALESERP_API_KEY: $SCALESERP_API_KEY
+      OPENAI_API_KEY: $OPENAI_API_KEY
     ports:
       - 3002:3000
 
@@ -48,12 +53,12 @@ services:
     ports:
      - 80:80
 
-  # metascraper:
-  #   image: meta-scraper
-  #   # build:
-  #   #   context: ./serverside/metascraper
-  #   ports:
-  #     - 3001:3000
+  metascraper:
+    image: meta-scraper
+    # build:
+    #   context: ./serverside/metascraper
+    ports:
+      - 3001:3000
 
 volumes:
   mongo-data:
