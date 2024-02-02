@@ -10,3 +10,6 @@
 [submodule "apps/symthink"]
 	path = apps/symthink
 	url = https://github.com/symthink/symthink.git
+[submodule "serverside"]
+	path = serverside
+	url = https://github.com/symthink/serverside.git

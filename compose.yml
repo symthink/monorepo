@@ -60,5 +60,14 @@ services:
     ports:
       - 3001:3000
 
+  firebase-auth-emulate:
+    image: firebase-auth-emulator
+    ports:
+     - 9199:9099
+     - 4000:4000
+    environment:
+      - FIREBASE_PROJECT_ID=symthink-io
+
+
 volumes:
   mongo-data:
