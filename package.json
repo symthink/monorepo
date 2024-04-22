@@ -6,7 +6,7 @@
     "start:symthink": "npm run clean:symthink ; nx serve symthink --dev --verbose",
     "start:org": "npm run clean:org ; nx serve org-home --dev",
     "build:org": "npm run clean:org ; nx build org-home --dev",
-    "build:symthink": "npm run clean:symthink ; nx build symthink --dev",
+    "build:symthink": "npm run clean:symthink ; nx build symthink --prod",
     "buildw:news": "npm run clean:news ; npm run prebuild:news ; nx buildw news --dev ; npm run postbuild:news",
     "build:news:prod": "npm run clean:news ; npm run prebuild:news ; nx build news && npm run postbuild:news ; node apps/news/build-sw.mjs",
     "clean:news": "rm apps/news/package.json ; rm -r apps/news/dist-www/*",
@@ -19,6 +19,7 @@
     "prebuild:news": "node prebuild-news.js",
     "prebuild:symthink": "node prebuild-symthink.js",
     "postbuild:news": "mkdir apps/news/dist-www/embed ; cp -fa apps/symthink/www/* apps/news/dist-www/embed",
+    "deploy:symthink": "vercel --prod",
     "deploy:org": "npm run build:org && firebase deploy --only hosting:symthink-org",
     "deploy:news": "npm run release:ci ; npm run build:news:prod && firebase deploy --only hosting:symthink-news-test",
     "deploy:news:prod": "npm run release:ci ; npm run build:news:prod && firebase deploy --only hosting:symthink-news",
@@ -49,7 +50,6 @@
     "tslib": "^2.4.1"
   },
   "devDependencies": {
-    "@capacitor/cli": "^4.6.2",
     "@ionic/core": "^7.0.8",
     "@nrwl/cli": "15.5.3",
     "@nrwl/eslint-plugin-nx": "15.5.3",
@@ -83,8 +83,6 @@
     "eslint-config-prettier": "8.6.0",
     "eslint-plugin-import": "2.27.5",
     "fs-extra": "^11.1.0",
-    "jest": "^29.4.1",
-    "jest-environment-jsdom": "^29.4.1",
     "nx": "15.5.3",
     "prettier": "2.8.3",
     "release-it": "^15.6.0",

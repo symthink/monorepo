@@ -119,3 +119,4 @@ secret.md
 /firebase-*.json
 /gca
 /data.json
+.vercel

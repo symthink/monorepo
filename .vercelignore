@@ -1,0 +1,8 @@
+node_modules
+backend
+serverside
+.vscode
+.firebase
+.firebaserc
+apps/org-home
+apps/news
