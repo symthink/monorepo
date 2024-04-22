@@ -1,15 +1,9 @@
-[submodule "apps/org-home"]
-	path = apps/org-home
-	url = https://github.com/symthink/org-home.git
 [submodule "apps/news"]
 	path = apps/news
 	url = https://github.com/symthink/news.git
 [submodule "backend/functions"]
 	path = backend/functions
 	url = https://github.com/symthink/functions.git
-[submodule "apps/symthink"]
-	path = apps/symthink
-	url = https://github.com/symthink/symthink.git
 [submodule "serverside"]
 	path = serverside
 	url = https://github.com/symthink/serverside.git
