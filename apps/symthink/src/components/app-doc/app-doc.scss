@@ -1,0 +1,150 @@
+:host {
+  display: block;
+}
+
+ion-fab-list.fab-list-side-start {
+  margin-inline: 100px;
+}
+
+app-doc-header {
+  visibility: var(--visibility) !important;
+}
+
+.secondary-btn-theme {
+  --color     : black;
+  --background: linear-gradient(to bottom, #aeaeae, #d4d4d6);
+}
+
+ion-fab-list.fab-list-side-start {
+  margin-inline: 68px;
+
+  ion-fab-button {
+    margin-inline: 0px;
+  }
+}
+
+.fab-back-button {
+  left: 80px;
+}
+
+ion-fab-button {
+  visibility: var(--fab-visibility);
+}
+
+ion-icon[name=git-branch-outline],
+ion-icon[name=checkmark-outline] {
+  --ionicon-stroke-width: 64px;
+}
+
+.plus-icon {
+  position: relative;
+  top     : -15px;
+  left    : 45px;
+  color   : darkslategrey;
+}
+
+body.dark {
+  .plus-icon {
+    color: white;
+  }
+}
+
+ion-fab-button.nav-back {
+  ion-icon.second-chevron {
+    margin-left: -25px;
+    opacity    : 0.5;
+  }
+}
+
+.doc-header {
+  // ion-toolbar {
+  //   --height          : 55px;
+  //   // --padding-start: 64px;
+  // }
+
+  ion-buttons.center {
+    justify-content: center;
+  }
+}
+
+.spacer-row {
+  width: 100%;
+  height: 27px;
+}
+
+ion-toolbar.add-support-opts {
+  --background: var(--ion-color-step-50);
+  height       : unset;
+  --padding-top: 0px;
+
+  ion-buttons {
+    justify-content: space-evenly;
+  }
+
+  ion-button {
+    flex: 1;
+    max-width: 60px;
+    height: 50px;
+  }
+
+  ion-fab-button {
+    --background: transparent;
+    --box-shadow: none;
+    border: 2px solid var(--ion-color-medium);
+    border-radius: 50%;
+    font-weight: bold;
+    --background-hover: none;
+    width: 30px;
+    height: 30px;
+  }
+}
+
+// tabbed appearance for mobile at bottom
+ion-footer.supports-toolbar {
+  ion-toolbar {
+    height       : 120px;
+    ion-buttons {
+      padding-top: 8px;
+    }
+  }
+}
+
+.doc-title {
+  text-align: center;
+
+  h1 {
+    font-size: xx-large !important;
+    border-bottom: 1px solid #cccccc;
+    color: currentColor;
+    margin: 0.67em 1em 0em 1em;
+    min-height: 18px;
+  }
+}
+.by-line {
+  margin: 0.2em 1.5em 0em;
+  font-variant: petite-caps;
+  font-weight: bold;
+  opacity: 0.6;
+  color: currentColor;
+}
+// .next-type {
+// }
+
+.fullscreen-btn-left {
+  margin-left: 100px;
+}
+
+.concl-btn span {
+  font-size: 26px;
+  margin-top: -26px;
+}
+
+.btnpair-1st, .btnpair-2nd {
+  margin: 0px;
+}
+.btnpair-2nd {
+  border-left: 1px solid var(--ion-color-step-400);
+}
+.arrow-nav {
+  display: flex;
+}

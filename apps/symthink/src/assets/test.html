@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html dir="ltr" lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Test Symthink</title>
+    <style>
+      * {
+        font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+        font-size: 1em;
+      }
+      body {
+        margin: 0px;
+
+      }
+      #send-msg {
+        font-size: 1.5em;
+        display: block;
+        margin: auto;
+        margin-top: 40px;
+      }
+      #tableframe {
+        width: 100%;
+        height: 100vh;
+      }
+      td {
+        padding: 0px;
+        margin: 0px;
+      }
+      #right {
+        padding: 20px;
+        background-color: aliceblue;
+        width: 400px;
+        vertical-align: top;
+        border-left: 1px solid #cccccc;
+
+        /* display: none; */
+      }
+      textarea {
+        width: 100%;
+        height: 90vh;
+        max-height: 500px;
+        white-space: pre;
+      }
+      #log {
+        width: 100%;
+        height: 100%;
+      }
+      li {
+        margin: 5px 0px 5px -20px;
+        padding: 5px 0px 5px 2px;
+      }
+      li:nth-child(even) {
+        background-color: #f2f1f1;
+      }
+      iframe {
+        zoom: 1;
+      }
+    </style>
+    <script>
+      var IFRAME;
+      var LOG;
+      var DOC = {
+        id: 'x5dxngl',
+        $chemaver: 1,
+        format: 1,
+        type: 'QUE',
+        text: 'Some dummy data',
+        support: [
+          {
+            id: 'gd1735a',
+            type: 'QUE',
+            text: 'a child item',
+            lastSupIsConcl: false,
+            numeric: false,
+          },
+        ],
+        orphans: [],
+        lastSupIsConcl: false,
+        numeric: false,
+      };
+      var SRC = {
+        author: 'Joe shmoe',
+        date: new Date(),
+        description: 'some long description here',
+        publisher: 'The Atlantic',
+        title: 'Some Title Here',
+        url: new URL('https://www.atlantic.com/babies-are-taking-over'),
+      };
+      var InComingMsg = [
+        {id:100, action: 'PAGECHANGE'},
+        {id:101, action: 'MODIFIED'},
+        {id:102, action: 'ERROR'},
+        {id:103, action: 'ADDSOURCE'},
+      ];
+
+      var MSG = { action: 5, value: DOC };
+      window.onload = () => {
+        LOG = document.querySelector('#log');
+        document.querySelector('#action-val').value = JSON.stringify(
+          DOC,
+          null,
+          2
+        );
+        IFRAME = document.querySelector('#symthink-iframe');
+        IFRAME.src = location.protocol + '//' + location.host + '/?dark=1';
+        console.log(`
+
+`);
+        console.log('"IFRAME", "DOC", and "MSG" availabe as global variables');
+        console.log('IFRAME.contentWindow.postMessage(MSG)');
+      };
+
+      window.send = function () {
+        var radioEls = document.getElementsByName('action');
+        var actionEl = Array.from(radioEls).find(e => e.checked);
+        var action = parseInt(actionEl.value);
+        var value = document.querySelector('#action-val').value;
+        var EditOrRead = [1, 2].includes(action);
+        if (EditOrRead) {
+          IFRAME.contentDocument.location.reload();
+        }
+        try {
+          value = JSON.parse(value);
+          value = structuredClone(value);
+        } catch (e) {
+          value = 'Invalid object';
+        }
+        console.log(value);
+        var message = { action, value };
+        console.log(`Sending action(${message.action}):`, message.value);
+        if (EditOrRead) {
+          setTimeout(() => {
+            IFRAME.contentWindow.postMessage(message, '*');
+          }, 1000);
+        } else {
+          IFRAME.contentWindow.postMessage(message, '*');
+        }
+      };
+
+      window.fillDoc = function () {
+        document.querySelector('#action-val').value = JSON.stringify(
+          DOC,
+          null,
+          2
+        );
+      };
+
+      window.fillSrc = function () {
+        document.querySelector('#action-val').value = JSON.stringify(
+          SRC,
+          null,
+          2
+        );
+      };
+
+      window.addEventListener(
+        'message',
+        (event) => {
+          console.log(
+            `Received action(${event.data.action}):`, InComingMsg.find(m => m.id === event.data.action).action,
+            event.data.value
+          );
+        },
+        false
+      );
+    </script>
+  </head>
+  <body>
+    <table id="tableframe">
+      <tr>
+        <td id="left">
+          <iframe
+            width="100%"
+            height="100%"
+            id="symthink-iframe"
+            frameborder="0"
+          ></iframe>
+        </td>
+        <td id="right">
+          <fieldset>
+            <legend>Select action:</legend>
+        
+            <div>
+              <input type="radio" id="READDOC" name="action" value="1"
+                     checked>
+              <label for="READDOC">READDOC (1)</label>
+            </div>
+        
+            <div>
+              <input type="radio" id="EDITDOC" name="action" value="2">
+              <label for="EDITDOC">EDITDOC (2)</label>
+            </div>
+        
+            <div>
+              <input type="radio" id="DIDSAVE" name="action" value="3">
+              <label for="DIDSAVE">DIDSAVE (3)</label>
+            </div>
+            <div>
+              <input type="radio" id="VIEWTREE" name="action" value="4">
+              <label for="VIEWTREE">VIEWTREE (4)</label>
+            </div>
+            <div>
+              <input type="radio" id="SOURCE" name="action" value="5">
+              <label for="SOURCE">SOURCE (5)</label>
+            </div>
+        </fieldset>
+
+          <br /><br />
+          <label for="action-val">Sample Data:</label>
+          <button onclick="fillDoc()">Symthink Doc</button
+          >&nbsp;<button onclick="fillSrc()">Source</button>
+          <textarea id="action-val" width="100%" height="5"> </textarea>       
+          <button id="send-msg" onclick="send()">Send Message</button>
+  
+        </td>
+      </tr>
+    </table>
+  </body>
+</html>

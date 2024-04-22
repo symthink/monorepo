@@ -1,0 +1,32 @@
+.centered-text {
+  display: contents;
+  span {
+    line-height: 30px;
+  }
+}
+
+.flx-col-ctr {
+  margin         : auto;
+  display        : flex;
+  flex-direction : column;
+  justify-content: center;
+  height         : 100%;
+
+  >* {
+    flex: 1;
+  }
+}
+
+.flx-row-ctr {
+  display        : flex;
+  flex-direction : row;
+  justify-content: center;
+
+  >* {
+    flex: 1;
+  }
+
+  &.space-between {
+    justify-content: space-between;
+  }
+}
