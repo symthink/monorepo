@@ -56,13 +56,14 @@ class AppService {
 
     onPostMessageReceived(event: MessageEvent, didLoad: Function) {
         console.log('Symthink received postMessage: ', event.data)
-        if (event.origin !== location.protocol + '//' + location.host) {
-            return new Error(
-                'This micro-frontend does not support cross-origin messaging.'
-            );
-        }
         const data: IPostMessage = event.data;
         try {
+            // if (event.origin !== location.protocol + '//' + location.host) {
+            //     throw new Error(
+            //         'This micro-frontend does not support cross-origin messaging.'
+            //     );
+            // }
+    
             if (data.action === IncomingMsgActionEnum.POSTBACK) {
                 const stdoc = new SymThinkDocument();
                 stdoc.load(data.value);
@@ -96,7 +97,8 @@ class AppService {
                 didLoad();
             } else {
                 if (!this.symthinkDoc) {
-                    throw new Error('Must open a Symthink document first.');
+                    let msg = 'Must open a Symthink document first.';
+                    throw new Error(msg);
                 }
                 if (data.action === IncomingMsgActionEnum.SOURCE) {
                     const itemId = data.value?.itemId;
@@ -112,8 +114,17 @@ class AppService {
                 }
             }
         } catch (e) {
-            console.warn('Error', e)
-            AppSvc.sendMessage(OutgoingMsgActionEnum.ERROR, e.message);
+            const msg = e.message + ` Expecting: {action: IncomingMsgActionEnum, value: any}
+
+            IncomingMsgActionEnum {
+                READDOC = 1,
+                EDITDOC = 2,
+                DIDSAVE = 3,
+                VIEWTREE = 4,
+                SOURCE = 5,
+                POSTBACK = 6,
+            }`;
+            AppSvc.sendMessage(OutgoingMsgActionEnum.ERROR, msg);
         }
         // ...
     }
