@@ -36,6 +36,7 @@ class AppService {
     currentSymthink: SymThink;
     symthinkDoc: SymThinkDocument;
     mod$: Subject<void>;
+    sourceWin: MessageEventSource;
 
     async init() {
         console.info(`Symthink app v${ENV.version} built ${(new Date(ENV.timestamp).toLocaleString())}`);
@@ -55,7 +56,9 @@ class AppService {
     }
 
     onPostMessageReceived(event: MessageEvent, didLoad: Function) {
-        console.log('Symthink received postMessage: ', event.data)
+        console.log('[stdoc] received postMessage: ', event.data);
+        event.source.postMessage('return ping');
+        this.sourceWin = event.source;
         const data: IPostMessage = event.data;
         try {
             // if (event.origin !== location.protocol + '//' + location.host) {
@@ -130,9 +133,8 @@ class AppService {
     }
 
     sendMessage(action: OutgoingMsgActionEnum, value: any = null) {
-        window.parent.postMessage(
-            { action, value },
-            location.protocol + '//' + location.host
+        this.sourceWin.postMessage(
+            { action, value }
         );
     }
 

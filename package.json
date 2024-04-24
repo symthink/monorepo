@@ -20,7 +20,7 @@
     "prebuild:news": "node prebuild-news.js",
     "prebuild:symthink": "node prebuild-symthink.js",
     "postbuild:news": "mkdir apps/news/dist-www/embed ; cp -fa apps/symthink/www/* apps/news/dist-www/embed",
-    "deploy:symthink": "vercel --prod",
+    "deploy:symthink": "npm run build:symthink && vercel --prod",
     "deploy:org": "npm run build:org && firebase deploy --only hosting:symthink-org",
     "deploy:news": "npm run release:ci ; npm run build:news:prod && firebase deploy --only hosting:symthink-news-test",
     "deploy:news:prod": "npm run release:ci ; npm run build:news:prod && firebase deploy --only hosting:symthink-news",
