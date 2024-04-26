@@ -9,5 +9,16 @@
         "source": "/:path*",
         "destination": "/"
       }
-    ]
+    ],
+    "headers": [
+      {
+        "source": "/(.*)",
+        "headers": [
+          { "key": "Cross-Origin-Resource-Policy", "value": "cross-origin" },
+          { "key": "Cross-Origin-Opener-Policy", "value": "same-origin-allow-popups" },
+          { "key": "Access-Control-Allow-Origin", "value": "*" },
+          { "key": "Access-Control-Allow-Methods", "value": "GET,OPTIONS,HEAD" }
+        ]
+      }
+    ]    
 }

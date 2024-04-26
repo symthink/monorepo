@@ -1,0 +1,239 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "$comment": "This schema is for the SymThink Document format. It is a JSON object that represents a SymThink Document. This was generated from the typescript types and interfaces in symthink.class.ts.  So, this should be kept in sync with changes made there.",
+    "definitions": {
+        "REF_LABEL": {
+            "type": "string",
+            "enum": [
+                "Person",
+                "Website",
+                "Print",
+                "Radio",
+                "TV"
+            ]
+        },
+        "FormatEnum": {
+            "type": "integer",
+            "enum": [
+                1,
+                2
+            ]
+        },
+        "IReference": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "string"
+                },
+                "label": {
+                    "$ref": "#/definitions/REF_LABEL"
+                },
+                "url": {
+                    "type": "string",
+                    "format": "uri"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "publisher": {
+                    "type": "string"
+                }
+            },
+            "required": [
+                "id",
+                "label"
+            ]
+        },
+        "ARG_TYPE": {
+            "type": "string",
+            "enum": [
+                "QUE",
+                "CLM",
+                "IDA",
+                "EVT",
+                "SRC",
+                "STM"
+            ]
+        },
+        "ISource": {
+            "type": "object",
+            "properties": {
+                "author": {
+                    "type": "string"
+                },
+                "date": {
+                    "type": "string",
+                    "format": "date-time"
+                },
+                "publisher": {
+                    "type": "string"
+                },
+                "title": {
+                    "type": "string"
+                },
+                "url": {
+                    "type": "string",
+                    "format": "uri"
+                },
+                "description": {
+                    "type": "string"
+                },
+                "image": {
+                    "type": "string",
+                    "format": "uri"
+                },
+                "logo": {
+                    "type": "string",
+                    "format": "uri"
+                }
+            },
+            "required": [
+                "author",
+                "date",
+                "publisher",
+                "title",
+                "url"
+            ]
+        },
+        "ISymThink": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "string"
+                },
+                "type": {
+                    "$ref": "#/definitions/ARG_TYPE"
+                },
+                "label": {
+                    "type": "string"
+                },
+                "text": {
+                    "type": "string"
+                },
+                "url": {
+                    "type": "string",
+                    "format": "uri"
+                },
+                "support": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/ISymThink"
+                    }
+                },
+                "source": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/ISource"
+                    }
+                },
+                "lastSupIsConcl": {
+                    "type": "boolean"
+                },
+                "expires": {
+                    "type": "integer"
+                },
+                "lastmod": {
+                    "type": "integer"
+                },
+                "eventDate": {
+                    "type": "integer"
+                },
+                "selected": {
+                    "type": "boolean"
+                },
+                "numeric": {
+                    "type": "boolean"
+                },
+                "decision": {
+                    "$ref": "#/definitions/IDecision"
+                },
+                "createdTime": {
+                    "type": "integer"
+                },
+                "creator": {
+                    "type": "string"
+                },
+                "creatorId": {
+                    "type": "string"
+                }
+            },
+            "required": [
+                "type"
+            ]
+        },
+        "ISymThinkDocument": {
+            "allOf": [
+                {
+                    "$ref": "#/definitions/ISymThink"
+                },
+                {
+                    "type": "object",
+                    "properties": {
+                        "$chemaver": {
+                            "type": "number"
+                        },
+                        "orphans": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/ISymThink"
+                            }
+                        },
+                        "format": {
+                            "$ref": "#/definitions/FormatEnum"
+                        },
+                        "uid": {
+                            "type": "string"
+                        },
+                        "timestamp": {
+                            "type": "string"
+                        },
+                        "decisions": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/IDecision"
+                            }
+                        },
+                        "emails": {
+                            "type": "array",
+                            "items": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                }
+            ]
+        },
+        "IDecision": {
+            "type": "object",
+            "properties": {
+                "ts": {
+                    "type": "string",
+                    "format": "date-time"
+                },
+                "scope": {
+                    "type": "string"
+                },
+                "uri": {
+                    "type": "string",
+                    "format": "uri"
+                },
+                "subscription": {
+                    "type": "string"
+                }
+            },
+            "required": [
+                "ts",
+                "scope"
+            ]
+        }
+    },
+    "type": "object",
+    "properties": {
+        "ISymThinkDocument": {
+            "$ref": "#/definitions/ISymThinkDocument"
+        }
+    },
+    "required": [
+        "ISymThinkDocument"
+    ]
+}
