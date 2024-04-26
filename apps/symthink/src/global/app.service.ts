@@ -57,15 +57,11 @@ class AppService {
 
     onPostMessageReceived(event: MessageEvent, didLoad: Function) {
         console.log('[stdoc] received postMessage: ', event.data);
-        event.source.postMessage('return ping');
-        this.sourceWin = event.source;
-        const data: IPostMessage = event.data;
         try {
-            // if (event.origin !== location.protocol + '//' + location.host) {
-            //     throw new Error(
-            //         'This micro-frontend does not support cross-origin messaging.'
-            //     );
-            // }
+            event.source.postMessage('return ping');
+            this.sourceWin = window.top;
+            console.log('[stdoc] sourceWin set to:', this.sourceWin);
+            const data: IPostMessage = event.data;
     
             if (data.action === IncomingMsgActionEnum.POSTBACK) {
                 const stdoc = new SymThinkDocument();
@@ -90,7 +86,7 @@ class AppService {
                     data.action
                 )
             ) {
-                if (!event.data.value.id) {
+                if (!event.data.value?.id) {
                     throw new Error('Invalid object');
                 }
                 this.symthinkDoc = new SymThinkDocument(event.data.value.id);
@@ -134,7 +130,7 @@ class AppService {
 
     sendMessage(action: OutgoingMsgActionEnum, value: any = null) {
         this.sourceWin.postMessage(
-            { action, value }
+            { action, value }, { targetOrigin: '*' }
         );
     }
 

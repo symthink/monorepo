@@ -48,9 +48,9 @@ export class AppRoot {
           this.navigate(evt.detail.domrect);
         }
         break;
-        case 'subcription-clicked':
-          const url: URL = evt.detail.value;
-          AppSvc.sendMessage(OutgoingMsgActionEnum.OPEN, url.toString());
+      case 'subcription-clicked':
+        const url: URL = evt.detail.value;
+        AppSvc.sendMessage(OutgoingMsgActionEnum.OPEN, url.toString());
         break;
       default:
         console.log('Event received but not handled in app-root');
@@ -97,8 +97,16 @@ export class AppRoot {
   async componentWillLoad() {
     this.nav$ = new Subject();
     this.nav$.subscribe((x) => this.onNavReceived(x));
-    const didLoad = () => {this.loaded = true};
-    window.addEventListener('message', (msgEvent: MessageEvent) => AppSvc.onPostMessageReceived(msgEvent, didLoad));
+    const didLoad = () => { this.loaded = true };
+    window.addEventListener('message', (msgEvent: MessageEvent) => {
+      if (!['https://symthink.io'].includes(msgEvent.origin) && !/http:\/\/localhost:\d+/.test(msgEvent.origin)) {
+        console.warn('Message received from untrusted origin:', msgEvent.origin);
+        console.log(msgEvent.data);
+        return;
+      }
+
+      AppSvc.onPostMessageReceived(msgEvent, didLoad)
+    });
   }
 
   componentDidRender() {

@@ -341,6 +341,72 @@
           }
         }
       }
+    },
+    "test": {
+      "root": "apps/test",
+      "sourceRoot": "apps/test/src",
+      "projectType": "application",
+      "generators": {
+        "@nxext/stencil:component": {
+          "style": "css"
+        }
+      },
+      "tags": [],
+      "targets": {
+        "build": {
+          "executor": "@nxext/stencil:build",
+          "outputs": ["{options.outputPath}"],
+          "options": {
+            "projectType": "application",
+            "tsConfig": "apps/test/tsconfig.app.json",
+            "configPath": "apps/test/stencil.config.ts",
+            "outputPath": "dist/apps/test"
+          },
+          "configurations": {
+            "production": {
+              "dev": false,
+              "prod": true
+            }
+          }
+        },
+        "serve": {
+          "executor": "@nxext/stencil:serve",
+          "outputs": ["{options.outputPath}"],
+          "options": {
+            "projectType": "application",
+            "tsConfig": "apps/test/tsconfig.app.json",
+            "configPath": "apps/test/stencil.config.ts",
+            "outputPath": "dist/apps/test"
+          }
+        },
+        "test": {
+          "executor": "@nxext/stencil:test",
+          "outputs": ["{options.outputPath}"],
+          "options": {
+            "projectType": "application",
+            "tsConfig": "apps/test/tsconfig.app.json",
+            "configPath": "apps/test/stencil.config.ts",
+            "outputPath": "dist/apps/test"
+          }
+        },
+        "e2e": {
+          "executor": "@nxext/stencil:e2e",
+          "outputs": ["{options.outputPath}"],
+          "options": {
+            "projectType": "application",
+            "tsConfig": "apps/test/tsconfig.app.json",
+            "configPath": "apps/test/stencil.config.ts",
+            "outputPath": "dist/apps/test"
+          }
+        },
+        "lint": {
+          "executor": "@nrwl/linter:eslint",
+          "outputs": ["{options.outputFile}"],
+          "options": {
+            "lintFilePatterns": ["apps/test/**/*.{ts,tsx}"]
+          }
+        }
+      }
     }
   },
   "$schema": "./node_modules/nx/schemas/workspace-schema.json"
