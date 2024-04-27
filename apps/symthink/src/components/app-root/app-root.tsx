@@ -105,8 +105,9 @@ export class AppRoot {
         return;
       }
 
-      AppSvc.onPostMessageReceived(msgEvent, didLoad)
+      AppSvc.onPostMessageReceived(msgEvent, didLoad);
     });
+    AppSvc.sendMessage(OutgoingMsgActionEnum.READY, null);
   }
 
   componentDidRender() {

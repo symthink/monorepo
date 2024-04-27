@@ -21,6 +21,7 @@ export enum OutgoingMsgActionEnum {
     VIEWTREE = 104,
     POST = 105,
     OPEN = 106,
+    READY = 107,
 }
 
 export interface IPostMessage {
@@ -40,6 +41,7 @@ class AppService {
 
     async init() {
         console.info(`Symthink app v${ENV.version} built ${(new Date(ENV.timestamp).toLocaleString())}`);
+        this.sourceWin = window.parent;
         this.maxwidthMediaQuery = window.matchMedia("only screen and (max-width: 768px)");
         this.mod$ = new Subject();
         this.mod$.subscribe(() => this.onDocModified());
@@ -57,9 +59,7 @@ class AppService {
 
     onPostMessageReceived(event: MessageEvent, didLoad: Function) {
         console.log('[stdoc] received postMessage: ', event.data);
-        try {
-            event.source.postMessage('return ping');
-            this.sourceWin = window.top;
+        try {   
             console.log('[stdoc] sourceWin set to:', this.sourceWin);
             const data: IPostMessage = event.data;
     
