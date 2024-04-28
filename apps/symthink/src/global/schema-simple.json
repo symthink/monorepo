@@ -1,0 +1,81 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "$comment": "This schema is for the SymThink Document format. It is a JSON object that represents a SymThink Document. This was generated from the typescript types and interfaces in symthink.class.ts.  So, this should be kept in sync with changes made there.",
+    "definitions": {
+        "ARG_TYPE": {
+            "type": "string",
+            "$comment": "The type of argument. QUE = Question, CLM = Claim, IDA = Idea",
+            "enum": [
+                "QUE",
+                "CLM",
+                "IDA"
+            ]
+        },
+        "ISymThink": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "string",
+                    "$comment": "A randomly generated unique id for the argument."
+                },
+                "type": {
+                    "$ref": "#/definitions/ARG_TYPE"
+                },
+                "label": {
+                    "type": "string",
+                    "maxLength": 40,
+                    "$comment": "A short label"
+                },
+                "text": {
+                    "type": "string",
+                    "maxLength": 280,
+                    "$comment": "The main text of the question, claim, or idea."
+                },
+                "AINote": {
+                    "type": "string",
+                    "$comment": "This is a space for the AI model to explain, comment or suggest anything regarding the 'text' written for this object."
+                },
+                "support": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/ISymThink"
+                    }
+                }
+            },
+            "required": [
+                "id",
+                "type",
+                "text"
+            ]
+        },
+        "ISymThinkDocument": {
+            "allOf": [
+                {
+                    "$ref": "#/definitions/ISymThink"
+                },
+                {
+                    "type": "object",
+                    "properties": {
+                        "dateTime": {
+                            "type": "string",
+                            "$comment": "A UTC formated date-time string of when the document was created."
+                        },
+                        "AIModel": {
+                            "type": "string",
+                            "$comment": "The name of the AI model that created this. (e.g. GPT-4, GPT-4-Turbo)."
+                        }
+                    }
+                }
+            ]
+        }
+    },
+    "type": "object",
+    "properties": {
+        "ISymThinkDocument": {
+            "$ref": "#/definitions/ISymThinkDocument"
+        }
+    },
+    "required": [
+        "ISymThinkDocument"
+    ]
+}
