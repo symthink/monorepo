@@ -482,7 +482,7 @@ export class AppDoc {
             <ion-icon
               color="medium"
               slot="start"
-              src="../../assets/icon/recycle.svg"
+              name="trash-outline"
             ></ion-icon>
           </ion-button>
           {/* <ion-fab-button

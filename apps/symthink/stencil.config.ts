@@ -7,7 +7,7 @@ export const config: Config = {
   globalStyle: 'src/global/app.scss',
   globalScript: 'src/global/app.ts',
   taskQueue: 'async',
-  sourceMap: true,
+  sourceMap: false,
 
   outputTargets: [
     {
@@ -15,7 +15,12 @@ export const config: Config = {
     },
     {
       type: 'www',
+      serviceWorker: null, // disable service workers
     },
+    // {
+    //   type: 'dist-custom-elements-bundle',
+    //   externalRuntime: false,
+    // },
   ],
   extras: {
     experimentalImportInjection: true,
