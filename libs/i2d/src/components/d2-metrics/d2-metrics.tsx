@@ -209,27 +209,19 @@ export class D2Metrics {
         {/* <d2-metric name="sources" value={this.sourceCnt} />
         <d2-metric name="depth" value={this.depth} />
         <d2-metric name="mindset" value={`${this.mindsetVal}`} /> */}
-        <ion-chip
-          class="metric depth"
-          onClick={() => this.onMetricClick('Size')}
-        >
-          <ion-label>Size&nbsp;</ion-label>
-          <div class="circle">{this.totalNodes}</div>
-        </ion-chip>
-        <ion-chip
-          class="metric sources"
-          onClick={() => this.onMetricClick('Sources')}
-        >
-          <ion-label>Sources&nbsp;</ion-label>
-          <div class="circle">{this.sourceCnt}</div>
-        </ion-chip>{' '}
-        <ion-chip
-          class="metric mindset"
-          onClick={() => this.onMetricClick('Mindset')}
-        >
-          <ion-label>Mindset&nbsp;</ion-label>
-          <div class="circle">{this.decisionCnt}</div>
-        </ion-chip>
+
+        <div class="metric" onClick={() => this.onMetricClick('Sources')}>
+          <div class="left sources">Sources</div>
+          <div class="right">{this.sourceCnt}</div>
+        </div>{' '}
+        <div class="metric" onClick={() => this.onMetricClick('Size')}>
+          <div class="left nodes">Nodes</div>
+          <div class="right">{this.totalNodes}</div>
+        </div>{' '}
+        <div class="metric" onClick={() => this.onMetricClick('Mindset')}>
+          <div class="left decisions">Decisions</div>
+          <div class="right">{this.decisionCnt}</div>
+        </div>
         <ion-modal
           class={this.modalClassName}
           ref={(e) => (this.modalEl = e as HTMLIonModalElement)}

@@ -223,10 +223,6 @@ class AppService {
                 text: 'Change type ...',
                 role: 'change-type',
             });
-            buttons.push({
-                text: 'Export ...',
-                role: 'export',
-            });
         }
         if (isPageTopItem) {
             // buttons.push({
@@ -237,11 +233,12 @@ class AppService {
                 text: 'Replace ...',
                 role: 'replace',
             });
-            buttons.push({
-                text: 'Export ...',
-                role: 'export',
-            });
         }
+        buttons.push({
+            text: 'Export ...',
+            role: 'export',
+        });
+
         const opts = {
             buttons
         }
