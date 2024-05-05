@@ -22,6 +22,8 @@ export enum OutgoingMsgActionEnum {
     POST = 105,
     OPEN = 106,
     READY = 107,
+    REPLACE = 108,
+    EXPORT = 109,
 }
 
 export interface IPostMessage {
@@ -221,12 +223,24 @@ class AppService {
                 text: 'Change type ...',
                 role: 'change-type',
             });
+            buttons.push({
+                text: 'Export ...',
+                role: 'export',
+            });
         }
         if (isPageTopItem) {
             // buttons.push({
             //     text: 'Quick share ...',
             //     role: 'quick-share',
             // });
+            buttons.push({
+                text: 'Replace ...',
+                role: 'replace',
+            });
+            buttons.push({
+                text: 'Export ...',
+                role: 'export',
+            });
         }
         const opts = {
             buttons
@@ -351,6 +365,12 @@ class AppService {
                 break;
             case 'add-source':
                 this.sendMessage(OutgoingMsgActionEnum.ADDSOURCE, item.id);
+                break;
+            case 'replace':
+                this.sendMessage(OutgoingMsgActionEnum.REPLACE, item.id);
+                break;
+            case 'export':
+                this.sendMessage(OutgoingMsgActionEnum.EXPORT, structuredClone(item.getRaw(true)));
                 break;
             default:
                 console.warn('Item option response not found:', rs);
