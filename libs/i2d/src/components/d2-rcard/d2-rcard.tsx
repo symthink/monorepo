@@ -62,7 +62,7 @@ export class D2Rcard {
   }
 
   get reOrderDisabled(): boolean {
-    return this.data.reorder$.value;// if true, re-order is disabled
+    return !this.data.reorder$.value;// if true, re-order is disabled
   }
 
   isTouchDevice() {
@@ -82,7 +82,9 @@ export class D2Rcard {
     }
     // trigger rerender on reorder
     this.data.reorder$.subscribe(() => {
-      this.listEl.closeSlidingItems();
+      if (this.listEl) {
+        this.listEl.closeSlidingItems();
+      }
       this.change = !this.change;
     });
     if (this.data) {

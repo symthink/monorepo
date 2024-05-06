@@ -4,6 +4,7 @@ import {
   ActionSheetOptions,
 } from '@ionic/core/dist/types/components/action-sheet/action-sheet-interface';
 import { Component, h, Prop, Element } from '@stencil/core';
+import { ARG_TYPE, CardRules } from '../../core/symthink.class';
 
 /**
  * This component is intended to be a stand-in replacement for an actionSheet but
@@ -29,10 +30,13 @@ export class D2Select {
 
   renderIcon(btn: ActionSheetButton) {
     if (btn.icon) {
-      if (this.useSvg(btn.icon)) {
-        return (<ion-icon color={btn.role==='destructive'?'danger':undefined} slot="end" src={btn.icon}></ion-icon>);
+      const card = CardRules.find((c) => c.type === btn.role);  
+      console.log('card', card);
+      if (card) {
+        return (<span slot="start" class={card.iconCls}>{card.char}</span>);
+        // return (<ion-icon color={btn.role==='destructive'?'danger':undefined} slot="end" src={btn.icon}></ion-icon>);
       } else {
-        return (<ion-icon color={btn.role==='destructive'?'danger':undefined} slot="end" name={btn.icon}></ion-icon>);
+        return (<ion-icon color={btn.role==='destructive'?'danger':undefined} slot="start" name={btn.icon}></ion-icon>);
       }
     }
   }

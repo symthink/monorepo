@@ -381,20 +381,7 @@ export class AppDoc {
                   detail={false}
                   onClick={(e) => this.onQuickAddClick(cr.type, e)}
                 >
-                  {cr.icon && (
-                    <ion-icon
-                      slot="start"
-                      color="medium"
-                      name={cr.icon}
-                    ></ion-icon>
-                  )}
-                  {cr.svg && (
-                    <ion-icon
-                      slot="start"
-                      color="medium"
-                      src={cr.svg}
-                    ></ion-icon>
-                  )}
+                  <ion-text slot="start" class={cr.iconCls}>{cr.char}</ion-text>
                   <ion-label>{cr.name}</ion-label>
                 </ion-item>,
               ])}

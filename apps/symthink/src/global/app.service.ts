@@ -451,7 +451,7 @@ class AppService {
 
     async presentSymthinkTypeChooser(evt?: any, subopt = false): Promise<string> {
         let copy = [...CardRules];
-        copy.reverse();
+        // copy.reverse();
         const buttons: ActionSheetButton[] = copy.map((rule) => {
             return {
                 text: rule.name,
