@@ -41,10 +41,6 @@ export class D2Rcard {
   @Prop() domrect?: DOMRect;
   // @Prop() reOrderDisabled = true;
   contentEl: HTMLIonContentElement;
-  @Watch('reOrderDisabled')
-  async onReorderChange() {
-    return this.listEl.closeSlidingItems();
-  }
   @State() checkboxHidden = true;
   @State() change = false;
 
@@ -86,7 +82,10 @@ export class D2Rcard {
       this.notify.subscribe((a) => this.onNotificationReceived(a));
     }
     // trigger rerender on reorder
-    this.data.reorder$.subscribe(() => this.change = !this.change);
+    this.data.reorder$.subscribe(() => {
+      this.listEl.closeSlidingItems();
+      this.change = !this.change;
+    });
     if (this.data) {
       if (this.data.select$) {
         this.data.select$.subscribe(() => (this.change = !this.change));
