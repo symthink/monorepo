@@ -405,80 +405,9 @@ export class AppDoc {
     );
   }
 
-  renderSupportToolbar() {
-    // if desktop, then slotted to rcard subheader
-    return (
-      <ion-toolbar
-        class="add-support-opts"
-        ref={(el) => (this.addItemToolbarEl = el as HTMLIonToolbarElement)}
-      >
-        <ion-buttons>
-          <ion-button
-            title="recycle"
-            disabled={!this.reOrderDisabled}
-            onClick={() => AppSvc.onRecycleItemClick()}
-          >
-            <ion-icon
-              color="medium"
-              slot="start"
-              name="trash-outline"
-            ></ion-icon>
-          </ion-button>
-          {/* <ion-fab-button
-            disabled={this.symthinkDoc.uid == 'worldview'}
-            size="small"
-            onClick={(e) => this.onByClick(e)}
-          >
-            <ion-label color="medium">BY</ion-label>
-          </ion-fab-button> */}
-          <ion-button
-            class="concl-btn"
-            title="therefore"
-            disabled={!this.reOrderDisabled || !this.symthink.hasKids()}
-            onClick={() => AppSvc.onUseConclusion()}
-            color="medium"
-          >
-            <span slot="icon-only" class="icon-concl"></span>
-          </ion-button>
-          <ion-button
-            title="list type"
-            disabled={!this.reOrderDisabled || !this.symthink.hasKids()}
-            onClick={() => AppSvc.toggleBulletType()}
-          >
-            <ion-icon
-              color="medium"
-              slot="icon-only"
-              name="list-outline"
-            ></ion-icon>
-          </ion-button>
-          <ion-button
-            title="reorder"
-            disabled={!(this.symthink.support?.length > 1)}
-            onClick={() => AppSvc.toggleReorder()}
-          >
-            <ion-icon
-              color="medium"
-              slot="icon-only"
-              name="reorder-four-outline"
-            ></ion-icon>
-            {!this.reOrderDisabled && (
-              <ion-icon
-                style={{ 'margin-left': '-27px' }}
-                color="success"
-                slot="icon-only"
-                name="checkmark-outline"
-              ></ion-icon>
-            )}
-          </ion-button>
-        </ion-buttons>
-      </ion-toolbar>
-    );
-  }
-
   render() {
     return (
       <Host>
-        {AppSvc.editing && this.renderSupportToolbar()}
         <d2-rcard
           canEdit={AppSvc.editing}
           data={this.symthink}
