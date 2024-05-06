@@ -1,4 +1,4 @@
-import { Subject } from 'rxjs';
+import { BehaviorSubject, Subject } from 'rxjs';
 
 const SCHEMA_VERSION = 1;// current
 export const MAX_KIDS = 20;
@@ -134,6 +134,7 @@ export class SymThink {
     createdTime: number;
     creator: string; // display name
     creatorId: string;
+    reorder$ = new BehaviorSubject<boolean>(false);
 
     constructor(id: string, parent?: SymThink) {
         // make read-only after first set

@@ -66,7 +66,6 @@ export namespace Components {
         "data": SymThinkDocument | SymThink1;
         "domrect"?: DOMRect;
         "notify"?: Subject<string>;
-        "reOrderDisabled": boolean;
     }
     interface D2Select {
         "options": ActionSheetOptions;
@@ -275,7 +274,6 @@ declare namespace LocalJSX {
     domrect?: DOMRect;
     pointerEvent?: MouseEvent | PointerEvent;
   }>) => void;
-        "reOrderDisabled"?: boolean;
     }
     interface D2Select {
         "options"?: ActionSheetOptions;

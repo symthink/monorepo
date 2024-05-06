@@ -39,7 +39,7 @@ export class D2Rcard {
   @Prop() canEdit = false;
   @Prop() notify?: Subject<string>;
   @Prop() domrect?: DOMRect;
-  @Prop() reOrderDisabled = true;
+  // @Prop() reOrderDisabled = true;
   contentEl: HTMLIonContentElement;
   @Watch('reOrderDisabled')
   async onReorderChange() {
@@ -66,6 +66,10 @@ export class D2Rcard {
     return this.canEdit;
   }
 
+  get reOrderDisabled(): boolean {
+    return this.data.reorder$.value;// if true, re-order is disabled
+  }
+
   isTouchDevice() {
     return 'ontouchstart' in window || navigator.maxTouchPoints > 0;
   }
@@ -81,6 +85,8 @@ export class D2Rcard {
     if (this.notify) {
       this.notify.subscribe((a) => this.onNotificationReceived(a));
     }
+    // trigger rerender on reorder
+    this.data.reorder$.subscribe(() => this.change = !this.change);
     if (this.data) {
       if (this.data.select$) {
         this.data.select$.subscribe(() => (this.change = !this.change));

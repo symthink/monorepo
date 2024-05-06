@@ -54,9 +54,6 @@ export class AppDoc {
 
   @Listen('itemAction')
   onItemAction(evt: CustomEvent) {
-    if (!this.reOrderDisabled) {
-      this.toggleReorder(true);
-    }
     const item = evt.detail.value as SymThink;
     const evnt = evt.detail.pointerEvent as PointerEvent;
     switch (evt.detail.action) {
@@ -124,9 +121,6 @@ export class AppDoc {
       case 'doc-title-change':
         AppSvc.mod$.next();
         break;
-      case 'recycle':
-        this.presentRecycleSelectModal();
-        break;
       case 'select-symthink':
         this.presentSymthinkSelectModal();
         break;
@@ -145,12 +139,6 @@ export class AppDoc {
   get depth(): number {
     const { dep } = this.symthinkDoc.getDepth();
     return dep;
-  }
-
-  toggleBulletType() {
-    this.symthinkDoc.deselect();
-    this.symthink.numeric = !this.symthink.numeric;
-    AppSvc.mod$.next();
   }
 
   async removeItem(item: SymThink) {
@@ -175,18 +163,8 @@ export class AppDoc {
     AppSvc.sendMessage(OutgoingMsgActionEnum.ADDSOURCE);
   }
 
-  onNextRecycleReceived(arg: { source: string; id: string }): void {
-    if (arg.source === 'recycle') {
-      const newKid = this.symthink.adoptOrphan(arg.id);
-      if (newKid) {
-        AppSvc.mod$.next();
-      }
-    }
-  }
-
   async componentWillLoad() {
     this.mod$.subscribe(() => this.cardSubject.next('external-mod'));
-    this.recycle$.subscribe((arg) => this.onNextRecycleReceived(arg));
     if (this.symthink) {
       this.symthinkDoc = this.symthink.getRoot() as SymThinkDocument;
       const pages = this.symthink.getPageIDs();
@@ -215,21 +193,6 @@ export class AppDoc {
     }
   }
 
-  async presentRecycleSelectModal() {
-    // const symthinkDoc = AppSvc.collection.loaded$.getValue();
-    const modal = await modalController.create({
-      component: 'app-select-recycled',
-      initialBreakpoint: 0.5,
-      breakpoints: [0, 0.5, 1],
-      componentProps: {
-        recycleBin: this.symthinkDoc.getOrphans(),
-        recycle$: this.recycle$,
-      },
-    });
-    modal.present();
-    return modal.onDidDismiss();
-  }
-
   async onHelpInfoClick(evt: MouseEvent) {
     evt.stopPropagation();
     evt.preventDefault();
@@ -256,14 +219,6 @@ export class AppDoc {
     }
   }
 
-  async onRecycleItemClick(_evt: MouseEvent) {
-    if (this.symthink.maxKids()) {
-      AppSvc.notifyMaxItemsReached();
-    } else {
-      await this.presentRecycleSelectModal();
-    }
-  }
-
   async onByClick(e: MouseEvent) {
     AppSvc.onDocHeaderOptsSelect(this.symthinkDoc, e);
   }
@@ -275,15 +230,6 @@ export class AppDoc {
       AppSvc.presentNotice('Feature pending');
       // const urlString = await AppSvc.presentShareLinkInput();
     }
-  }
-
-  async onUseConclusion(_e: MouseEvent) {
-    if (this.symthink.lastSupIsConcl) {
-      this.symthink.lastSupIsConcl = false;
-    } else {
-      this.symthink.lastSupIsConcl = true;
-    }
-    AppSvc.mod$.next();
   }
 
   onQuickAddClick(type: ARG_TYPE, evt: MouseEvent): void {
@@ -340,13 +286,6 @@ export class AppDoc {
     e.stopPropagation();
     e.preventDefault();
     this.docAction.emit({ action: 'go-top', value: true });
-  }
-
-  toggleReorder(off = false): void {
-    if (this.symthinkDoc.deselect()) {
-      this.cardSubject.next('external-mod');
-    }
-    this.reOrderDisabled = off ? true : !this.reOrderDisabled;
   }
 
   showBackButton(): boolean {
@@ -477,7 +416,7 @@ export class AppDoc {
           <ion-button
             title="recycle"
             disabled={!this.reOrderDisabled}
-            onClick={(e) => this.onRecycleItemClick(e)}
+            onClick={() => AppSvc.onRecycleItemClick()}
           >
             <ion-icon
               color="medium"
@@ -496,7 +435,7 @@ export class AppDoc {
             class="concl-btn"
             title="therefore"
             disabled={!this.reOrderDisabled || !this.symthink.hasKids()}
-            onClick={(e) => this.onUseConclusion(e)}
+            onClick={() => AppSvc.onUseConclusion()}
             color="medium"
           >
             <span slot="icon-only" class="icon-concl"></span>
@@ -504,7 +443,7 @@ export class AppDoc {
           <ion-button
             title="list type"
             disabled={!this.reOrderDisabled || !this.symthink.hasKids()}
-            onClick={() => this.toggleBulletType()}
+            onClick={() => AppSvc.toggleBulletType()}
           >
             <ion-icon
               color="medium"
@@ -515,7 +454,7 @@ export class AppDoc {
           <ion-button
             title="reorder"
             disabled={!(this.symthink.support?.length > 1)}
-            onClick={() => this.toggleReorder()}
+            onClick={() => AppSvc.toggleReorder()}
           >
             <ion-icon
               color="medium"
@@ -544,7 +483,6 @@ export class AppDoc {
           canEdit={AppSvc.editing}
           data={this.symthink}
           notify={this.cardSubject}
-          reOrderDisabled={this.reOrderDisabled}
           domrect={this.domrect}
         >
           {this.symthink.isRoot && (

@@ -11,6 +11,11 @@ export enum IncomingMsgActionEnum {
     VIEWTREE = 4,
     SOURCE = 5,
     POSTBACK = 6,
+    POSTSUBCR = 7,
+    RECYCLE = 8,
+    THEREFORE = 9,
+    LISTTYPE = 10,
+    REORDER = 11,
 }
 
 export enum OutgoingMsgActionEnum {
@@ -40,17 +45,21 @@ class AppService {
     symthinkDoc: SymThinkDocument;
     mod$: Subject<void>;
     sourceWin: MessageEventSource;
+    recycle$: Subject<{ source; id }>;
 
     async init() {
         console.info(`Symthink app v${ENV.version} built ${(new Date(ENV.timestamp).toLocaleString())}`);
         this.sourceWin = window.parent;
         this.maxwidthMediaQuery = window.matchMedia("only screen and (max-width: 768px)");
         this.mod$ = new Subject();
+        this.recycle$ = new Subject<{ source; id }>();
         this.mod$.subscribe(() => this.onDocModified());
         const url = new URL(document.location.href);
         if (url.searchParams.has('dark')) {
             document.body.classList.add('dark');
         }
+        this.recycle$.subscribe((arg) => this.onNextRecycleReceived(arg));
+
     }
 
     onDocModified() {
@@ -61,10 +70,10 @@ class AppService {
 
     onPostMessageReceived(event: MessageEvent, didLoad: Function) {
         console.log('[stdoc] received postMessage: ', event.data);
-        try {   
+        try {
             console.log('[stdoc] sourceWin set to:', this.sourceWin);
             const data: IPostMessage = event.data;
-    
+
             if (data.action === IncomingMsgActionEnum.POSTBACK) {
                 const stdoc = new SymThinkDocument();
                 stdoc.load(data.value);
@@ -113,6 +122,18 @@ class AppService {
                     }
                     this.mod$.next();
                 }
+                else if (data.action === IncomingMsgActionEnum.RECYCLE) {
+                    this.onRecycleItemClick();
+                }
+                else if (data.action === IncomingMsgActionEnum.THEREFORE) {
+                    this.onUseConclusion();
+                }
+                else if (data.action === IncomingMsgActionEnum.LISTTYPE) {
+                    this.toggleBulletType();
+                }
+                else if (data.action === IncomingMsgActionEnum.REORDER) {
+                    this.toggleReorder();
+                }
             }
         } catch (e) {
             const msg = e.message + ` Expecting: {action: IncomingMsgActionEnum, value: any}
@@ -134,6 +155,59 @@ class AppService {
         this.sourceWin.postMessage(
             { action, value }, { targetOrigin: '*' }
         );
+    }
+
+    onNextRecycleReceived(arg: { source: string; id: string }): void {
+        if (arg.source === 'recycle') {
+            const newKid = this.currentSymthink.adoptOrphan(arg.id);
+            if (newKid) {
+                this.mod$.next();
+            }
+        }
+    }
+
+    async presentRecycleSelectModal() {
+        // const symthinkDoc = AppSvc.collection.loaded$.getValue();
+        const modal = await modalController.create({
+            component: 'app-select-recycled',
+            initialBreakpoint: 0.5,
+            breakpoints: [0, 0.5, 1],
+            componentProps: {
+                recycleBin: this.symthinkDoc.getOrphans(),
+                recycle$: this.recycle$,
+            },
+        });
+        modal.present();
+        return modal.onDidDismiss();
+    }
+
+    async onRecycleItemClick() {
+        if (this.currentSymthink.maxKids()) {
+            this.notifyMaxItemsReached();
+        } else {
+            await this.presentRecycleSelectModal();
+        }
+    }
+
+    async onUseConclusion() {
+        if (this.currentSymthink.lastSupIsConcl) {
+            this.currentSymthink.lastSupIsConcl = false;
+        } else {
+            this.currentSymthink.lastSupIsConcl = true;
+        }
+        this.mod$.next();
+    }
+
+
+    toggleBulletType() {
+        this.symthinkDoc.deselect();
+        this.currentSymthink.numeric = !this.currentSymthink.numeric;
+        this.mod$.next();
+    }
+
+    toggleReorder(): void {
+        this.symthinkDoc.deselect();
+        this.currentSymthink.reorder$.next(!this.currentSymthink.reorder$.value);
     }
 
     async dismissAlerts() {
@@ -180,14 +254,14 @@ class AppService {
                 text: 'Unsubscribe',
                 role: 'unsubscribe',
                 icon: 'notifications-off-outline'
-            });    
+            });
         } else {
             if (isPageTopItem) {
                 if (item.type === ARG_TYPE.Question) {
                     buttons.push({
-                      text: 'Decision',
-                      role: 'decision',
-                      icon: 'git-merge-outline'
+                        text: 'Decision',
+                        role: 'decision',
+                        icon: 'git-merge-outline'
                     });
                 }
             } else { // support
@@ -202,7 +276,7 @@ class AppService {
                     icon: 'cut-outline'
                 });
                 const postText = item.type === ARG_TYPE.Question ?
-                        'Post': 'Rephrase & Post';
+                    'Post' : 'Rephrase & Post';
                 buttons.push({
                     text: postText,
                     role: 'post',
@@ -218,7 +292,7 @@ class AppService {
                 text: 'Add Source',
                 role: 'add-source',
                 icon: 'add-outline'
-              });
+            });
             buttons.push({
                 text: 'Change type ...',
                 role: 'change-type',
@@ -337,7 +411,7 @@ class AppService {
                 break;
             case 'decision':
                 const yes = await this.presentConfirm('Replace this question with the top idea in the list.  The other items will be archived.',
-                'Confirm Decision');
+                    'Confirm Decision');
                 if (yes) {
                     item.decide();
                     modified = true;
@@ -346,7 +420,7 @@ class AppService {
             case 'post':
                 // send question text out to parent window
                 this.sendMessage(OutgoingMsgActionEnum.POST, structuredClone(item.getRaw(true)));
-                    // parent win: handle modal pop up with scope question and decision configuration
+                // parent win: handle modal pop up with scope question and decision configuration
                 break;
             case 'search':
                 const encoded = encodeURIComponent(item.text);
@@ -475,7 +549,7 @@ class AppService {
             header: 'Header Format',
             buttons
         }
-        const {role, data} = await this.presentDynamicSelect(opts, evt, false);
+        const { role, data } = await this.presentDynamicSelect(opts, evt, false);
         if (role !== 'backdrop' && item.format !== data) {
             item.format = data;
             AppSvc.mod$.next();

@@ -81,6 +81,22 @@ export class AppRoot {
                 <ion-label>POSTBACK</ion-label>
                 <ion-radio slot="start" value="6" />
               </ion-item>
+              <ion-item>
+                <ion-label>RECYCLE</ion-label>
+                <ion-radio slot="start" value="8" />
+              </ion-item>
+              <ion-item>
+                <ion-label>THEREFORE</ion-label>
+                <ion-radio slot="start" value="9" />
+              </ion-item>
+              <ion-item>
+                <ion-label>LISTTYPE</ion-label>
+                <ion-radio slot="start" value="10" />
+              </ion-item>
+              <ion-item>
+                <ion-label>REORDER</ion-label>
+                <ion-radio slot="start" value="11" />
+              </ion-item>
             </ion-radio-group>
             &nbsp;&nbsp;&nbsp;
             <button onClick={this.sendMessage} style={{ marginTop: '10px' }}>Send Message</button>
