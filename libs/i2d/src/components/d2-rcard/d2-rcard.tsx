@@ -6,8 +6,7 @@ import {
   State,
   Event,
   EventEmitter,
-  Element,
-  Watch,
+  Element
 } from '@stencil/core';
 import { Subject } from 'rxjs';
 import {
