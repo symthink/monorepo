@@ -48,7 +48,7 @@ export class AppRoot {
         </header>
         <div style={{ display: 'flex', height: '100vh' }}>
           <div style={{ flex: '3' }}>
-            <iframe src="http://localhost:3341" width="100%" style={{ height: '100%' }}></iframe>
+            <iframe src="http://localhost:3335" width="100%" style={{ height: '100%' }}></iframe>
           </div>
           <div style={{ 'min-width': '400px', flex: '1' }}>
             <ion-radio-group onIonChange={this.handleActionChange}>

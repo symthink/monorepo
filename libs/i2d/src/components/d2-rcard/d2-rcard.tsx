@@ -440,6 +440,7 @@ export class D2Rcard {
                     height: this.selectedElHeight + '',
                   }}
                   placeholder={this.supportsPh(item)}
+                  enterkeyhint="done"
                 ></ion-textarea>
               )}
               {!isEditable(item) && (
@@ -498,19 +499,41 @@ export class D2Rcard {
   }
 
   onKeyUp(evt: KeyboardEvent, type?: string) {
+    console.log('onKeyUp handler', evt.key, type)
     if (evt.key === 'Enter') {
+      evt.stopPropagation();
+      evt.preventDefault();
+      let nextItem: SymThink;
       if (type === 'top') {
         // if has child items, then focus on first child item
-        
-        // if no child items, then make child item and focus on it
-        this.data.addChild();
-
+        if (this.data.hasKids()) {
+          nextItem = this.data.support[0];
+        }
+        else {
+          if (!this.data.isKidEnabled()) {
+            this.data.enableKids();
+          }
+          nextItem = this.data.addChild({type: ARG_TYPE.Statement});
+        }
       } else {
         // if has next sibling, then focus on next sibling
-        // if no next sibling, then make next sibling and focus on it
-
-        
+        const idx = this.data.support.findIndex((i) => i.selected);
+        if (idx === -1) {
+          console.log('no selected item found')
+          return;
+        }
+        if (this.data.support[idx + 1]) {
+          nextItem = this.data.support[idx + 1];
+        } else {
+          // if no next sibling, then make next sibling and focus on it
+          nextItem = this.data.addChild({type: ARG_TYPE.Statement});
+        }
       }
+      if (nextItem) {
+        nextItem.select$.next(true);
+      }
+      this.change = !this.change;
+      return;
     }
   }
 
@@ -607,6 +630,7 @@ export class D2Rcard {
                 height: this.selectedElHeight + '',
               }}
               placeholder={this.textPh(this.data)}
+              enterkeyhint="done"
             ></ion-textarea>
           )}
           {!isEditable(this.data) && (

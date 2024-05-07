@@ -414,7 +414,7 @@ export class AppDoc {
           )}
 
           {this.showBackButton() && this.renderBackBtn()}
-          {AppSvc.editing && this.renderAddSupportBtn()}
+          {/* {AppSvc.editing && this.renderAddSupportBtn()} */}
         </d2-rcard>
       </Host>
     );
