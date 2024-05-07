@@ -425,6 +425,7 @@ export class D2Rcard {
                 <ion-textarea
                   onIonInput={(e) => this.onTextareaInput(e, item)}
                   onIonBlur={(e) => this.onTextareaBlur(e, item)}
+                  onKeyUp={(e) => this.onKeyUp(e)}
                   value={item.text}
                   maxlength={280}
                   spellcheck={true}
@@ -496,25 +497,29 @@ export class D2Rcard {
     );
   }
 
+  onKeyUp(evt: KeyboardEvent, type?: string) {
+    if (evt.key === 'Enter') {
+      if (type === 'top') {
+        // if has child items, then focus on first child item
+        
+        // if no child items, then make child item and focus on it
+        this.data.addChild();
+
+      } else {
+        // if has next sibling, then focus on next sibling
+        // if no next sibling, then make next sibling and focus on it
+
+        
+      }
+    }
+  }
+
   onTextareaInput(evt: IonTextareaCustomEvent<InputEvent>, item) {
     evt.stopPropagation();
     evt.preventDefault();
     const ta = evt.target as HTMLIonTextareaElement;
     item.text = ta.value;
     this.docAction.emit({ action: 'modified', value: null });
-
-    // let percDiff = getPercentageDifference(
-    //   item.text?.toString() || '',
-    //   ta.value.toString()
-    // );
-    // percDiff = Math.round(percDiff);
-    // item.text = ta.value;
-    // item.selected = false;
-    // if (item.text.length > 5) {
-    //   this.modified(percDiff);
-    // } else {
-    //   this.modified();
-    // }
   }
 
   onTextareaBlur(evt: IonTextareaCustomEvent<any>, item) {
@@ -587,6 +592,7 @@ export class D2Rcard {
             <ion-textarea
               onIonInput={(e) => this.onTextareaInput(e, this.data)}
               onIonBlur={(e) => this.onTextareaBlur(e, this.data)}
+              onKeyUp={(e) => this.onKeyUp(e, 'top')}
               value={this.data.getCurrentItemText()}
               maxlength={280}
               spellcheck={true}
