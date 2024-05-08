@@ -107,6 +107,9 @@ export class AppRoot {
 
       AppSvc.onPostMessageReceived(msgEvent, didLoad);
     });
+    document.addEventListener('scroll', () => {
+      AppSvc.sendMessage(OutgoingMsgActionEnum.SCROLL, window.scrollY); 
+    });
     AppSvc.sendMessage(OutgoingMsgActionEnum.READY, null);
   }
 

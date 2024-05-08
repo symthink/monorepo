@@ -1,5 +1,7 @@
 import { Component, h, State } from '@stencil/core';
 
+import * as jsonData from '../../../../../data2.json';
+
 @Component({
   tag: 'app-root',
   styleUrl: 'app-root.css',
@@ -10,6 +12,7 @@ export class AppRoot {
   @State() value: any = '';
 
   componentDidLoad() {
+    this.value = structuredClone(jsonData);
     window.addEventListener('message', (event) => {
       console.log('Received message from iframe:', event.data);
       switch (event.data.action) {
@@ -48,7 +51,7 @@ export class AppRoot {
         </header>
         <div style={{ display: 'flex', height: '100vh' }}>
           <div style={{ flex: '3' }}>
-            <iframe src="http://localhost:3335" width="100%" style={{ height: '100%' }}></iframe>
+            <iframe src="http://localhost:3342" width="100%" style={{ height: '100%' }}></iframe>
           </div>
           <div style={{ 'min-width': '400px', flex: '1' }}>
             <ion-radio-group onIonChange={this.handleActionChange}>
@@ -105,7 +108,9 @@ export class AppRoot {
               placeholder="Enter value here..."
               onInput={this.handleValueChange}
               style={{ width: '100%', height: '50%', marginTop: '10px' }}
-            ></textarea>
+            >
+              
+            </textarea>
           </div>
         </div>
       </div>

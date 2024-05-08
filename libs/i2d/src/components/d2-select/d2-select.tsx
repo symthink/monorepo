@@ -4,7 +4,7 @@ import {
   ActionSheetOptions,
 } from '@ionic/core/dist/types/components/action-sheet/action-sheet-interface';
 import { Component, h, Prop, Element } from '@stencil/core';
-import { ARG_TYPE, CardRules } from '../../core/symthink.class';
+import { CardRules } from '../../core/symthink.class';
 
 /**
  * This component is intended to be a stand-in replacement for an actionSheet but

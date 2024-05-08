@@ -118,6 +118,6 @@ secret.md
 
 /firebase-*.json
 /gca
-/data.json
+/data*.json
 .vercel
 /tmp.txt

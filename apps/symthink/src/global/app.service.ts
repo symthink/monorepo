@@ -29,6 +29,7 @@ export enum OutgoingMsgActionEnum {
     READY = 107,
     REPLACE = 108,
     EXPORT = 109,
+    SCROLL = 110,
 }
 
 export interface IPostMessage {
@@ -46,6 +47,8 @@ class AppService {
     mod$: Subject<void>;
     sourceWin: MessageEventSource;
     recycle$: Subject<{ source; id }>;
+    themeChange$: Subject<void> = new Subject();
+    prefersDark = window.matchMedia('(prefers-color-scheme: dark)');  
 
     async init() {
         console.info(`Symthink app v${ENV.version} built ${(new Date(ENV.timestamp).toLocaleString())}`);
@@ -54,12 +57,8 @@ class AppService {
         this.mod$ = new Subject();
         this.recycle$ = new Subject<{ source; id }>();
         this.mod$.subscribe(() => this.onDocModified());
-        const url = new URL(document.location.href);
-        if (url.searchParams.has('dark')) {
-            document.body.classList.add('dark');
-        }
         this.recycle$.subscribe((arg) => this.onNextRecycleReceived(arg));
-
+        this.setTheme()
     }
 
     onDocModified() {
@@ -264,6 +263,12 @@ class AppService {
                         icon: 'git-merge-outline'
                     });
                 }
+                buttons.push({
+                    text: 'Add Support',
+                    role: 'add-support',
+                    icon: 'add-outline'
+                });
+    
             } else { // support
                 buttons.push({
                     text: 'Extend',
@@ -282,20 +287,11 @@ class AppService {
                     role: 'post',
                     icon: 'chatbubbles-outline'
                 });
-                buttons.push({
-                    text: 'Google Search',
-                    role: 'search',
-                    icon: 'search-outline'
-                });
             }
             buttons.push({
                 text: 'Add Source',
                 role: 'add-source',
                 icon: 'add-outline'
-            });
-            buttons.push({
-                text: 'Change type ...',
-                role: 'change-type',
             });
         }
         if (isPageTopItem) {
@@ -377,6 +373,7 @@ class AppService {
                 }
                 modified = true;
                 break;
+            // deprecated; done with punctuation now onBlur
             case 'change-type':
                 const type = await this.presentSymthinkTypeChooser(evt);
                 if (type !== 'backdrop') {
@@ -389,8 +386,12 @@ class AppService {
                     }
                 }
                 break;
+            // deprecated
             case 'quick-share':
                 this.shareSymthinkShallow(item);
+                break;
+            case 'add-support':
+                item.addChild({type: ARG_TYPE.Statement});
                 break;
             case 'title-edit':
                 const { data, role } = await AppSvc.presentLabelInput(
@@ -611,6 +612,21 @@ class AppService {
     get isMobileUserAgent(): boolean {
         const userAgent = navigator.userAgent || navigator.vendor;
         return /windows phone/i.test(userAgent) || /android/i.test(userAgent) || /iPhone|iPod/.test(userAgent);
+    }
+
+    private onPrefersDarkChange(e) {
+        document.body.classList.toggle('dark', e.matches);
+        this.themeChange$.next();
+      }
+    
+      private setTheme() {
+        // Add or remove the "dark" class based on if the media query matches
+        const toggleDarkTheme = (shouldAdd) => {
+          document.body.classList.toggle('dark', shouldAdd);
+        }
+        toggleDarkTheme(this.prefersDark.matches);
+        // Listen for changes to the prefers-color-scheme media query
+        this.prefersDark.addEventListener('change', this.onPrefersDarkChange.bind(this));
     }
 }
 

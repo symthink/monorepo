@@ -19,6 +19,7 @@ import {
   Bullets,
   ARG_TYPE,
   ISource,
+  sympunkRegex,
 } from '../../core/symthink.class';
 // import getPercentageDifference from 'text-percentage-difference';
 
@@ -99,7 +100,7 @@ export class D2Rcard {
         });
       }
       this.sourcList = this.data.getShowableSources();
-      this.data.getRoot().log$.subscribe((a: {action: StLogActionEnum, ts: number}) => {
+      this.data.getRoot().log$.subscribe((a: { action: StLogActionEnum, ts: number }) => {
         if (a.action === StLogActionEnum.ADD_SOURCE) {
           console.log('ADD_SOURCE event received in rcard, trigger re-render')
           this.sourcList = this.data.getShowableSources();
@@ -304,7 +305,7 @@ export class D2Rcard {
     const bullet = Bullets.find((b) => b.x === x);
     const charLabel = item.isKidEnabled() ? bullet.full : bullet.circ;
     return (
-      <span slot="start" class={{ bullet: true, numbull: this.data.numeric }}>
+      <span slot="start" class={{ bullet: true, 'bullet-full': item.isKidEnabled(),  numbull: this.data.numeric }}>
         {charLabel}
       </span>
     );
@@ -382,7 +383,7 @@ export class D2Rcard {
     let supSrcList = this.data.support.map((sup) => {
       if (sup.hasSources()) {
         return this.sourcList.reduce((acc, curr, i) => {
-          if (curr.id === sup.id) acc.push(i+1);
+          if (curr.id === sup.id) acc.push(i + 1);
           return acc;
         }, []);
       } else {
@@ -513,7 +514,7 @@ export class D2Rcard {
           if (!this.data.isKidEnabled()) {
             this.data.enableKids();
           }
-          nextItem = this.data.addChild({type: ARG_TYPE.Statement});
+          nextItem = this.data.addChild({ type: ARG_TYPE.Statement });
         }
       } else {
         // if has next sibling, then focus on next sibling
@@ -526,7 +527,7 @@ export class D2Rcard {
           nextItem = this.data.support[idx + 1];
         } else {
           // if no next sibling, then make next sibling and focus on it
-          nextItem = this.data.addChild({type: ARG_TYPE.Statement});
+          nextItem = this.data.addChild({ type: ARG_TYPE.Statement });
         }
       }
       if (nextItem) {
@@ -541,32 +542,38 @@ export class D2Rcard {
     evt.stopPropagation();
     evt.preventDefault();
     const ta = evt.target as HTMLIonTextareaElement;
+    let newVal = ta.value.trim();
+    if (!sympunkRegex.test(newVal)) {
+      // no sympunk found, check for regular punctuation
+      for (let cardType of CardRules) {
+        if (cardType.swap && cardType.swap.test(newVal)) {
+          newVal = newVal.replace(cardType.swap, cardType.char);
+          item.type = cardType.type;
+          break;
+        }
+      }
+    }
     item.text = ta.value;
     this.docAction.emit({ action: 'modified', value: null });
   }
 
   onTextareaBlur(evt: IonTextareaCustomEvent<any>, item) {
     const ta = evt.target as HTMLIonTextareaElement;
-    if (item.type === ARG_TYPE.Statement) {
-      return (item.text = ta.value);
-    }
     const typ = CardRules.find((r) => r.type === item.type);
     if (typ && ta && ta.value && ta.value.length) {
-      let newVal =
-        ta.value
-          .replace(/[\r\n\t]+/g, ' ')
-          .replace(trailingSympunkRegExp, '')
-          .replace(/[\.\!\?]+$/, '') + typ.char;
-      // const m = newVal.matchAll(/[^\.\!\?]*[\.\!\?]/g);
-      // let nxt = m.next();
-      // const sentences = [];
-      // while (!nxt.done && nxt.value?.length) {
-      //   let tmp: string = nxt.value[0];
-      //   tmp = tmp.trim();
-      //   tmp = tmp.charAt(0).toUpperCase() + tmp.slice(1);
-      //   sentences.push(tmp);
-      //   nxt = m.next();
-      // }
+      let newVal = ta.value.trim();
+      if (!sympunkRegex.test(newVal)) {
+        // no sympunk found, check for regular punctuation
+        for (let cardType of CardRules) {
+          if (cardType.swap && cardType.swap.test(newVal)) {
+            newVal = newVal.replace(cardType.swap, cardType.char);
+            item.type = cardType.type;
+            break;
+          }
+        }
+      }
+
+      // capitalize first letter of each sentence
       let match;
       const sentences = [];
       while ((match = sympunkReplacementRegex.exec(newVal)) !== null) {
@@ -575,14 +582,15 @@ export class D2Rcard {
         tmp = tmp.charAt(0).toUpperCase() + tmp.slice(1);
         sentences.push(tmp);
       }
-      item.text = sentences.join(' ');
+      item.text = sentences.length ? sentences.join(' ').trim() : newVal;
+      this.change = !this.change;
     }
   }
 
   renderItems() {
     const isEditable = (itm) => !!(itm.selected && this.canEdit);
     const srcListX = this.sourcList.reduce((acc, curr, i) => {
-      if (curr.id === this.data.id) acc.push(i+1);
+      if (curr.id === this.data.id) acc.push(i + 1);
       return acc;
     }, []);
     return [

@@ -179,9 +179,9 @@ ion-textarea {
 }
 
 .selected {
-  box-shadow: 3px 5px 3px rgba(0, 0, 0, 0.5);
-  margin: 0px 3px 5px 0px;
-  border: 0.5px solid #919191;
+  border: 0.5px dashed #919191;
+  border-left: 0px;
+  border-right: 0px;
 }
 .selected textarea {
   caret-color: currentColor !important;
@@ -282,6 +282,10 @@ ion-breadcrumb:last-child {
 .bullet {
   margin-top : 0px;
   margin-left: 12px;
+}
+.bullet-full {
+  font-size: 47px;
+  margin-right: 11px;
 }
 
 .opts-btn {

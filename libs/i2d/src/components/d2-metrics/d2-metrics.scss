@@ -81,12 +81,12 @@ ion-chip {
 .right {
   text-align: left;
   padding: 0 5px;
-  border-bottom: 1px solid black;  
+  border-bottom: 1px solid currentColor;  
 }
 .left {
   text-align: right;
   padding: 0 5px;
-  border-bottom: 1px solid black;
+  border-bottom: 1px solid currentColor;
   border-right: 2px solid #bebdbd;
   &.sources {
     border-right: 2px solid #ff601086;
