@@ -58,7 +58,7 @@ class AppService {
         this.recycle$ = new Subject<{ source; id }>();
         this.mod$.subscribe(() => this.onDocModified());
         this.recycle$.subscribe((arg) => this.onNextRecycleReceived(arg));
-        this.setTheme()
+        this.setTheme();
     }
 
     onDocModified() {

@@ -66,6 +66,9 @@ export class AppRoot {
   @Listen('docAction')
   async onDocAction(evt: CustomEvent) {
     switch (evt.detail.action) {
+      case 'scroll':
+        AppSvc.sendMessage(OutgoingMsgActionEnum.SCROLL, evt.detail.value);
+        break;
       case 'modified':
         AppSvc.onDocModified();
         break;
@@ -107,13 +110,11 @@ export class AppRoot {
 
       AppSvc.onPostMessageReceived(msgEvent, didLoad);
     });
-    document.addEventListener('scroll', () => {
-      AppSvc.sendMessage(OutgoingMsgActionEnum.SCROLL, window.scrollY); 
-    });
     AppSvc.sendMessage(OutgoingMsgActionEnum.READY, null);
   }
 
   componentDidRender() {
+
     if (this.loaded && this.ionNav) {
       this.ionNav.addEventListener('ionNavDidChange', async () => {
         const viewController = await this.ionNav.getActive();

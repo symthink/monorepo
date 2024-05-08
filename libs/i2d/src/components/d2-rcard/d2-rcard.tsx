@@ -14,7 +14,6 @@ import {
   SymThink,
   CardRules,
   StLogActionEnum,
-  trailingSympunkRegExp,
   sympunkReplacementRegex,
   Bullets,
   ARG_TYPE,
@@ -711,7 +710,7 @@ export class D2Rcard {
 
   render() {
     return [
-      <ion-content
+      <ion-content scrollEvents={true} onIonScroll={(e) => this.docAction.emit({action: 'scroll', value: e.detail.currentY})}
         fullscreen={true}
         ref={(el) => (this.contentEl = el as HTMLIonContentElement)}
         onClick={(e) => this.onIonContentClick(e)}
