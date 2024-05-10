@@ -304,7 +304,7 @@ export class D2Rcard {
     const bullet = Bullets.find((b) => b.x === x);
     const charLabel = item.isKidEnabled() ? bullet.full : bullet.circ;
     return (
-      <span slot="start" class={{ bullet: true, 'bullet-full': item.isKidEnabled(),  numbull: this.data.numeric }}>
+      <span slot="start" class={{ bullet: true, 'bullet-full': item.isKidEnabled() && !this.data.numeric,  numbull: this.data.numeric }}>
         {charLabel}
       </span>
     );

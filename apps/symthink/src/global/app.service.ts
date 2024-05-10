@@ -48,7 +48,7 @@ class AppService {
     sourceWin: MessageEventSource;
     recycle$: Subject<{ source; id }>;
     themeChange$: Subject<void> = new Subject();
-    prefersDark = window.matchMedia('(prefers-color-scheme: dark)');  
+    prefersDark = window.matchMedia('(prefers-color-scheme: dark)');
 
     async init() {
         console.info(`Symthink app v${ENV.version} built ${(new Date(ENV.timestamp).toLocaleString())}`);
@@ -178,13 +178,19 @@ class AppService {
         });
         modal.present();
         return modal.onDidDismiss();
+
     }
 
     async onRecycleItemClick() {
         if (this.currentSymthink.maxKids()) {
             this.notifyMaxItemsReached();
         } else {
-            await this.presentRecycleSelectModal();
+            const top = await modalController.getTop();
+            if (top) {
+                await top.dismiss();
+            } else {
+                await this.presentRecycleSelectModal();
+            }
         }
     }
 
@@ -268,7 +274,7 @@ class AppService {
                     role: 'add-support',
                     icon: 'add-outline'
                 });
-    
+
             } else { // support
                 buttons.push({
                     text: 'Extend',
@@ -391,7 +397,7 @@ class AppService {
                 this.shareSymthinkShallow(item);
                 break;
             case 'add-support':
-                item.addChild({type: ARG_TYPE.Statement});
+                item.addChild({ type: ARG_TYPE.Statement });
                 break;
             case 'title-edit':
                 const { data, role } = await AppSvc.presentLabelInput(
@@ -617,12 +623,12 @@ class AppService {
     private onPrefersDarkChange(e) {
         document.body.classList.toggle('dark', e.matches);
         this.themeChange$.next();
-      }
-    
-      private setTheme() {
+    }
+
+    private setTheme() {
         // Add or remove the "dark" class based on if the media query matches
         const toggleDarkTheme = (shouldAdd) => {
-          document.body.classList.toggle('dark', shouldAdd);
+            document.body.classList.toggle('dark', shouldAdd);
         }
         toggleDarkTheme(this.prefersDark.matches);
         // Listen for changes to the prefers-color-scheme media query
