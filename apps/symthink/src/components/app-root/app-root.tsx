@@ -102,7 +102,7 @@ export class AppRoot {
     this.nav$.subscribe((x) => this.onNavReceived(x));
     const didLoad = () => { this.loaded = true };
     window.addEventListener('message', (msgEvent: MessageEvent) => {
-      if (!['https://symthink.io'].includes(msgEvent.origin) && !/http:\/\/localhost:\d+/.test(msgEvent.origin)) {
+      if (!['https://symthink.io','https://platform.symthink.io'].includes(msgEvent.origin) && !/http:\/\/localhost:\d+/.test(msgEvent.origin)) {
         console.warn('Message received from untrusted origin:', msgEvent.origin);
         console.log(msgEvent.data);
         return;
