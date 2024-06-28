@@ -65,6 +65,7 @@ export interface ISymThink {
     createdTime?: number;
     creator?: string;
     creatorId?: string;
+    private?: boolean;
 }
 export interface ISymThinkDocument extends ISymThink {
     $chemaver?: number;
@@ -181,6 +182,7 @@ export class SymThink {
         this.creatorId = arg.creatorId || undefined;
         this.lastSupIsConcl = !!arg.lastSupIsConcl;
         this.lastmod = arg.lastmod || undefined;
+        this.private = !!arg.private || undefined;
         if (arg.eventDate) {
             try {
                 this.eventDate = new Date(arg.eventDate * 1000);
@@ -376,6 +378,7 @@ export class SymThink {
             lastSupIsConcl: !!this.lastSupIsConcl,
             numeric: this.numeric || undefined,
             url: this.url ? this.url.toString() : undefined,
+            private: !!this.private || undefined
         };
         if (this.source) {
             o.source = this.source.map(s => {
