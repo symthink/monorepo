@@ -30,6 +30,7 @@ export enum OutgoingMsgActionEnum {
     REPLACE = 108,
     EXPORT = 109,
     SCROLL = 110,
+    PRIVACY = 111,
 }
 
 export interface IPostMessage {
@@ -64,7 +65,7 @@ class AppService {
     onDocModified() {
         this.saved = false;
         const raw = this.symthinkDoc.getRawDoc();
-        this.sendMessage(OutgoingMsgActionEnum.MODIFIED, structuredClone(raw));
+        this.sendMessage(OutgoingMsgActionEnum.MODIFIED, raw);
     }
 
     onPostMessageReceived(event: MessageEvent, didLoad: Function) {
@@ -286,12 +287,20 @@ class AppService {
                     role: 'trim',
                     icon: 'cut-outline'
                 });
-                const postText = item.type === ARG_TYPE.Question ?
-                    'Post' : 'Rephrase & Post';
+                // const postText = item.type === ARG_TYPE.Question ?
+                //     'Post' : 'Rephrase & Post';
+                // buttons.push({
+                //     text: postText,
+                //     role: 'post',
+                //     icon: 'chatbubbles-outline'
+                // });
+                const btnText = item.private ? 'Remove lock' : 'Add lock';
                 buttons.push({
-                    text: postText,
-                    role: 'post',
-                    icon: 'chatbubbles-outline'
+                    text: btnText,
+                    role: 'toggle-private',
+                    icon: 'lock-closed-outline',
+                    cssClass: 'badge',
+                    data: !!item.private
                 });
             }
             buttons.push({
@@ -426,7 +435,7 @@ class AppService {
                 break;
             case 'post':
                 // send question text out to parent window
-                this.sendMessage(OutgoingMsgActionEnum.POST, structuredClone(item.getRaw(true)));
+                this.sendMessage(OutgoingMsgActionEnum.POST, item.getRaw(true));
                 // parent win: handle modal pop up with scope question and decision configuration
                 break;
             case 'search':
@@ -448,7 +457,16 @@ class AppService {
                 this.sendMessage(OutgoingMsgActionEnum.REPLACE, item.id);
                 break;
             case 'export':
-                this.sendMessage(OutgoingMsgActionEnum.EXPORT, structuredClone(item.getRaw(true)));
+                this.sendMessage(OutgoingMsgActionEnum.EXPORT, item.getRaw(true));
+                break;
+            case 'toggle-private':
+                if (item.private) {
+                    delete item.private;
+                } else {
+                    item.private = true;
+                }
+                this.sendMessage(OutgoingMsgActionEnum.PRIVACY, !!item.private);
+                modified = true;
                 break;
             default:
                 console.warn('Item option response not found:', rs);

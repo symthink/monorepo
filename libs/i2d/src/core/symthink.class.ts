@@ -135,6 +135,7 @@ export class SymThink {
     creator: string; // display name
     creatorId: string;
     reorder$ = new BehaviorSubject<boolean>(false);
+    private = false;
 
     constructor(id: string, parent?: SymThink) {
         // make read-only after first set

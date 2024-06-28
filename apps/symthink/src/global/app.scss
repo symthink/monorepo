@@ -83,6 +83,12 @@
   content  : "∴";
   font-size: 2em;
 }
+
+.icon-lock:before {
+  content: '🔒';
+}
+
+
 :root {
 
   --ion-font-family: 'Sympunk', 'Comfortaa', sans-serif;

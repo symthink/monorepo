@@ -338,3 +338,17 @@ ion-breadcrumb:last-child {
   color: inherit !important;
   margin-right: 1em !important;
 }
+.locked {
+  position: absolute;
+  top: -5px;
+  left: 1px;
+  padding: 2px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.locked:before {
+  content: '🔒';
+  font-size: 12px;
+}
+

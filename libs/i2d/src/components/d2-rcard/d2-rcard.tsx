@@ -306,6 +306,7 @@ export class D2Rcard {
     return (
       <span slot="start" class={{ bullet: true, 'bullet-full': item.isKidEnabled() && !this.data.numeric,  numbull: this.data.numeric }}>
         {charLabel}
+        {!!item.private && <span class="locked" />}
       </span>
     );
     // return <d2-icon slot="start" label={label}></d2-icon>;
