@@ -16,6 +16,7 @@ export enum IncomingMsgActionEnum {
     THEREFORE = 9,
     LISTTYPE = 10,
     REORDER = 11,
+    EDITEDITEM = 12,
 }
 
 export enum OutgoingMsgActionEnum {
@@ -31,6 +32,7 @@ export enum OutgoingMsgActionEnum {
     EXPORT = 109,
     SCROLL = 110,
     PRIVACY = 111,
+    EDITITEM = 112,
 }
 
 export interface IPostMessage {
@@ -59,7 +61,9 @@ class AppService {
         this.recycle$ = new Subject<{ source; id }>();
         this.mod$.subscribe(() => this.onDocModified());
         this.recycle$.subscribe((arg) => this.onNextRecycleReceived(arg));
-        this.setTheme();
+
+        // use light only for MVP
+        // this.setTheme();
     }
 
     onDocModified() {
@@ -134,6 +138,15 @@ class AppService {
                 else if (data.action === IncomingMsgActionEnum.REORDER) {
                     this.toggleReorder();
                 }
+                else if (data.action === IncomingMsgActionEnum.EDITEDITEM) {
+                    const item = this.symthinkDoc.find((c) => c.id === data.value?.id);
+                    if (item) {
+                        if (data.value.text) item.text = data.value.text;
+                        if (data.value.type) item.type = data.value.type;
+                        if (data.value.label) item.label = data.value.label;
+                        this.mod$.next();
+                    }
+                }
             }
         } catch (e) {
             const msg = e.message + ` Expecting: {action: IncomingMsgActionEnum, value: any}
@@ -145,6 +158,12 @@ class AppService {
                 VIEWTREE = 4,
                 SOURCE = 5,
                 POSTBACK = 6,
+                POSTSUBCR = 7,
+                RECYCLE = 8,
+                THEREFORE = 9,
+                LISTTYPE = 10,
+                REORDER = 11,
+                EDITEDITEM = 12,
             }`;
             AppSvc.sendMessage(OutgoingMsgActionEnum.ERROR, msg);
         }
@@ -314,15 +333,11 @@ class AppService {
             //     text: 'Quick share ...',
             //     role: 'quick-share',
             // });
-            buttons.push({
-                text: 'Replace ...',
-                role: 'replace',
-            });
         }
-        buttons.push({
-            text: 'Export ...',
-            role: 'export',
-        });
+        // buttons.push({
+        //     text: 'Export ...',
+        //     role: 'export',
+        // });
 
         const opts = {
             buttons
@@ -638,20 +653,20 @@ class AppService {
         return /windows phone/i.test(userAgent) || /android/i.test(userAgent) || /iPhone|iPod/.test(userAgent);
     }
 
-    private onPrefersDarkChange(e) {
-        document.body.classList.toggle('dark', e.matches);
-        this.themeChange$.next();
-    }
+    // private onPrefersDarkChange(e) {
+    //     document.body.classList.toggle('dark', e.matches);
+    //     this.themeChange$.next();
+    // }
 
-    private setTheme() {
-        // Add or remove the "dark" class based on if the media query matches
-        const toggleDarkTheme = (shouldAdd) => {
-            document.body.classList.toggle('dark', shouldAdd);
-        }
-        toggleDarkTheme(this.prefersDark.matches);
-        // Listen for changes to the prefers-color-scheme media query
-        this.prefersDark.addEventListener('change', this.onPrefersDarkChange.bind(this));
-    }
+    // private setTheme() {
+    //     // Add or remove the "dark" class based on if the media query matches
+    //     const toggleDarkTheme = (shouldAdd) => {
+    //         document.body.classList.toggle('dark', shouldAdd);
+    //     }
+    //     toggleDarkTheme(this.prefersDark.matches);
+    //     // Listen for changes to the prefers-color-scheme media query
+    //     this.prefersDark.addEventListener('change', this.onPrefersDarkChange.bind(this));
+    // }
 }
 
 export const AppSvc = new AppService();

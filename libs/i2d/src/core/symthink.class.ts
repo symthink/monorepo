@@ -865,7 +865,7 @@ export const trailingSympunkRegExp = /[🕫💡❓]+/g
 export const sympunkRegex = /[🕫💡❓]$/
 export const sympunkReplacementRegex = /[^\.\!\?]*[\.\!\?🕫💡❓]/g;
 export const Bullets = [
-    { x: 0, circ: '⊙', full: '•', circle: '&#x2299;', fulle: '&#x2688;' },
+    { x: 0, circ: '○', full: '◉', circle: '&#x25CB;', fulle: '&#x25C9;' },
     { x: 1, circ: '➀', full: '➊', circle: '&#x2780;', fulle: '&#x278A;' },
     { x: 2, circ: '➁', full: '➋', circle: '&#x2781;', fulle: '&#x278B;' },
     { x: 3, circ: '➂', full: '➌', circle: '&#x2782;', fulle: '&#x278C;' },

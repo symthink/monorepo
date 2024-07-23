@@ -70,7 +70,7 @@ export class AppDoc {
       case 'delete-source':
         AppSvc.presentConfirm('', 'Delete source?', true).then((yes) => {
           if (yes) {
-            const o = evt.detail.value as {stid: string; index: number};
+            const o = evt.detail.value as { stid: string; index: number };
             console.log('got:', o);
             if (this.symthink.rmChildSource(o.stid, o.index)) {
               AppSvc.mod$.next();
@@ -160,7 +160,7 @@ export class AppDoc {
   }
 
   async onAddSourceClick() {
-    AppSvc.sendMessage(OutgoingMsgActionEnum.ADDSOURCE);
+    AppSvc.sendMessage(OutgoingMsgActionEnum.ADDSOURCE, this.symthink.id);
   }
 
   async componentWillLoad() {
@@ -248,19 +248,19 @@ export class AppDoc {
       });
       this.cardSubject.next('external-mod');
       AppSvc.mod$.next();
-      // this.cardExternalMod.emit();
       this.modified();
       item.select$.next(true);
+      AppSvc.sendMessage(OutgoingMsgActionEnum.EDITITEM, item.id);
     }
   }
 
-  onCreateClick() {
-    this.docAction.emit({ action: 'create', value: true });
-  }
+  // onCreateClick() {
+  //   this.docAction.emit({ action: 'create', value: true });
+  // }
 
-  onEditClick() {
-    this.docAction.emit({ action: 'edit', value: true });
-  }
+  // onEditClick() {
+  //   this.docAction.emit({ action: 'edit', value: true });
+  // }
 
   backLongpress = false;
   backPressTimeout;
@@ -337,57 +337,53 @@ export class AppDoc {
   }
 
   renderAddSupportBtn() {
-    const card = CardRules.find((cr) => cr.type === this.symthink.type);
-    if (card) {
-      this.next = CardRules.find((c) => card.next === c.type);
-    }
     return (
       <div
+        style={{ marginLeft: '-6px' }}
         class={{
           'ion-padding': AppSvc.isWidescreen,
-          'ion-text-center': true,
         }}
         slot="card-list-bottom"
       >
         <ion-button
           onClick={(e) => this.onQuickAddClick(this.next.type, e)}
-          class="onpage-btn btnpair-1st"
-          fill="outline"
-        >
-          <ion-label color="dark">Add&nbsp;{this.next.name}</ion-label>
+          fill="none">
+          <div style={{borderRadius: '50%', border: '2.5px solid #808080'}}>
+            <ion-icon style={{ fontSize: '1.5em', marginRight: '0px' }}
+              slot="start"
+              name="add-outline"
+            ></ion-icon>
+          </div>
+          <ion-label style={{ width: '138px' }}>
+            <div style={{ border: '1.7px solid #808080' }}></div>
+          </ion-label>
         </ion-button>
+      </div>
+    );
+  }
+
+  renderAddSourceBtn() {
+    return (
+      <div
+        style={{ marginLeft: '-6px' }}
+        class={{
+          'ion-padding': AppSvc.isWidescreen,
+        }}
+        slot="card-bottom"
+      >
         <ion-button
-          id={'add-item-' + this.level}
-          class="onpage-btn btnpair-2nd"
-          fill="outline"
-        >
-          <ion-icon
-            slot="icon-only"
-            name="chevron-expand-outline"
-            color="tertiary"
-          ></ion-icon>
+          onClick={() => this.onAddSourceClick()}
+          fill="none">
+          <div style={{borderRadius: '50%', border: '2.5px solid #808080'}}>
+            <ion-icon style={{ fontSize: '1.5em', marginRight: '0px' }}
+              slot="start"
+              name="add-outline"
+            ></ion-icon>
+          </div>
+          <ion-label style={{ width: '138px' }}>
+            <div style={{ border: '1.7px solid #808080' }}></div>
+          </ion-label>
         </ion-button>
-        <ion-popover
-          class="item-opts-popover"
-          trigger={'add-item-' + this.level}
-          dismissOnSelect={true}
-        >
-          <ion-content>
-            <ion-list>
-              {CardRules.map((cr) => [
-                <ion-item
-                  lines="inset"
-                  button={true}
-                  detail={false}
-                  onClick={(e) => this.onQuickAddClick(cr.type, e)}
-                >
-                  <ion-text slot="start" class={cr.iconCls}>{cr.char}</ion-text>
-                  <ion-label>{cr.name}</ion-label>
-                </ion-item>,
-              ])}
-            </ion-list>
-          </ion-content>
-        </ion-popover>
       </div>
     );
   }
@@ -414,7 +410,8 @@ export class AppDoc {
           )}
 
           {this.showBackButton() && this.renderBackBtn()}
-          {/* {AppSvc.editing && this.renderAddSupportBtn()} */}
+          {AppSvc.editing && this.renderAddSupportBtn()}
+          {AppSvc.editing && this.renderAddSourceBtn()}
         </d2-rcard>
       </Host>
     );

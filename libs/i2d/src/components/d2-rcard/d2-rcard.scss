@@ -179,9 +179,7 @@ ion-textarea {
 }
 
 .selected {
-  border: 0.5px dashed #919191;
-  border-left: 0px;
-  border-right: 0px;
+  border-top: 0.5px dashed #919191;
 }
 .selected textarea {
   caret-color: currentColor !important;
@@ -261,21 +259,15 @@ ion-breadcrumb:last-child {
 }
 
 .sources-border {
-  padding: 0px 20px 0px 20px;
+  border-top: 1px solid black;
+  width: 130px;
+  margin: 20px auto 10px;
 
-  ion-icon {
-    color     : #c8c7cc;
-    background: var(--background);
-  }
-
-  >div {
-    margin    : 0px auto 0px;
+  > div {
+    margin: -16px auto 0px;
     text-align: center;
-  }
-
-  hr {
-    border-top: 2px solid #c8c7cc;
-    margin-top: -23px;
+    width: 16px;
+    background: white;
   }
 }
 
@@ -284,9 +276,9 @@ ion-breadcrumb:last-child {
   margin-left: 12px;
 }
 .bullet-full {
-  font-size: 47px;
   margin-right: 11px;
   margin-left: 11px;
+  font-size: 12px;
 }
 
 .opts-btn {

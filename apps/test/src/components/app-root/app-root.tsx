@@ -14,15 +14,15 @@ export class AppRoot {
   componentDidLoad() {
     this.value = structuredClone(jsonData);
     window.addEventListener('message', (event) => {
-      console.log('Received message from iframe:', event.data);
+      // console.log('Received message from iframe:', event.data);
       switch (event.data.action) {
         case 102:
           console.error('Error received from Symthink Doc');
           console.warn(event.data.value);
           break;
         default:
-          console.log('Event received but not handled in app-root');
-          console.log(event.data);
+          console.warn('Event received but not handled in parent window');
+          console.debug(event.data);
       }
     });
   }
@@ -51,7 +51,7 @@ export class AppRoot {
         </header>
         <div style={{ display: 'flex', height: '100vh' }}>
           <div style={{ flex: '3' }}>
-            <iframe src="http://localhost:3345" width="100%" style={{ height: '100%' }}></iframe>
+            <iframe src="http://localhost:3347" width="100%" style={{ height: '100%' }}></iframe>
           </div>
           <div style={{ 'min-width': '400px', flex: '1' }}>
             <ion-radio-group onIonChange={this.handleActionChange}>

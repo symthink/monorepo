@@ -66,7 +66,9 @@ export class D2Rcard {
   }
 
   isTouchDevice() {
-    return 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+    // for testing on desktop
+    return true;
+    // return 'ontouchstart' in window || navigator.maxTouchPoints > 0;
   }
 
   disableSlideOpts(itm: SymThink) {
@@ -304,7 +306,7 @@ export class D2Rcard {
     const bullet = Bullets.find((b) => b.x === x);
     const charLabel = item.isKidEnabled() ? bullet.full : bullet.circ;
     return (
-      <span slot="start" class={{ bullet: true, 'bullet-full': item.isKidEnabled() && !this.data.numeric,  numbull: this.data.numeric }}>
+      <span slot="start" class={{ bullet: true, 'bullet-full': item.isKidEnabled() && !this.data.numeric, numbull: this.data.numeric }}>
         {charLabel}
         {!!item.private && <span class="locked" />}
       </span>
@@ -404,7 +406,7 @@ export class D2Rcard {
               id={item.id}
               class={{
                 'can-edit': this.canEdit,
-                selected: !!item.selected,
+                selected: !!item.selected && this.canEdit,
                 'item-text': !isConcl(index + 1),
                 'item-concl': isConcl(index + 1),
               }}
@@ -468,19 +470,20 @@ export class D2Rcard {
               {this.canEdit && this.renderItemOptionsBtn(item)}
               <ion-reorder slot="end"></ion-reorder>
             </ion-item>
-            <ion-item-options
-              side="start"
-              onIonSwipe={() => this.onExtendItem(item)}
-            >
-              <ion-item-option
-                expandable
-                class="secondary-btn-theme"
-                onClick={() => this.onExtendItem(item)}
+            {!item.hasKids() &&
+              <ion-item-options
+                side="start"
+                onIonSwipe={() => this.onExtendItem(item)}
               >
-                <ion-icon name="arrow-forward-outline"></ion-icon>
-              </ion-item-option>
-            </ion-item-options>
-
+                <ion-item-option
+                  expandable
+                  class="secondary-btn-theme"
+                  onClick={() => this.onExtendItem(item)}
+                >
+                  <ion-icon name="arrow-forward-outline"></ion-icon>
+                </ion-item-option>
+              </ion-item-options>
+            }
             <ion-item-options
               side="end"
               onIonSwipe={() => this.onItemOptionsClick(item)}
@@ -603,7 +606,7 @@ export class D2Rcard {
           lines="none"
           class={{
             shared: true,
-            selected: this.data.selected,
+            selected: this.data.selected && this.canEdit,
             'can-edit': this.canEdit,
             'top-item': true,
           }}
@@ -685,16 +688,6 @@ export class D2Rcard {
   renderSources() {
     console.log('renderSources()', this.sourcList)
     return [
-      <div class="sources-border">
-        <br />
-        <br />
-        <div>
-          <ion-icon size="large" name="bookmark"></ion-icon>
-        </div>
-        <hr />
-        <br />
-        <br />
-      </div>,
       <ion-list>
         {this.sourcList?.map((md, ix) => (
           <d2-src-metadata
@@ -705,13 +698,13 @@ export class D2Rcard {
             canEdit={this.canEdit}
           ></d2-src-metadata>
         ))}
-      </ion-list>,
+      </ion-list>
     ];
   }
 
   render() {
     return [
-      <ion-content scrollEvents={true} onIonScroll={(e) => this.docAction.emit({action: 'scroll', value: e.detail.currentY})}
+      <ion-content scrollEvents={true} onIonScroll={(e) => this.docAction.emit({ action: 'scroll', value: e.detail.currentY })}
         fullscreen={true}
         ref={(el) => (this.contentEl = el as HTMLIonContentElement)}
         onClick={(e) => this.onIonContentClick(e)}
@@ -733,8 +726,11 @@ export class D2Rcard {
         <ion-list ref={(el) => (this.listEl = el as HTMLIonListElement)}>
           {this.renderItems()}
         </ion-list>
-        <br />
         <slot name="card-list-bottom"></slot>
+
+        <div class="sources-border">
+          <div>§</div>
+        </div>
 
         {!!this.sourcList?.length && this.renderSources()}
         <slot name="card-bottom"></slot>
