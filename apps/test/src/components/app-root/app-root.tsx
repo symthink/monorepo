@@ -1,6 +1,6 @@
 import { Component, h, State } from '@stencil/core';
 
-import * as jsonData from '../../../../../data2.json';
+import * as jsonData from '../../assets/data.json';
 
 @Component({
   tag: 'app-root',
@@ -12,18 +12,14 @@ export class AppRoot {
   @State() value: any = '';
 
   componentDidLoad() {
-    this.value = structuredClone(jsonData);
+    console.log('Component loaded', jsonData);
+    this.value = jsonData;
     window.addEventListener('message', (event) => {
       // console.log('Received message from iframe:', event.data);
-      switch (event.data.action) {
-        case 102:
-          console.error('Error received from Symthink Doc');
-          console.warn(event.data.value);
-          break;
-        default:
-          console.warn('Event received but not handled in parent window');
-          console.debug(event.data);
-      }
+      if (event.data?.hello) return;
+
+      console.log(`[Parent win] received event - Action: ${event.data.action}`);
+      console.log(`Value: `, event.data.value);
     });
   }
 
@@ -34,84 +30,25 @@ export class AppRoot {
     iframe.contentWindow.postMessage(message, '*');
   }
 
-  handleActionChange = (event) => {
-    this.action = parseInt(event.detail.value);
-    console.log('Action changed:', this.action)
+  sendEdit() {
+    this.action = 2;
+    this.sendMessage();
   }
-
-  handleValueChange = (event) => {
-    this.value = structuredClone(JSON.parse(event.target.value));
+  sendRead() {  
+    this.action = 1;
+    this.sendMessage();
   }
 
   render() {
     return (
       <div>
         <header>
-          <h1>Symthink Document Testing Frame</h1>
+          <h1>Symthink Document Testing Frame</h1><div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div>
+          <button onClick={() => this.sendEdit()}>Edit doc</button><div>&nbsp;&nbsp;&nbsp;</div>
+          <button onClick={() => this.sendRead()}>Read-only</button>
         </header>
         <div style={{ display: 'flex', height: '100vh' }}>
-          <div style={{ flex: '3' }}>
-            <iframe src="http://localhost:3347" width="100%" style={{ height: '100%' }}></iframe>
-          </div>
-          <div style={{ 'min-width': '400px', flex: '1' }}>
-            <ion-radio-group onIonChange={this.handleActionChange}>
-              <ion-item>
-                <ion-label>READDOC</ion-label>
-                <ion-radio slot="start" value="1" />
-              </ion-item>
-
-              <ion-item>
-                <ion-label>EDITDOC</ion-label>
-                <ion-radio slot="start" value="2" />
-              </ion-item>
-
-              <ion-item>
-                <ion-label>DIDSAVE</ion-label>
-                <ion-radio slot="start" value="3" />
-              </ion-item>
-
-              <ion-item>
-                <ion-label>VIEWTREE</ion-label>
-                <ion-radio slot="start" value="4" />
-              </ion-item>
-
-              <ion-item>
-                <ion-label>SOURCE</ion-label>
-                <ion-radio slot="start" value="5" />
-              </ion-item>
-
-              <ion-item>
-                <ion-label>POSTBACK</ion-label>
-                <ion-radio slot="start" value="6" />
-              </ion-item>
-              <ion-item>
-                <ion-label>RECYCLE</ion-label>
-                <ion-radio slot="start" value="8" />
-              </ion-item>
-              <ion-item>
-                <ion-label>THEREFORE</ion-label>
-                <ion-radio slot="start" value="9" />
-              </ion-item>
-              <ion-item>
-                <ion-label>LISTTYPE</ion-label>
-                <ion-radio slot="start" value="10" />
-              </ion-item>
-              <ion-item>
-                <ion-label>REORDER</ion-label>
-                <ion-radio slot="start" value="11" />
-              </ion-item>
-            </ion-radio-group>
-            &nbsp;&nbsp;&nbsp;
-            <button onClick={this.sendMessage} style={{ marginTop: '10px' }}>Send Message</button>
-
-            <textarea
-              placeholder="Enter value here..."
-              onInput={this.handleValueChange}
-              style={{ width: '100%', height: '50%', marginTop: '10px' }}
-            >
-              
-            </textarea>
-          </div>
+          <iframe src="http://localhost:3355" width="100%" style={{ height: '100%' }}></iframe>
         </div>
       </div>
     );

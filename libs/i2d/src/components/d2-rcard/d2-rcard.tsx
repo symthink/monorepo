@@ -42,7 +42,6 @@ export class D2Rcard {
   contentEl: HTMLIonContentElement;
   @State() checkboxHidden = true;
   @State() change = false;
-
   @Event() itemAction: EventEmitter<{
     action;
     value;
@@ -55,6 +54,7 @@ export class D2Rcard {
   private currIonTextareaEl: HTMLIonTextareaElement;
   private selectedElHeight: number = 50;
   private sourcList: { id: string; index: number; src: ISource }[];
+  private pressTimer: number | undefined;
   // private logEvt$: Subject<StLogActionEnum> = new Subject();
 
   get showMoreOptions(): boolean {
@@ -66,9 +66,7 @@ export class D2Rcard {
   }
 
   isTouchDevice() {
-    // for testing on desktop
-    return true;
-    // return 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+    return 'ontouchstart' in window || navigator.maxTouchPoints > 0;
   }
 
   disableSlideOpts(itm: SymThink) {
@@ -305,8 +303,15 @@ export class D2Rcard {
     const x = this.data.numeric ? num : 0;
     const bullet = Bullets.find((b) => b.x === x);
     const charLabel = item.isKidEnabled() ? bullet.full : bullet.circ;
+    let classList = {
+      bullet: true,
+      'bullet-full': item.isKidEnabled() && !this.data.numeric,
+      'bullet-hollow': !item.isKidEnabled() && !this.data.numeric,
+      numbull: this.data.numeric,
+    };
+
     return (
-      <span slot="start" class={{ bullet: true, 'bullet-full': item.isKidEnabled() && !this.data.numeric, numbull: this.data.numeric }}>
+      <span slot="start" class={classList}>
         {charLabel}
         {!!item.private && <span class="locked" />}
       </span>
@@ -429,6 +434,8 @@ export class D2Rcard {
                   onIonInput={(e) => this.onTextareaInput(e, item)}
                   onIonBlur={(e) => this.onTextareaBlur(e, item)}
                   onKeyUp={(e) => this.onKeyUp(e)}
+                  onTouchStart={(e) => this.handleTouchStart(e, item)}
+                  onTouchEnd={(e) => this.handleTouchEnd(e)}    
                   value={item.text}
                   maxlength={280}
                   spellcheck={true}
@@ -590,6 +597,19 @@ export class D2Rcard {
     }
   }
 
+  handleTouchStart = (e: Event, item) => {
+    e.preventDefault();
+    this.pressTimer = window.setTimeout(() => {
+      this.itemAction.emit({ action: 'edit-full', value: item });
+    }, 700);
+  };
+  handleTouchEnd = (e: Event) => {
+    e.preventDefault();
+    if (this.pressTimer) {
+      clearTimeout(this.pressTimer);
+    }
+  };
+
   renderItems() {
     const isEditable = (itm) => !!(itm.selected && this.canEdit);
     const srcListX = this.sourcList.reduce((acc, curr, i) => {
@@ -627,6 +647,8 @@ export class D2Rcard {
               onIonInput={(e) => this.onTextareaInput(e, this.data)}
               onIonBlur={(e) => this.onTextareaBlur(e, this.data)}
               onKeyUp={(e) => this.onKeyUp(e, 'top')}
+              onTouchStart={(e) => this.handleTouchStart(e, this.data)}
+              onTouchEnd={(e) => this.handleTouchEnd(e)}
               value={this.data.getCurrentItemText()}
               maxlength={280}
               spellcheck={true}
@@ -688,6 +710,9 @@ export class D2Rcard {
   renderSources() {
     console.log('renderSources()', this.sourcList)
     return [
+      !this.canEdit && <div class="sources-border">
+        <div>§</div>
+      </div>,
       <ion-list>
         {this.sourcList?.map((md, ix) => (
           <d2-src-metadata
@@ -728,9 +753,9 @@ export class D2Rcard {
         </ion-list>
         <slot name="card-list-bottom"></slot>
 
-        <div class="sources-border">
+        {this.canEdit && <div class="sources-border">
           <div>§</div>
-        </div>
+        </div>}
 
         {!!this.sourcList?.length && this.renderSources()}
         <slot name="card-bottom"></slot>

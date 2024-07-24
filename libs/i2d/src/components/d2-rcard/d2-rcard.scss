@@ -72,19 +72,6 @@ d2-icon {
   align-self   : flex-start;
 }
 
-ion-reorder-group {
-  margin-left: 10px;
-  display    : block;
-}
-
-/* Small devices (portrait tablets and large phones, 600px and up) */
-@media only screen and (min-width: 600px) {
-  ion-reorder-group {
-    margin-left: 16px;
-    display    : block;
-  }
-}
-
 // must revert effect of above for conclusion which sits inside of ion-reorder-group tag
 ion-item.item-concl {
   margin-left: -10px;
@@ -181,9 +168,11 @@ ion-textarea {
 .selected {
   border-top: 0.5px dashed #919191;
 }
+
 .selected textarea {
   caret-color: currentColor !important;
 }
+
 .animatable {
   position: absolute;
   z-index : 10000;
@@ -260,25 +249,66 @@ ion-breadcrumb:last-child {
 
 .sources-border {
   border-top: 1px solid black;
-  width: 130px;
-  margin: 20px auto 10px;
+  width     : 130px;
+  margin    : 20px auto 10px;
 
-  > div {
-    margin: -16px auto 0px;
+  >div {
+    margin    : -16px auto 0px;
     text-align: center;
-    width: 16px;
+    width     : 16px;
     background: white;
   }
 }
 
 .bullet {
-  margin-top : 0px;
-  margin-left: 12px;
+  line-height   : 1;
+  display       : inline-block;
+  text-align    : center;
+  vertical-align: middle;
 }
+
 .bullet-full {
-  margin-right: 11px;
-  margin-left: 11px;
-  font-size: 12px;
+  font-size : 10px;
+  width     : 10px;
+  height    : 10px;
+  margin-top: 8px;
+}
+
+.bullet-hollow {
+  font-size   : 15px;
+  width       : 15px;
+  height      : 15px;
+  margin-left : -2px;
+  margin-right: 13px;
+}
+ion-reorder-group {
+  margin-left: 10px;
+  display    : block;
+}
+
+/* Small devices (portrait tablets and large phones, 600px and up) */
+@media only screen and (min-width: 600px) {
+  ion-reorder-group {
+    margin-left: 16px;
+  }
+}
+
+/* Media query for small, high-resolution devices (Retina displays, including iPhones) */
+@media only screen and (max-width: 400px),
+only screen and (min-resolution: 2dppx),
+only screen and (-webkit-min-device-pixel-ratio: 2) {
+  ion-reorder-group {
+    margin-left: 20px;
+  }
+  .bullet-hollow {
+    font-size: 10px;
+    width    : 10px;
+    height   : 10px;
+    margin: 6px 14px 0px 0px;
+  }
+  .bullet-full {
+    margin-right: 14px;
+  }
 }
 
 .opts-btn {
@@ -325,22 +355,23 @@ ion-breadcrumb:last-child {
 
 // }
 .item-subscript {
-  display: flex;
+  display        : flex;
   justify-content: flex-end;
-  color: inherit !important;
-  margin-right: 1em !important;
-}
-.locked {
-  position: absolute;
-  top: -5px;
-  left: 1px;
-  padding: 2px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-.locked:before {
-  content: '🔒';
-  font-size: 12px;
+  color          : inherit !important;
+  margin-right   : 1em !important;
 }
 
+.locked {
+  position       : absolute;
+  top            : -5px;
+  left           : 1px;
+  padding        : 2px;
+  display        : flex;
+  align-items    : center;
+  justify-content: center;
+}
+
+.locked:before {
+  content  : '🔒';
+  font-size: 12px;
+}

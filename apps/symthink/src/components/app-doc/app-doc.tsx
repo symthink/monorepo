@@ -110,6 +110,9 @@ export class AppDoc {
           }
         });
         break;
+      case 'edit-full':
+        AppSvc.sendMessage(OutgoingMsgActionEnum.EDITITEM, item.getRaw(false));
+        break;  
       default:
     }
   }
@@ -339,7 +342,7 @@ export class AppDoc {
   renderAddSupportBtn() {
     return (
       <div
-        style={{ marginLeft: '-6px' }}
+        style={{ marginLeft: '-6px', marginTop: '10px' }}
         class={{
           'ion-padding': AppSvc.isWidescreen,
         }}
@@ -349,13 +352,13 @@ export class AppDoc {
           onClick={(e) => this.onQuickAddClick(this.next.type, e)}
           fill="none">
           <div style={{borderRadius: '50%', border: '2.5px solid #808080'}}>
-            <ion-icon style={{ fontSize: '1.5em', marginRight: '0px' }}
+            <ion-icon style={{ fontSize: '1.5em', marginRight: '0px', color: 'blue', '--ionicon-stroke-width': '50px' }}
               slot="start"
               name="add-outline"
             ></ion-icon>
           </div>
-          <ion-label style={{ width: '138px' }}>
-            <div style={{ border: '1.7px solid #808080' }}></div>
+          <ion-label style={{ width: '130px' }}>
+            <div style={{ borderBottom: '2px solid #808080', marginTop: '-16px', color: '#808080' }}>add item</div>
           </ion-label>
         </ion-button>
       </div>
@@ -375,13 +378,13 @@ export class AppDoc {
           onClick={() => this.onAddSourceClick()}
           fill="none">
           <div style={{borderRadius: '50%', border: '2.5px solid #808080'}}>
-            <ion-icon style={{ fontSize: '1.5em', marginRight: '0px' }}
+            <ion-icon style={{ fontSize: '1.5em', marginRight: '0px', color: 'blue', '--ionicon-stroke-width': '50px' }}
               slot="start"
               name="add-outline"
             ></ion-icon>
           </div>
-          <ion-label style={{ width: '138px' }}>
-            <div style={{ border: '1.7px solid #808080' }}></div>
+          <ion-label style={{ width: '130px' }}>
+            <div style={{ borderBottom: '2px solid #808080', marginTop: '-16px', color: '#808080' }}>add source</div>
           </ion-label>
         </ion-button>
       </div>
