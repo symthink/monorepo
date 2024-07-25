@@ -522,7 +522,7 @@ export class D2Rcard {
               onIonSwipe={() => this.onRemoveOrTrimItem(item)}
             >
               <ion-item-option color="tertiary"
-                onClick={(e) => this.toggleLock(item)}
+                onClick={() => this.toggleLock(item)}
               >
                 <ion-icon name={`lock-${item.private ? 'open' : 'closed'}-outline`}></ion-icon>
               </ion-item-option>
