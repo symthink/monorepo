@@ -528,7 +528,7 @@ export class D2Rcard {
               </ion-item-option>
               <ion-item-option
                 expandable color="danger"
-                onClick={(e) => this.onRemoveOrTrimItem(item)}
+                onClick={() => this.onRemoveOrTrimItem(item)}
               >
                 <ion-icon name="trash-outline"></ion-icon>
               </ion-item-option>
