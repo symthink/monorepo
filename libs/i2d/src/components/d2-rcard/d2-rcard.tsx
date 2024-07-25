@@ -256,6 +256,19 @@ export class D2Rcard {
     this.itemAction.emit({ action: 'slide-opt-trim', value: item });
   }
 
+  async toggleLock(item: SymThink) {
+    if (item.private) {
+      delete item.private;
+    } else {
+      item.private = true;
+    }
+    this.docAction.emit({ action: 'modified', value: null });
+    if (this.listEl) {
+      this.listEl.closeSlidingItems();
+    }
+    this.modified();
+  }
+
   async onExtendItem(item: SymThink) {
     this.itemAction.emit({ action: 'slide-opt-extend', value: item });
   }
@@ -506,15 +519,20 @@ export class D2Rcard {
             }
             <ion-item-options
               side="end"
-              onIonSwipe={() => this.onItemOptionsClick(item)}
+              onIonSwipe={() => this.onRemoveOrTrimItem(item)}
             >
-              <ion-item-option
-                expandable
-                class="secondary-btn-theme opts-btn-slide"
-                onClick={(e) => this.onItemOptionsClick(item, e)}
+              <ion-item-option color="tertiary"
+                onClick={(e) => this.toggleLock(item)}
               >
-                <ion-icon name="ellipsis-horizontal"></ion-icon>
+                <ion-icon name={`lock-${item.private ? 'open' : 'closed'}-outline`}></ion-icon>
               </ion-item-option>
+              <ion-item-option
+                expandable color="danger"
+                onClick={(e) => this.onRemoveOrTrimItem(item)}
+              >
+                <ion-icon name="trash-outline"></ion-icon>
+              </ion-item-option>
+
             </ion-item-options>
           </ion-item-sliding>
         ))}
