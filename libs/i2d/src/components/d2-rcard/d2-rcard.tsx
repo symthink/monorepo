@@ -130,13 +130,28 @@ export class D2Rcard {
   }
 
   componentWillRender() {
-    this.currIonTextareaEl = null;
+    if (this.currIonTextareaEl) {
+      console.log('remove ion-textarea handlers');
+      this.currIonTextareaEl.removeEventListener('touchstart', this.handleTouchStart);
+      this.currIonTextareaEl.removeEventListener('touchend', this.handleTouchEnd);
+      this.currIonTextareaEl.removeEventListener('contextmenu', this.preventDefault);
+      this.currIonTextareaEl = null;
+    }
+  }
+
+  preventDefault(e: TouchEvent) {
+    e.preventDefault();
+    e.stopPropagation();
   }
 
   async componentDidRender() {
     this.currIonTextareaEl = this.contentEl.querySelector('ion-textarea');
     if (this.currIonTextareaEl) {
       this.currIonTextareaEl.autoGrow = true;
+      this.currIonTextareaEl.addEventListener('touchstart', this.handleTouchStart, { passive: true });
+      this.currIonTextareaEl.addEventListener('touchend', this.handleTouchEnd, { passive: true });
+      this.currIonTextareaEl.addEventListener('contextmenu', this.preventDefault);
+      console.log('new ion-textarea found');
     }
     // const selectedEl = this.el.shadowRoot.querySelector('.selected');
     // if (selectedEl) {
@@ -430,12 +445,10 @@ export class D2Rcard {
             >
               {!isConcl(index + 1) && this.renderItemIcon(item, index + 1)}
               {isEditable(item) && (
-                <ion-textarea
+                <ion-textarea id={item.id}
                   onIonInput={(e) => this.onTextareaInput(e, item)}
                   onIonBlur={(e) => this.onTextareaBlur(e, item)}
                   onKeyUp={(e) => this.onKeyUp(e)}
-                  onTouchStart={(e) => this.handleTouchStart(e, item)}
-                  onTouchEnd={(e) => this.handleTouchEnd(e)}    
                   value={item.text}
                   maxlength={280}
                   spellcheck={true}
@@ -597,14 +610,19 @@ export class D2Rcard {
     }
   }
 
-  handleTouchStart = (e: Event, item) => {
-    e.preventDefault();
+  handleTouchStart = (_e: TouchEvent) => {
+    if (this.currIonTextareaEl) {
+      this.currIonTextareaEl.blur();
+    }
     this.pressTimer = window.setTimeout(() => {
-      this.itemAction.emit({ action: 'edit-full', value: item });
-    }, 700);
+      console.log('LongPressed:', this.currIonTextareaEl.id);
+      const item = this.data.find((i) => i.id === this.currIonTextareaEl.id);
+      if (item) {
+        this.itemAction.emit({ action: 'edit-full', value: item });
+      }
+    }, 600);
   };
-  handleTouchEnd = (e: Event) => {
-    e.preventDefault();
+  handleTouchEnd = (_e: TouchEvent) => {
     if (this.pressTimer) {
       clearTimeout(this.pressTimer);
     }
@@ -643,12 +661,10 @@ export class D2Rcard {
           }}
         >
           {isEditable(this.data) && (
-            <ion-textarea
+            <ion-textarea id={this.data.id}
               onIonInput={(e) => this.onTextareaInput(e, this.data)}
               onIonBlur={(e) => this.onTextareaBlur(e, this.data)}
               onKeyUp={(e) => this.onKeyUp(e, 'top')}
-              onTouchStart={(e) => this.handleTouchStart(e, this.data)}
-              onTouchEnd={(e) => this.handleTouchEnd(e)}
               value={this.data.getCurrentItemText()}
               maxlength={280}
               spellcheck={true}
