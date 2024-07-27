@@ -144,6 +144,9 @@ class AppService {
                         if (data.value.text) item.text = data.value.text;
                         if (data.value.type) item.type = data.value.type;
                         if (data.value.label) item.label = data.value.label;
+                        if (data.value.private) {
+                            item.private = true;
+                        } 
                         this.mod$.next();
                     }
                 }

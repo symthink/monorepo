@@ -150,8 +150,10 @@ export class D2Rcard {
       this.currIonTextareaEl.autoGrow = true;
       this.currIonTextareaEl.addEventListener('touchstart', this.handleTouchStart, { passive: true });
       this.currIonTextareaEl.addEventListener('touchend', this.handleTouchEnd, { passive: true });
-      this.currIonTextareaEl.addEventListener('contextmenu', this.preventDefault);
-      console.log('new ion-textarea found');
+      const ta = this.currIonTextareaEl.querySelector('textarea');
+      if (ta) {
+        ta.addEventListener('contextmenu', (e) => e.preventDefault());
+      }
     }
     // const selectedEl = this.el.shadowRoot.querySelector('.selected');
     // if (selectedEl) {
