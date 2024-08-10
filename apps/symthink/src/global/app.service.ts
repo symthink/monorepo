@@ -491,7 +491,7 @@ class AppService {
                 modified = true;
                 break;
             case 'edit':
-                this.sendMessage(OutgoingMsgActionEnum.EDITITEM, item.id);
+                this.sendMessage(OutgoingMsgActionEnum.EDITITEM, item.getRaw(false));
                 break;
     
             default:
