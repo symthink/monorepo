@@ -276,7 +276,11 @@ class AppService {
     async onItemOptionsSelect(item: SymThink, isPageTopItem: boolean, evt?: MouseEvent | PointerEvent) {
         const buttons: ActionSheetButton[] = [];
 
-
+        buttons.push({
+            text: 'Edit',
+            role: 'edit',
+            icon: 'create-outline'
+        });
         if (item.url) {
             buttons.push({
                 text: 'Unsubscribe',
@@ -486,6 +490,10 @@ class AppService {
                 this.sendMessage(OutgoingMsgActionEnum.PRIVACY, !!item.private);
                 modified = true;
                 break;
+            case 'edit':
+                this.sendMessage(OutgoingMsgActionEnum.EDITITEM, item.id);
+                break;
+    
             default:
                 console.warn('Item option response not found:', rs);
         }
