@@ -117,6 +117,16 @@ class AppService {
                 if (data.action === IncomingMsgActionEnum.SOURCE) {
                     const itemId = data.value?.itemId;
                     const srcData = data.value?.source;
+                    if (srcData.url) {
+                        try {
+                            srcData.url = new URL(srcData.url);
+                        } catch (e) {
+                            console.warn('Invalid URL:', srcData.url);
+                        }
+                    }
+                    if (typeof(srcData.date) === 'string') {
+                        srcData.date = new Date(srcData.date);
+                    }                 
                     const card = this.symthinkDoc.find((c) => c.id === itemId);
                     if (card) {
                         card.addSource(srcData);
