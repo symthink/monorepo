@@ -1,6 +1,7 @@
 import { Component, h, Prop, Event, EventEmitter } from '@stencil/core';
-import { ISource } from '../../core/symthink.class';
-import dayjs from 'dayjs';
+import { CitationStyleLang, isCSL } from '../../core/symthink.class';
+import { Cite } from '@citation-js/core';
+import '@citation-js/plugin-csl';
 
 @Component({
   tag: 'd2-src-metadata',
@@ -8,7 +9,7 @@ import dayjs from 'dayjs';
   shadow: true,
 })
 export class D2SrcMetadata {
-  @Prop() data: ISource;
+  @Prop() data: CitationStyleLang;
   @Prop() listNo: number;
   @Prop() stid: string;
   @Prop() index: number;
@@ -16,44 +17,37 @@ export class D2SrcMetadata {
 
   @Event() itemAction: EventEmitter<{ action; value }>;
 
+  private citation: string = '';
+
+  componentWillLoad() {
+    if (!isCSL(this.data)) {
+      console.error('Invalid citation data:', this.data);
+      return;
+    }
+    this.citation = Cite(this.data).format('bibliography', {
+      format: 'html',
+      template: 'apa',
+      lang: 'en-US',
+    });
+  }
+
   onSourceClick() {
-    window.open(this.data.url, '_blank');
+    if (this.data.URL) {
+      window.open(this.data.URL, '_blank');
+    }
   }
 
   onDeleteClick() {
     this.itemAction.emit({action: 'delete-source', value: {stid: this.stid, index: this.index}})
   }
 
-  isValid(s: string) {
-    if (s) {
-      const a = new RegExp('[\\\\+*?\\[\\^\\]$(){}=!<>|:]', 'g');
-      return !a.test(s);  
-    }
-    return false;
-  }
-
-  renderLabel() {
-    return (
-      <ion-label class="ion-text-wrap">
-      <h2><a href={this.data.url.toString()} target="_blank">{this.data.title}</a></h2>
-      {this.data.author && <p>By {this.data.author}
-      {this.data.date && [ ' on ',
-        dayjs(this.data.date).format('MMM D, YYYY')
-      ]}
-      </p>}
-      {this.isValid(this.data.publisher) && <p>Publisher: {this.data.publisher}</p>}
-      {this.data.url?.hostname && <p>{this.data.url.hostname}</p>}
-    </ion-label>
-    );
-  }
-
   render() {
     if (this.canEdit) {
       return (
         <ion-item-sliding>
-          <ion-item class="align-icon-start">
+          <ion-item class="align-icon-start" onClick={() => this.onSourceClick()}>
             <div slot="start">{(this.listNo)}.</div>
-            {this.renderLabel()}
+            <ion-label class="ion-text-wrap" innerHTML={this.citation}></ion-label>
           </ion-item>
           <ion-item-options side="end" onIonSwipe={() => this.onDeleteClick()}>
             <ion-item-option color="danger" expandable onClick={() => this.onDeleteClick()}>
@@ -68,7 +62,7 @@ export class D2SrcMetadata {
     } else {
       return (
         <ion-item class="align-icon-start" detail detailIcon="open-outline" onClick={() => this.onSourceClick()}>
-          {this.renderLabel()}
+          <ion-label class="ion-text-wrap" innerHTML={this.citation}></ion-label>
         </ion-item>
       );
     }

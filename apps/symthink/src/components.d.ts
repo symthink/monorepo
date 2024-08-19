@@ -8,7 +8,7 @@ import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
 import { ISymThink, SymThink } from "@symthink/i2d";
 import { Subject } from "rxjs";
 import { MatchResults } from "@stencil/router";
-import { ISource, SymThink as SymThink1, SymThinkDocument } from "../../../libs/i2d/src/core/symthink.class";
+import { CitationStyleLang, SymThink as SymThink1, SymThinkDocument } from "../../../libs/i2d/src/core/symthink.class";
 import { ActionSheetOptions } from "@ionic/core/dist/types/components/action-sheet/action-sheet-interface";
 export namespace Components {
     interface AppDoc {
@@ -72,7 +72,7 @@ export namespace Components {
     }
     interface D2SrcMetadata {
         "canEdit": boolean;
-        "data": ISource;
+        "data": CitationStyleLang;
         "index": number;
         "listNo": number;
         "stid": string;
@@ -280,7 +280,7 @@ declare namespace LocalJSX {
     }
     interface D2SrcMetadata {
         "canEdit"?: boolean;
-        "data"?: ISource;
+        "data"?: CitationStyleLang;
         "index"?: number;
         "listNo"?: number;
         "onItemAction"?: (event: D2SrcMetadataCustomEvent<{ action; value }>) => void;

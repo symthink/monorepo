@@ -31,6 +31,8 @@
   },
   "private": true,
   "dependencies": {
+    "@citation-js/core": "^0.7.14",
+    "@citation-js/plugin-csl": "^0.7.14",
     "@googlemaps/js-api-loader": "^1.16.2",
     "@ionic/storage": "^3.0.6",
     "canvas-confetti": "^1.6.0",

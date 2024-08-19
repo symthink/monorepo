@@ -253,7 +253,7 @@ export class AppDoc {
       AppSvc.mod$.next();
       this.modified();
       item.select$.next(true);
-      AppSvc.sendMessage(OutgoingMsgActionEnum.EDITITEM, item.getRaw(false));
+      // AppSvc.sendMessage(OutgoingMsgActionEnum.EDITITEM, item.getRaw(false));
     }
   }
 

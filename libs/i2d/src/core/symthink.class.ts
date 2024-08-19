@@ -33,18 +33,24 @@ export enum ARG_TYPE {
     Statement = 'STM'
 }
 
-export interface ISource {
-    author: string;
-    date: Date;
-    publisher: string;
-    title: string;
-    url: URL;
-    description?: string;
-    image?: URL;
-    logo?: URL;
+export type CitationStyleLang = {
+    type?: string;
+    title?: string;
+    author?: { family: string; given?: string }[];
+    issued?: { "date-parts": [[number, number, number]] };
+    "container-title"?: string;
+    publisher?: string;
+    URL?: string;
+    source?: string;
+};
+
+export function isCSL(obj: any): obj is CitationStyleLang {
+    const requiredFields = ['type', 'title', 'issued'];
+    return !!(requiredFields.every(field => field in obj) &&
+        obj['issued'] && Array.isArray(obj['issued']['date-parts']) &&
+        Array.isArray(obj['issued']['date-parts'][0]) &&
+        obj['issued']['date-parts'][0].length);
 }
-
-
 
 // // everything below the top level
 export interface ISymThink {
@@ -54,7 +60,7 @@ export interface ISymThink {
     text?: string;
     url?: string;
     support?: ISymThink[];
-    source?: ISource[];
+    source?: CitationStyleLang[];
     lastSupIsConcl?: boolean;
     expires?: number; // for orphans only
     lastmod?: number;
@@ -119,7 +125,7 @@ export class SymThink {
     // https://symthink.io/n/SOMEID#nodeId
     url: URL;
     support: SymThink[];
-    source: ISource[];
+    source: CitationStyleLang[];
     parent: SymThink = null;
     checked = false; // for edit mode Extend/Trim options
     active = false;
@@ -195,12 +201,7 @@ export class SymThink {
             arg.support.map((a) => this.addChild(a, false));
         }
         if (arg.source) {
-            this.source = arg.source.map(s => {
-                const cp = { ...s } as any;
-                try { cp.url = new URL(s.url) } catch (e) { }
-                try { cp.date = new Date(s.date) } catch (e) { }
-                return cp;
-            });
+            this.source = arg.source;
         }
         if (arg.url) {            
             try { this.url = new URL(arg.url) } catch (e) { console.log('Invalid URL:', e) }
@@ -232,7 +233,7 @@ export class SymThink {
         return !!(this.source && this.source.length);
     }
 
-    addSource(src: ISource) {
+    addSource(src: CitationStyleLang) {
         if (!this.hasSources()) {
             this.source = [];
         }
@@ -242,7 +243,7 @@ export class SymThink {
         this.logAction(StLogActionEnum.ADD_SOURCE);
     }
 
-    getShowableSources(): {id: string, index: number; src: ISource}[] {
+    getShowableSources(): {id: string, index: number; src: CitationStyleLang}[] {
         let srcList = [];
         if (this.hasSources()) {
             srcList = this.source.map((src, x) => {
@@ -381,12 +382,7 @@ export class SymThink {
             private: !!this.private || undefined
         };
         if (this.source) {
-            o.source = this.source.map(s => {
-                const cp = { ...s } as any;
-                try { cp.url = s.url.toString() } catch (e) { }
-                try { cp.date = s.date.toString() } catch (e) { }
-                return cp;
-            });
+            o.source = this.source.map(s => structuredClone(s));
         }
         if (deep && this.support) {
             o.support = this.support.map((a) => a.getRaw(a.hasKids()));

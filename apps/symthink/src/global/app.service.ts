@@ -1,6 +1,6 @@
 import { ActionSheetButton, ActionSheetOptions, alertController, modalController, OverlayEventDetail, popoverController } from '@ionic/core';
 import { HostElement } from '@stencil/core/internal';
-import { ARG_TYPE, CardRules, FormatEnum, SymThink, SymThinkDocument, trailingSympunkRegExp } from '@symthink/i2d';
+import { ARG_TYPE, CardRules, FormatEnum, isCSL, SymThink, SymThinkDocument, trailingSympunkRegExp } from '@symthink/i2d';
 import { Subject } from 'rxjs';
 import { ENV } from '../environment/config';
 
@@ -117,16 +117,9 @@ class AppService {
                 if (data.action === IncomingMsgActionEnum.SOURCE) {
                     const itemId = data.value?.itemId;
                     const srcData = data.value?.source;
-                    if (srcData.url) {
-                        try {
-                            srcData.url = new URL(srcData.url);
-                        } catch (e) {
-                            console.warn('Invalid URL:', srcData.url);
-                        }
+                    if (!isCSL(srcData)) {
+                        throw new Error('Invalid CSL source');
                     }
-                    if (typeof(srcData.date) === 'string') {
-                        srcData.date = new Date(srcData.date);
-                    }                 
                     const card = this.symthinkDoc.find((c) => c.id === itemId);
                     if (card) {
                         card.addSource(srcData);

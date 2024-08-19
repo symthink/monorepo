@@ -17,8 +17,8 @@ import {
   sympunkReplacementRegex,
   Bullets,
   ARG_TYPE,
-  ISource,
   sympunkRegex,
+  CitationStyleLang,
 } from '../../core/symthink.class';
 // import getPercentageDifference from 'text-percentage-difference';
 
@@ -53,7 +53,7 @@ export class D2Rcard {
   private listEl: HTMLIonListElement;
   private currIonTextareaEl: HTMLIonTextareaElement;
   private selectedElHeight: number = 50;
-  private sourcList: { id: string; index: number; src: ISource }[];
+  private sourcList: { id: string; index: number; src: CitationStyleLang }[];
   private pressTimer: number | undefined;
   // private logEvt$: Subject<StLogActionEnum> = new Subject();
 

@@ -3,7 +3,7 @@
 }
 
 ion-label * {
-  font-size     : var(--font-size, 20px)!important;
+  font-size     : inherit;
   font-family   : var(--ion-font-family);
   font-weight   : var(--font-weight, 300);
   letter-spacing: var(--letter-spacing, normal);
