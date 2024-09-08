@@ -33,6 +33,7 @@ export enum OutgoingMsgActionEnum {
     SCROLL = 110,
     PRIVACY = 111,
     EDITITEM = 112,
+    METRIC = 113,
 }
 
 export interface IPostMessage {

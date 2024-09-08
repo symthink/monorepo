@@ -93,6 +93,10 @@ export interface D2MetricCustomEvent<T> extends CustomEvent<T> {
     detail: T;
     target: HTMLD2MetricElement;
 }
+export interface D2MetricsCustomEvent<T> extends CustomEvent<T> {
+    detail: T;
+    target: HTMLD2MetricsElement;
+}
 export interface D2OutlineCustomEvent<T> extends CustomEvent<T> {
     detail: T;
     target: HTMLD2OutlineElement;
@@ -247,6 +251,7 @@ declare namespace LocalJSX {
     }
     interface D2Metrics {
         "modalClassName"?: string;
+        "onDocAction"?: (event: D2MetricsCustomEvent<{ action; value }>) => void;
         "refresh"?: Subject<any | void>;
         /**
           * Symthink Document

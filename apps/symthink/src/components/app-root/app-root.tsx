@@ -87,10 +87,14 @@ export class AppRoot {
         this.ionNav.popToRoot();
         break;
       case 'edit':
+        console.log('Edit doc');
         window.postMessage(
           { action: IncomingMsgActionEnum.EDITDOC, value: null },
           location.protocol + '//' + location.host
         );
+        break;
+      case 'metric-press':
+        AppSvc.sendMessage(OutgoingMsgActionEnum.METRIC, evt.detail.value);
         break;
       default:
     }

@@ -1,9 +1,13 @@
-import { Component, h, JSX, Prop, State } from '@stencil/core';
+import {
+  Component, h, JSX, Prop, State, Event,
+  EventEmitter,
+} from '@stencil/core';
 import {
   SymThinkDocument,
   StLogActionEnum,
 } from '../../core/symthink.class';
 import { Subject } from 'rxjs';
+
 
 interface IMetricInfo {
   name: string;
@@ -26,6 +30,7 @@ export class D2Metrics {
   @Prop() modalClassName?: string;
   @State() modified = false;
   @State() modalIsOpen = false;
+  @Event() docAction: EventEmitter<{ action; value }>;
 
   selected: IMetricInfo;
   sourceCnt: number;
@@ -66,16 +71,16 @@ export class D2Metrics {
   // }
 
   list: IMetricInfo[] = [
-    {
-      name: 'Sources',
-      info: () => (
-        <div>
-          <p>
-            This badge displays the total sources cited in this document.
-          </p>
-        </div>
-      ),
-    },
+    // {
+    //   name: 'Sources',
+    //   info: () => (
+    //     <div>
+    //       <p>
+    //         This badge displays the total sources cited in this document.
+    //       </p>
+    //     </div>
+    //   ),
+    // },
     {
       name: 'Mindset',
       icon: <span class="gankyil-symbol"></span>,
@@ -178,6 +183,8 @@ export class D2Metrics {
   //   }
   // }
   async onMetricClick(metric: string) {
+    this.docAction.emit({ action: 'metric-press', value: metric });
+
     const met = this.list.find((m) => m.name === metric);
     if (met) {
       this.selected = met;
