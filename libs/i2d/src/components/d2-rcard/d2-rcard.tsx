@@ -789,7 +789,7 @@ export class D2Rcard {
         </ion-list>
         <slot name="card-list-bottom"></slot>
 
-        {this.canEdit && <div class="sources-border">
+        {this.canEdit && !this.data.isRoot && <div class="sources-border">
           <div>§</div>
         </div>}
 

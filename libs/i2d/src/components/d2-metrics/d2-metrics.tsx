@@ -217,17 +217,17 @@ export class D2Metrics {
         <d2-metric name="depth" value={this.depth} />
         <d2-metric name="mindset" value={`${this.mindsetVal}`} /> */}
 
+        <div class="metric" onClick={() => this.onMetricClick('Mindset')}>
+          <div class="left decisions">Engagement</div>
+          <div class="right">{this.decisionCnt}</div>
+        </div>{' '}
         <div class="metric" onClick={() => this.onMetricClick('Sources')}>
           <div class="left sources">Sources</div>
           <div class="right">{this.sourceCnt}</div>
         </div>{' '}
         <div class="metric" onClick={() => this.onMetricClick('Size')}>
-          <div class="left nodes">Nodes</div>
+          <div class="left nodes">Depth</div>
           <div class="right">{this.totalNodes}</div>
-        </div>{' '}
-        <div class="metric" onClick={() => this.onMetricClick('Mindset')}>
-          <div class="left decisions">Decisions</div>
-          <div class="right">{this.decisionCnt}</div>
         </div>
         <ion-modal
           class={this.modalClassName}

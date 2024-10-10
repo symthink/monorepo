@@ -112,7 +112,7 @@ export class AppDoc {
         break;
       case 'edit-full':
         AppSvc.sendMessage(OutgoingMsgActionEnum.EDITITEM, item.getRaw(false));
-        break;  
+        break;
       default:
     }
   }
@@ -339,33 +339,65 @@ export class AppDoc {
     );
   }
 
+
+
   renderAddSupportBtn() {
     return (
       <div
-        style={{ marginLeft: '-6px', marginTop: '10px' }}
+        style={{
+          paddingTop: '30px', paddingBottom: '30px',
+          display: 'flex', justifyContent: 'center', minWidth: '340px', maxWidth: '600px'
+        }}
         class={{
           'ion-padding': AppSvc.isWidescreen,
         }}
         slot="card-list-bottom"
       >
-        <ion-button
-          onClick={(e) => this.onQuickAddClick(this.next.type, e)}
-          fill="none">
-          <div style={{borderRadius: '50%', border: '2.5px solid #808080'}}>
-            <ion-icon style={{ fontSize: '1.5em', marginRight: '0px', color: 'blue', '--ionicon-stroke-width': '50px' }}
-              slot="start"
-              name="add-outline"
-            ></ion-icon>
-          </div>
-          <ion-label style={{ width: '130px' }}>
-            <div style={{ borderBottom: '2px solid #808080', marginTop: '-16px', color: '#808080' }}>add item</div>
+        <div style={{
+          backgroundColor: '#f2eded', width: '80%', borderRadius: '50px'
+          , display: 'flex', justifyContent: 'flex-start', alignItems: 'center', padding: '12px'
+        }}
+          onClick={(e) => this.onQuickAddClick(this.next.type, e)}>
+          <ion-icon style={{ fontSize: '1.5em', marginRight: '8px', color: 'grey' }}
+            name="add-outline"
+          ></ion-icon>
+          <ion-label style={{ width: 'fit-content' }}>
+            <div style={{ color: 'black' }}>Add question, idea or claim</div>
           </ion-label>
-        </ion-button>
+        </div>
       </div>
     );
   }
 
   renderAddSourceBtn() {
+    return (
+      <div
+        style={{
+          paddingTop: '30px', paddingBottom: '30px',
+          display: 'flex', justifyContent: 'center', minWidth: '340px', maxWidth: '600px'
+        }}
+        class={{
+          'ion-padding': AppSvc.isWidescreen,
+        }}
+        slot="card-bottom"
+      >
+        <div style={{
+          backgroundColor: '#f2eded', width: '80%', borderRadius: '50px'
+          , display: 'flex', justifyContent: 'flex-start', alignItems: 'center', padding: '12px'
+        }}
+          onClick={(e) => this.onAddSourceClick()}>
+          <ion-icon style={{ fontSize: '1.5em', marginRight: '8px', color: 'grey' }}
+            name="add-outline"
+          ></ion-icon>
+          <ion-label style={{ width: 'fit-content' }}>
+            <div style={{ color: 'black' }}>Add source</div>
+          </ion-label>
+        </div>
+      </div>
+    );
+  }
+
+  renderAddSourceBtn2() {
     return (
       <div
         style={{ marginLeft: '-6px' }}
@@ -377,7 +409,7 @@ export class AppDoc {
         <ion-button
           onClick={() => this.onAddSourceClick()}
           fill="none">
-          <div style={{borderRadius: '50%', border: '2.5px solid #808080'}}>
+          <div style={{ borderRadius: '50%', border: '2.5px solid #808080' }}>
             <ion-icon style={{ fontSize: '1.5em', marginRight: '0px', color: 'blue', '--ionicon-stroke-width': '50px' }}
               slot="start"
               name="add-outline"
@@ -392,6 +424,7 @@ export class AppDoc {
   }
 
   render() {
+    console.log('level', this.level);
     return (
       <Host>
         <d2-rcard
@@ -414,7 +447,7 @@ export class AppDoc {
 
           {this.showBackButton() && this.renderBackBtn()}
           {AppSvc.editing && this.renderAddSupportBtn()}
-          {AppSvc.editing && this.renderAddSourceBtn()}
+          {(AppSvc.editing && this.level) && this.renderAddSourceBtn()}
         </d2-rcard>
       </Host>
     );
