@@ -356,7 +356,7 @@ export class AppDoc {
         style={{
           paddingTop: '30px', paddingBottom: '30px',
           display: 'flex', justifyContent: 'flex-start', 
-          minWidth: '340px', maxWidth: '600px', margin: '5px'
+          width: '250px', marginLeft: '10px'
         }}
         class={{
           'ion-padding': AppSvc.isWidescreen,
@@ -368,11 +368,11 @@ export class AppDoc {
           , display: 'flex', justifyContent: 'flex-start', alignItems: 'center', padding: '12px'
         }}
           onClick={(e) => this.onQuickAddClick(this.next.type, e)}>
-          <ion-icon style={{ fontSize: '1.5em', marginRight: '8px', color: 'grey' }}
+          <ion-icon style={{ fontSize: '1.5em', marginRight: '8px', color: 'black', fontWeight: '400' }}
             name="add-outline"
           ></ion-icon>
-          <ion-label style={{ width: 'fit-content' }}>
-            <div style={{ color: 'black' }}>Add item</div>
+          <ion-label style={{ width: '100%', textAlign: 'center' }}>
+            <div style={{ color: 'black', fontWeight: '400' }}>Add item</div>
           </ion-label>
         </div>
       </div>
@@ -382,29 +382,31 @@ export class AppDoc {
   renderAddSourceBtn() {
     return (
       <div
-        style={{
-          paddingTop: '30px', paddingBottom: '30px',
-          display: 'flex', justifyContent: 'flex-start', minWidth: '340px', maxWidth: '600px'
-        }}
-        class={{
-          'ion-padding': AppSvc.isWidescreen,
-        }}
-        slot="card-bottom"
-      >
-        <div style={{
-          backgroundColor: '#e8e8e8', width: '80%', borderRadius: '25px 5px 5px 25px'
-          , display: 'flex', justifyContent: 'flex-start', alignItems: 'center', padding: '12px'
-        }}
-          onClick={() => this.onAddSourceClick()}>
-          <ion-icon style={{ fontSize: '1.5em', marginRight: '8px', color: 'grey' }}
-            name="add-outline"
-          ></ion-icon>
-          <ion-label style={{ width: 'fit-content' }}>
-            <div style={{ color: 'black' }}>Add source</div>
-          </ion-label>
-        </div>
+      style={{
+        paddingTop: '30px', paddingBottom: '30px',
+        display: 'flex', justifyContent: 'flex-start', 
+        width: '250px', marginLeft: '10px'
+      }}
+      class={{
+        'ion-padding': AppSvc.isWidescreen,
+      }}
+      slot="card-bottom"
+    >
+      <div style={{
+        backgroundColor: '#e8e8e8', width: '80%', borderRadius: '25px 5px 5px 25px'
+        , display: 'flex', justifyContent: 'flex-start', alignItems: 'center', padding: '12px'
+      }}
+        onClick={(e) => this.onAddSourceClick()}>
+        <ion-icon style={{ fontSize: '1.5em', marginRight: '8px', color: 'black', fontWeight: '400' }}
+          name="add-outline"
+        ></ion-icon>
+        <ion-label style={{ width: '100%', textAlign: 'center' }}>
+          <div style={{ color: 'black', fontWeight: '400' }}>Add source</div>
+        </ion-label>
       </div>
+    </div>
     );
+
   }
 
   render() {
