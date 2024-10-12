@@ -627,6 +627,13 @@ ${conclusion}`;
         }
         return false;
     }
+
+    getLabel(): string {
+        if (this.isRoot) {
+          return 'root';
+        }
+        return (this.label || this.text.substring(0, this.text.indexOf(':'))).toLowerCase();
+    }
 }
 
 // a.k.a root card

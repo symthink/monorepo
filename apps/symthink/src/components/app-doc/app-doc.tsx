@@ -178,6 +178,11 @@ export class AppDoc {
       if (this.symthinkDoc.log$) {
         this.symthinkDoc.log$.subscribe(() => this.modified());
       }
+      AppSvc.sendMessage(OutgoingMsgActionEnum.PAGECHANGE, {
+        pageId: this.symthink.id,
+        level: this.level,
+        label: this.symthink.getLabel()
+      });
     }
   }
 
@@ -300,8 +305,7 @@ export class AppDoc {
   }
 
   showMetrics(): boolean {
-    const label = (this.symthink.label || this.symthink.text.substring(0, this.symthink.text.indexOf(':'))).toLowerCase();
-    return this.level === 1 && ['stories', 'platform'].includes(label);
+    return this.level === 1 && ['stories', 'platform'].includes(this.symthink.getLabel());
   }
 
   renderTouchBackBtn() {

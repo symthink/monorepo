@@ -81,10 +81,24 @@ export class AppRoot {
           // console.log('app-doc', appDocEl)
           appDocEl.comingBack();
         }
-        this.ionNav.pop();
+        this.ionNav.pop(null, () => {
+          console.log('Popped--------');
+          AppSvc.sendMessage(OutgoingMsgActionEnum.PAGECHANGE, {
+            pageId: AppSvc.currentSymthink.id,
+            level: this.ionNav.childElementCount,
+            label: AppSvc.currentSymthink.getLabel()
+          });
+        });
         break;
       case 'go-top':
-        this.ionNav.popToRoot();
+        this.ionNav.popToRoot(null, () => {
+          console.log('PoppedToRoot--------');
+          AppSvc.sendMessage(OutgoingMsgActionEnum.PAGECHANGE, {
+            pageId: AppSvc.currentSymthink.id,
+            level: 0,
+            label: AppSvc.currentSymthink.getLabel()
+          });  
+        });
         break;
       case 'edit':
         console.log('Edit doc');
@@ -118,18 +132,16 @@ export class AppRoot {
   }
 
   componentDidRender() {
-
     if (this.loaded && this.ionNav) {
       this.ionNav.addEventListener('ionNavDidChange', async () => {
         const viewController = await this.ionNav.getActive();
         AppSvc.currentSymthink = viewController.params.symthink as SymThink;
-        if (this.lastChildElementCount > this.ionNav.childElementCount) {
-          // going back
-          const pages = AppSvc.currentSymthink.getPageIDs();
-          window.postMessage(
-            { action: OutgoingMsgActionEnum.PAGECHANGE, value: pages },
-            location.protocol + '//' + location.host
-          );
+        if (this.lastChildElementCount > this.ionNav.childElementCount) {    
+          // const pages = AppSvc.currentSymthink.getPageIDs();
+          // window.postMessage(
+          //   { action: OutgoingMsgActionEnum.PAGECHANGE, value: pages },
+          //   location.protocol + '//' + location.host
+          // );
         }
         this.lastChildElementCount = this.ionNav.childElementCount;
       });
