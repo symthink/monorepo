@@ -299,6 +299,11 @@ export class AppDoc {
     return AppSvc.saved && AppSvc.editing;
   }
 
+  showMetrics(): boolean {
+    const label = (this.symthink.label || this.symthink.text.substring(0, this.symthink.text.indexOf(':'))).toLowerCase();
+    return this.level === 1 && ['stories', 'platform'].includes(label);
+  }
+
   renderTouchBackBtn() {
     return (
       <ion-fab-button
@@ -346,7 +351,8 @@ export class AppDoc {
       <div
         style={{
           paddingTop: '30px', paddingBottom: '30px',
-          display: 'flex', justifyContent: 'center', minWidth: '340px', maxWidth: '600px'
+          display: 'flex', justifyContent: 'flex-start', 
+          minWidth: '340px', maxWidth: '600px', margin: '5px'
         }}
         class={{
           'ion-padding': AppSvc.isWidescreen,
@@ -354,7 +360,7 @@ export class AppDoc {
         slot="card-list-bottom"
       >
         <div style={{
-          backgroundColor: '#f2eded', width: '80%', borderRadius: '50px'
+          backgroundColor: '#e8e8e8', width: '80%', borderRadius: '25px 5px 5px 25px'
           , display: 'flex', justifyContent: 'flex-start', alignItems: 'center', padding: '12px'
         }}
           onClick={(e) => this.onQuickAddClick(this.next.type, e)}>
@@ -362,7 +368,7 @@ export class AppDoc {
             name="add-outline"
           ></ion-icon>
           <ion-label style={{ width: 'fit-content' }}>
-            <div style={{ color: 'black' }}>Add question, idea or claim</div>
+            <div style={{ color: 'black' }}>Add item</div>
           </ion-label>
         </div>
       </div>
@@ -374,7 +380,7 @@ export class AppDoc {
       <div
         style={{
           paddingTop: '30px', paddingBottom: '30px',
-          display: 'flex', justifyContent: 'center', minWidth: '340px', maxWidth: '600px'
+          display: 'flex', justifyContent: 'flex-start', minWidth: '340px', maxWidth: '600px'
         }}
         class={{
           'ion-padding': AppSvc.isWidescreen,
@@ -382,10 +388,10 @@ export class AppDoc {
         slot="card-bottom"
       >
         <div style={{
-          backgroundColor: '#f2eded', width: '80%', borderRadius: '50px'
+          backgroundColor: '#e8e8e8', width: '80%', borderRadius: '25px 5px 5px 25px'
           , display: 'flex', justifyContent: 'flex-start', alignItems: 'center', padding: '12px'
         }}
-          onClick={(e) => this.onAddSourceClick()}>
+          onClick={() => this.onAddSourceClick()}>
           <ion-icon style={{ fontSize: '1.5em', marginRight: '8px', color: 'grey' }}
             name="add-outline"
           ></ion-icon>
@@ -397,34 +403,7 @@ export class AppDoc {
     );
   }
 
-  renderAddSourceBtn2() {
-    return (
-      <div
-        style={{ marginLeft: '-6px' }}
-        class={{
-          'ion-padding': AppSvc.isWidescreen,
-        }}
-        slot="card-bottom"
-      >
-        <ion-button
-          onClick={() => this.onAddSourceClick()}
-          fill="none">
-          <div style={{ borderRadius: '50%', border: '2.5px solid #808080' }}>
-            <ion-icon style={{ fontSize: '1.5em', marginRight: '0px', color: 'blue', '--ionicon-stroke-width': '50px' }}
-              slot="start"
-              name="add-outline"
-            ></ion-icon>
-          </div>
-          <ion-label style={{ width: '130px' }}>
-            <div style={{ borderBottom: '2px solid #808080', marginTop: '-16px', color: '#808080' }}>add source</div>
-          </ion-label>
-        </ion-button>
-      </div>
-    );
-  }
-
   render() {
-    console.log('level', this.level);
     return (
       <Host>
         <d2-rcard
@@ -433,7 +412,7 @@ export class AppDoc {
           notify={this.cardSubject}
           domrect={this.domrect}
         >
-          {this.symthink.isRoot && (
+          {this.showMetrics() && (
             <d2-head-format
               slot="card-top"
               symthinkDoc={this.symthinkDoc}
