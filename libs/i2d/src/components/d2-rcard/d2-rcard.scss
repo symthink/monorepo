@@ -82,7 +82,9 @@ ion-item.item-concl {
     margin-left: -16px;
   }
 }
-
+ion-item {
+  --inner-padding-end: 0px;
+}
 ion-item.item-text {
   align-items              : flex-start;
   // --inner-padding-bottom: 10px;
@@ -166,7 +168,7 @@ ion-textarea {
 }
 
 .selected {
-  border-top: 0.5px dashed #919191;
+  border-bottom: 0.5px dashed #919191;
 }
 
 .selected textarea {

@@ -56,6 +56,7 @@ export class AppDoc {
   onItemAction(evt: CustomEvent) {
     const item = evt.detail.value as SymThink;
     const evnt = evt.detail.pointerEvent as PointerEvent;
+    console.log('** itemAction **', evt.detail.action);
     switch (evt.detail.action) {
       case 'support-clicked':
         if (item.isKidEnabled()) {
@@ -71,7 +72,6 @@ export class AppDoc {
         AppSvc.presentConfirm('', 'Delete source?', true).then((yes) => {
           if (yes) {
             const o = evt.detail.value as { stid: string; index: number };
-            console.log('got:', o);
             if (this.symthink.rmChildSource(o.stid, o.index)) {
               AppSvc.mod$.next();
               this.cardSubject.next('external-mod');
@@ -83,7 +83,6 @@ export class AppDoc {
       case 'item-opts-clicked':
         AppSvc.onItemOptionsSelect(
           item,
-          item.id === this.symthink.id,
           evnt
         ).then((didChange) => {
           this.cardSubject.next('external-mod'); // will close sliding item
@@ -101,8 +100,17 @@ export class AppDoc {
           }
         });
         break;
-      case 'slide-opt-trim':
-        AppSvc.handleItemOption(item, { role: 'trim' }).then((didChange) => {
+      case 'slide-opt-disablekids':
+        AppSvc.handleItemOption(item, { role: 'disablekids' }).then((didChange) => {
+          if (didChange) {
+            AppSvc.mod$.next(); // save doc
+          } else {
+            this.cardSubject.next('external-mod'); // will close sliding item
+          }
+        });
+        break;
+      case 'slide-opt-recycle':
+        AppSvc.handleItemOption(item, { role: 'recycle' }).then((didChange) => {
           if (didChange) {
             AppSvc.mod$.next(); // save doc
           } else {
@@ -308,6 +316,10 @@ export class AppDoc {
     return this.level === 1 && ['stories', 'platform'].includes(this.symthink.getLabel());
   }
 
+  suppDisabled(): boolean {
+    return this.symthink.numeric && this.symthink.support?.length > 9;
+  }
+
   renderTouchBackBtn() {
     return (
       <ion-fab-button
@@ -328,21 +340,21 @@ export class AppDoc {
   renderBackBtn() {
     return (
       <div slot="card-top" class="arrow-nav">
-        <ion-button
-          fill="clear"
+        <ion-button shape="round"
+          fill="solid" color="light"
+          class="text-active"
+          onClick={(e) => this.goTop(e)}
+        >
+          <ion-icon name="arrow-up-outline" slot="icon-only" style={{ borderTop: '1px solid #06189f' }}></ion-icon>
+        </ion-button>
+        <div style={{ width: '20px' }}>&nbsp;</div>
+        <ion-button shape="round"
+          fill="solid" color="light"
           class="text-active"
           onMouseDown={(e) => this.backTouchStart(e)}
           onMouseUp={(e) => this.backTouchEnd(e)}
         >
-          <ion-icon name="arrow-back-outline" slot="icon-only"></ion-icon>
-        </ion-button>
-        <div class="spacer-row">&nbsp;</div>
-        <ion-button
-          fill="clear"
-          class="text-active"
-          onClick={(e) => this.goTop(e)}
-        >
-          <ion-icon name="arrow-up-outline" slot="icon-only"></ion-icon>
+          <ion-icon name="chevron-back-outline" slot="icon-only"></ion-icon>
         </ion-button>
       </div>
     );
@@ -350,30 +362,33 @@ export class AppDoc {
 
 
 
-  renderAddSupportBtn() {
+  renderAddSupportBtn(disable = false) {
+    const innerStyle = disable ? {
+      ...styles.leftSideBtnInner,
+      backgroundColor: styles.leftSideBtnDisabled.backgroundColor
+    } : styles.leftSideBtnInner;
+    const textColor = disable ? styles.leftSideBtnDisabled.color : 'black';
+    const fontWeight = disable ? styles.leftSideBtnDisabled.fontWeight : '400';
+    const iconStyle = disable ? {
+      ...styles.leftSideBtnIcon,
+      color: styles.leftSideBtnDisabled.color
+    } : styles.leftSideBtnIcon;
     return (
       <div
-        style={{
-          paddingTop: '30px', paddingBottom: '30px',
-          display: 'flex', justifyContent: 'flex-start', 
-          width: '250px', marginLeft: '10px'
-        }}
+        style={styles.leftSideBtnOuter}
         class={{
           'ion-padding': AppSvc.isWidescreen,
         }}
         slot="card-list-bottom"
       >
-        <div style={{
-          backgroundColor: '#e8e8e8', width: '80%', borderRadius: '25px 5px 5px 25px'
-          , display: 'flex', justifyContent: 'flex-start', alignItems: 'center', padding: '12px'
-        }}
-          onClick={(e) => this.onQuickAddClick(this.next.type, e)}>
-          <ion-icon style={{ fontSize: '1.5em', marginRight: '8px', color: 'black', fontWeight: '400' }}
+        <div style={innerStyle}
+          onClick={(e) => disable ? console.log('disabled') : this.onQuickAddClick(this.next.type, e)}>
+          <ion-label style={{ width: '100%', textAlign: 'center' }}>
+            <div style={{ color: textColor, fontWeight }}>Add&nbsp;item</div>
+          </ion-label>
+          <ion-icon style={iconStyle}
             name="add-outline"
           ></ion-icon>
-          <ion-label style={{ width: '100%', textAlign: 'center' }}>
-            <div style={{ color: 'black', fontWeight: '400' }}>Add item</div>
-          </ion-label>
         </div>
       </div>
     );
@@ -382,29 +397,22 @@ export class AppDoc {
   renderAddSourceBtn() {
     return (
       <div
-      style={{
-        paddingTop: '30px', paddingBottom: '30px',
-        display: 'flex', justifyContent: 'flex-start', 
-        width: '250px', marginLeft: '10px'
-      }}
-      class={{
-        'ion-padding': AppSvc.isWidescreen,
-      }}
-      slot="card-bottom"
-    >
-      <div style={{
-        backgroundColor: '#e8e8e8', width: '80%', borderRadius: '25px 5px 5px 25px'
-        , display: 'flex', justifyContent: 'flex-start', alignItems: 'center', padding: '12px'
-      }}
-        onClick={(e) => this.onAddSourceClick()}>
-        <ion-icon style={{ fontSize: '1.5em', marginRight: '8px', color: 'black', fontWeight: '400' }}
-          name="add-outline"
-        ></ion-icon>
-        <ion-label style={{ width: '100%', textAlign: 'center' }}>
-          <div style={{ color: 'black', fontWeight: '400' }}>Add source</div>
-        </ion-label>
+        style={styles.leftSideBtnOuter}
+        class={{
+          'ion-padding': AppSvc.isWidescreen,
+        }}
+        slot="card-bottom"
+      >
+        <div style={styles.leftSideBtnInner}
+          onClick={() => this.onAddSourceClick()}>
+          <ion-label style={{ width: '100%', textAlign: 'center' }}>
+            <div style={{ color: 'black', fontWeight: '400' }}>Add&nbsp;source</div>
+          </ion-label>
+          <ion-icon style={styles.leftSideBtnIcon}
+            name="add-outline"
+          ></ion-icon>
+        </div>
       </div>
-    </div>
     );
 
   }
@@ -431,10 +439,42 @@ export class AppDoc {
           )}
 
           {this.showBackButton() && this.renderBackBtn()}
-          {AppSvc.editing && this.renderAddSupportBtn()}
+          {AppSvc.editing && this.renderAddSupportBtn(this.suppDisabled())}
           {(AppSvc.editing && this.level) && this.renderAddSourceBtn()}
         </d2-rcard>
       </Host>
     );
+  }
+}
+
+const styles = {
+  leftSideBtnOuter: {
+    paddingTop: '30px',
+    paddingBottom: '30px',
+    display: 'flex',
+    justifyContent: 'flex-start',
+    width: '200px',
+    marginLeft: '10px',
+    height: '108px',
+  },
+  leftSideBtnInner: {
+    backgroundColor: '#e8e8e8',
+    width: '80%',
+    borderRadius: '0px 25px 25px 0px',
+    display: 'flex',
+    justifyContent: 'flex-start',
+    alignItems: 'center',
+    padding: '12px'
+  },
+  leftSideBtnIcon: {
+    fontSize: '1.5em',
+    marginLeft: '8px',
+    color: 'black',
+    fontWeight: '400'
+  },
+  leftSideBtnDisabled: {
+    backgroundColor: '#f3f3f3',
+    color: '#8e8e8e',
+    fontWeight: 'normal'
   }
 }

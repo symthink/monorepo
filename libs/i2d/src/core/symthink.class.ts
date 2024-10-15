@@ -1,7 +1,7 @@
 import { BehaviorSubject, Subject } from 'rxjs';
 
 const SCHEMA_VERSION = 1;// current
-export const MAX_KIDS = 20;
+export const MAX_KIDS = 10;
 
 export enum REF_LABEL {
     Person = 'Person',
@@ -72,6 +72,7 @@ export interface ISymThink {
     creator?: string;
     creatorId?: string;
     private?: boolean;
+    ref?: HTMLIonItemSlidingElement;
 }
 export interface ISymThinkDocument extends ISymThink {
     $chemaver?: number;
@@ -143,6 +144,7 @@ export class SymThink {
     creatorId: string;
     reorder$ = new BehaviorSubject<boolean>(false);
     private = false;
+    ref: HTMLIonItemSlidingElement;
 
     constructor(id: string, parent?: SymThink) {
         // make read-only after first set
@@ -276,7 +278,7 @@ export class SymThink {
     }
 
     isKidEnabled() {
-        return !!this.support;
+        return this.support?.length !== undefined;
     }
 
     maxKids(): boolean {
@@ -456,7 +458,6 @@ export class SymThink {
     }
     removeChild(card: SymThink): SymThink {
         const index = this.support.findIndex(c => c.id === card.id);
-        console.log('index', index)
         if (index !== -1) {
             this.logAction(StLogActionEnum.REMOVE_CHILD);
             return this.support.splice(index, 1)[0];
@@ -632,7 +633,7 @@ ${conclusion}`;
         if (this.isRoot) {
           return 'root';
         }
-        return (this.label || this.text.substring(0, this.text.indexOf(':'))).toLowerCase();
+        return (this.label || this.text?.substring(0, this.text?.indexOf(':'))||'empty').toLowerCase();
     }
 }
 

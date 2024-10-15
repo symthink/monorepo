@@ -255,7 +255,11 @@ export class D2Rcard {
   }
 
   async onRemoveOrTrimItem(item: SymThink) {
-    this.itemAction.emit({ action: 'slide-opt-trim', value: item });
+    if (item.canDisable()) {
+      this.itemAction.emit({ action: 'slide-opt-disablekids', value: item });
+    } else {
+      this.itemAction.emit({ action: 'slide-opt-recycle', value: item });
+    }
   }
 
   async toggleLock(item: SymThink) {
@@ -272,6 +276,7 @@ export class D2Rcard {
   }
 
   async onExtendItem(item: SymThink) {
+    console.log('++ onExtendItem ++');
     this.itemAction.emit({ action: 'slide-opt-extend', value: item });
   }
 
@@ -413,6 +418,7 @@ export class D2Rcard {
   }
 
   renderSupportItems() {
+    console.log('renderSupportItems()');
     const isConcl = (num: number) =>
       this.data.lastSupIsConcl && this.data.support.length === num;
     const isEditable = (itm: SymThink) =>
@@ -435,6 +441,12 @@ export class D2Rcard {
         {this.data.support.map((item, index) => (
           <ion-item-sliding
             disabled={this.disableSlideOpts(item)}
+            ref={el => (item.ref = el as HTMLIonItemSlidingElement)}
+            onIonDrag={(e) => {
+              if (e.detail.ratio < 0 && item.isKidEnabled()) {
+                item.ref.close();
+              }
+            }}
             key={item.id}
           >
             <ion-item
@@ -459,7 +471,7 @@ export class D2Rcard {
               }}
             >
               {!isConcl(index + 1) && this.renderItemIcon(item, index + 1)}
-              {isEditable(item) && (
+              {isEditable(item) && [
                 <ion-textarea id={item.id}
                   onIonInput={(e) => this.onTextareaInput(e, item)}
                   onIonBlur={(e) => this.onTextareaBlur(e, item)}
@@ -479,8 +491,14 @@ export class D2Rcard {
                   }}
                   placeholder={this.supportsPh(item)}
                   enterkeyhint="done"
-                ></ion-textarea>
-              )}
+                ></ion-textarea>,
+                <ion-button
+                  slot="end" fill="clear" style={{ height: '100%', backgroundColor: '#e8e8e8', color: 'black', marginRight: '0px' }}
+                  onClick={() => this.handleExpandClick(item)}
+                >
+                  <ion-icon slot="icon-only" size="medium" name="expand-outline"></ion-icon>
+                </ion-button>
+              ]}
               {!isEditable(item) && (
                 <ion-label
                   style={{ 'max-width': '100%' }}
@@ -505,11 +523,11 @@ export class D2Rcard {
               {this.canEdit && this.renderItemOptionsBtn(item)}
               <ion-reorder slot="end"></ion-reorder>
             </ion-item>
-            {!item.hasKids() &&
-              <ion-item-options
-                side="start"
-                onIonSwipe={() => this.onExtendItem(item)}
-              >
+            <ion-item-options
+              side="start"
+              onIonSwipe={() => this.onExtendItem(item)}
+            >
+              {!item.isKidEnabled() &&
                 <ion-item-option
                   expandable
                   class="secondary-btn-theme"
@@ -517,24 +535,28 @@ export class D2Rcard {
                 >
                   <ion-icon name="arrow-forward-outline"></ion-icon>
                 </ion-item-option>
-              </ion-item-options>
-            }
+              }
+            </ion-item-options>
             <ion-item-options
               side="end"
               onIonSwipe={() => this.onRemoveOrTrimItem(item)}
             >
-              <ion-item-option color="tertiary"
-                onClick={() => this.toggleLock(item)}
-              >
-                <ion-icon name={`lock-${item.private ? 'open' : 'closed'}-outline`}></ion-icon>
-              </ion-item-option>
-              <ion-item-option
-                expandable color="danger"
-                onClick={() => this.onRemoveOrTrimItem(item)}
-              >
-                <ion-icon name="trash-outline"></ion-icon>
-              </ion-item-option>
-
+              {item.canDisable() && (
+                <ion-item-option
+                  expandable class="secondary-btn-theme"
+                  onClick={() => this.onRemoveOrTrimItem(item)}
+                >
+                  <ion-icon name="cut-outline"></ion-icon>
+                </ion-item-option>
+              )}
+              {!item.canDisable() && (
+                <ion-item-option
+                  expandable color="warn"
+                  onClick={() => this.onRemoveOrTrimItem(item)}
+                >
+                  <ion-icon name="trash-bin-outline"></ion-icon>
+                </ion-item-option>
+              )}
             </ion-item-options>
           </ion-item-sliding>
         ))}
@@ -635,7 +657,7 @@ export class D2Rcard {
       this.currIonTextareaEl.blur();
     }
     this.pressTimer = window.setTimeout(() => {
-      console.log('LongPressed:', this.currIonTextareaEl.id);
+      // console.log('LongPressed:', this.currIonTextareaEl.id);
       const item = this.data.find((i) => i.id === this.currIonTextareaEl.id);
       if (item) {
         this.itemAction.emit({ action: 'edit-full', value: item });
@@ -647,6 +669,9 @@ export class D2Rcard {
       clearTimeout(this.pressTimer);
     }
   };
+  handleExpandClick(item: SymThink) {
+    this.itemAction.emit({ action: 'edit-full', value: item });
+  }
 
   renderItems() {
     const isEditable = (itm) => !!(itm.selected && this.canEdit);
@@ -655,90 +680,79 @@ export class D2Rcard {
       return acc;
     }, []);
     return [
-      <ion-item-sliding
-        disabled={this.disableSlideOpts(this.data)}
-        key={this.data.id}
+      <ion-item
+        id={this.data.id}
+        lines="none"
+        class={{
+          shared: true,
+          selected: this.data.selected && this.canEdit,
+          'can-edit': this.canEdit,
+          'top-item': true,
+        }}
+        onClick={(e) => this.onItemClick(this.data, e)}
+        onMouseEnter={(evt: MouseEvent) => {
+          const e = evt.target as HTMLElement;
+          if (this.canEdit && !this.data.selected) {
+            e.classList.add('item-over');
+          }
+        }}
+        onMouseLeave={(evt: MouseEvent) => {
+          const e = evt.target as HTMLElement;
+          e.classList.remove('item-over');
+        }}
       >
-        <ion-item
-          id={this.data.id}
-          lines="none"
-          class={{
-            shared: true,
-            selected: this.data.selected && this.canEdit,
-            'can-edit': this.canEdit,
-            'top-item': true,
-          }}
-          onClick={(e) => this.onItemClick(this.data, e)}
-          onMouseEnter={(evt: MouseEvent) => {
-            const e = evt.target as HTMLElement;
-            if (this.canEdit && !this.data.selected) {
-              e.classList.add('item-over');
-            }
-          }}
-          onMouseLeave={(evt: MouseEvent) => {
-            const e = evt.target as HTMLElement;
-            e.classList.remove('item-over');
-          }}
-        >
-          {isEditable(this.data) && (
-            <ion-textarea id={this.data.id}
-              onIonInput={(e) => this.onTextareaInput(e, this.data)}
-              onIonBlur={(e) => this.onTextareaBlur(e, this.data)}
-              onKeyUp={(e) => this.onKeyUp(e, 'top')}
-              value={this.data.getCurrentItemText()}
-              maxlength={280}
-              spellcheck={true}
-              autocapitalize="sentences"
-              autocorrect={'off'}
-              wrap={'soft'}
-              autofocus={true}
-              autoGrow={true}
-              inputmode={'text'}
-              style={{
-                'caret-color': 'currentColor',
-                height: this.selectedElHeight + '',
-              }}
-              placeholder={this.textPh(this.data)}
-              enterkeyhint="done"
-            ></ion-textarea>
-          )}
-          {!isEditable(this.data) && (
-            <ion-label
-              style={{ 'max-width': 'unset' }}
-              class={{
-                'ion-text-wrap': true,
-                placeholder: !this.data.hasItemText(),
-              }}
-            >
-              {this.renderLabel(this.data.getCurrentItemText()) ||
-                this.textPh(this.data)}
-              {this.data.isEvent && (
-                <p>
-                  <b>Date:</b> {this.data.eventDate?.toLocaleString()}
-                </p>
-              )}
-              {!!srcListX.length && (
-                <p class="item-subscript">
-                  <ion-icon name="bookmark" size="small"></ion-icon>&nbsp;{srcListX.join(',')}
-                </p>
-              )}
-            </ion-label>
-          )}
-          {/* {this.data.selected && (
-      <ion-icon name="create-outline" slot="end"></ion-icon>
-    )} */}
-          {this.canEdit && this.renderItemOptionsBtn(this.data)}
-        </ion-item>
-        <ion-item-options side="end">
-          <ion-item-option
-            color="tertiary"
-            class="secondary-btn-theme opts-btn-slide"
-            onClick={(e) => this.onItemOptionsClick(this.data, e)}
+        {isEditable(this.data) && [
+          <ion-textarea id={this.data.id}
+            onIonInput={(e) => this.onTextareaInput(e, this.data)}
+            onIonBlur={(e) => this.onTextareaBlur(e, this.data)}
+            onKeyUp={(e) => this.onKeyUp(e, 'top')}
+            value={this.data.getCurrentItemText()}
+            maxlength={280}
+            spellcheck={true}
+            autocapitalize="sentences"
+            autocorrect={'off'}
+            wrap={'soft'}
+            autofocus={true}
+            autoGrow={true}
+            inputmode={'text'}
+            style={{
+              'caret-color': 'currentColor',
+              height: this.selectedElHeight + '',
+            }}
+            placeholder={this.textPh(this.data)}
+            enterkeyhint="done"
+          ></ion-textarea>,
+          <ion-button
+            slot="end" fill="clear" style={{ height: '100%', backgroundColor: '#e8e8e8', color: 'black', marginRight: '0px' }}
+            onClick={() => this.handleExpandClick(this.data)}
           >
-            <ion-icon name="ellipsis-horizontal"></ion-icon>
-          </ion-item-option>
-        </ion-item-options>
-      </ion-item-sliding>,
+            <ion-icon slot="icon-only" size="medium" name="expand-outline"></ion-icon>
+          </ion-button>
+        ]}
+        {!isEditable(this.data) && (
+          <ion-label
+            style={{ 'max-width': 'unset' }}
+            class={{
+              'ion-text-wrap': true,
+              placeholder: !this.data.hasItemText(),
+            }}
+          >
+            {this.renderLabel(this.data.getCurrentItemText()) ||
+              this.textPh(this.data)}
+            {this.data.isEvent && (
+              <p>
+                <b>Date:</b> {this.data.eventDate?.toLocaleString()}
+              </p>
+            )}
+            {!!srcListX.length && (
+              <p class="item-subscript">
+                <ion-icon name="bookmark" size="small"></ion-icon>&nbsp;{srcListX.join(',')}
+              </p>
+            )}
+          </ion-label>
+        )}
+      </ion-item>
+      ,
       this.data.hasKids() && this.renderSupportItems(),
     ];
   }

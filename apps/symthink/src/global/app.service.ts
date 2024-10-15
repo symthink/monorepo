@@ -1,6 +1,6 @@
 import { ActionSheetButton, ActionSheetOptions, alertController, modalController, OverlayEventDetail, popoverController } from '@ionic/core';
 import { HostElement } from '@stencil/core/internal';
-import { ARG_TYPE, CardRules, FormatEnum, isCSL, SymThink, SymThinkDocument, trailingSympunkRegExp } from '@symthink/i2d';
+import { ARG_TYPE, CardRules, FormatEnum, isCSL, MAX_KIDS, SymThink, SymThinkDocument, trailingSympunkRegExp } from '@symthink/i2d';
 import { Subject } from 'rxjs';
 import { ENV } from '../environment/config';
 
@@ -34,6 +34,7 @@ export enum OutgoingMsgActionEnum {
     PRIVACY = 111,
     EDITITEM = 112,
     METRIC = 113,
+    RECYCLE = 114,
 }
 
 export interface IPostMessage {
@@ -277,14 +278,8 @@ class AppService {
     }
 
 
-    async onItemOptionsSelect(item: SymThink, isPageTopItem: boolean, evt?: MouseEvent | PointerEvent) {
+    async onItemOptionsSelect(item: SymThink, evt?: MouseEvent | PointerEvent) {
         const buttons: ActionSheetButton[] = [];
-
-        buttons.push({
-            text: 'Edit',
-            role: 'edit',
-            icon: 'create-outline'
-        });
         if (item.url) {
             buttons.push({
                 text: 'Unsubscribe',
@@ -292,64 +287,17 @@ class AppService {
                 icon: 'notifications-off-outline'
             });
         } else {
-            if (isPageTopItem) {
-                if (item.type === ARG_TYPE.Question) {
-                    buttons.push({
-                        text: 'Decision',
-                        role: 'decision',
-                        icon: 'git-merge-outline'
-                    });
-                }
-                buttons.push({
-                    text: 'Add Support',
-                    role: 'add-support',
-                    icon: 'add-outline'
-                });
-
-            } else { // support
-                buttons.push({
-                    text: 'Extend',
-                    role: 'extend',
-                    icon: 'arrow-forward-outline'
-                });
-                buttons.push({
-                    text: 'Trim',
-                    role: 'trim',
-                    icon: 'cut-outline'
-                });
-                // const postText = item.type === ARG_TYPE.Question ?
-                //     'Post' : 'Rephrase & Post';
-                // buttons.push({
-                //     text: postText,
-                //     role: 'post',
-                //     icon: 'chatbubbles-outline'
-                // });
-                const btnText = item.private ? 'Remove lock' : 'Add lock';
-                buttons.push({
-                    text: btnText,
-                    role: 'toggle-private',
-                    icon: 'lock-closed-outline',
-                    cssClass: 'badge',
-                    data: !!item.private
-                });
-            }
             buttons.push({
-                text: 'Add Source',
-                role: 'add-source',
-                icon: 'add-outline'
+                text: 'Extend',
+                role: 'extend',
+                icon: 'arrow-forward-outline'
+            });
+            buttons.push({
+                text: 'Trim',
+                role: 'trim',
+                icon: 'cut-outline'
             });
         }
-        if (isPageTopItem) {
-            // buttons.push({
-            //     text: 'Quick share ...',
-            //     role: 'quick-share',
-            // });
-        }
-        // buttons.push({
-        //     text: 'Export ...',
-        //     role: 'export',
-        // });
-
         const opts = {
             buttons
         }
@@ -381,6 +329,7 @@ class AppService {
 
     async handleItemOption(item: SymThink, rs: OverlayEventDetail, evt?: MouseEvent | PointerEvent) {
         let modified = false;
+        console.log('handle', rs.role, item)
         switch (rs.role) {
             case 'extend':
                 if (item.type === ARG_TYPE.Question) {
@@ -392,26 +341,28 @@ class AppService {
                 item.enableKids();
                 modified = true;
                 break;
-            case 'trim':
-                if (item.canDisable()) {
-                    item.disableKids();
-                } else {
-                    if (item.hasKids()) {
-                        const alert = await alertController.create({
-                            cssClass: 'symthink-alert',
-                            header: 'Confirm Remove',
-                            message: `Click Continue to move this item and it's child items into this document's Recycling Bin.  It will be automatically deleted after 7 days.`,
-                            buttons: ['Cancel', { text: 'Continue', role: 'archive' }],
-                        });
-                        await alert.present();
-                        const { role } = await alert.onDidDismiss();
-                        if (role === 'archive') {
-                            item.makeOrphan();
-                        }
-                    } else {
+            case 'disablekids':
+                item.disableKids();
+                break;
+            case 'recycle':
+                if (item.hasKids()) {
+                    const alert = await alertController.create({
+                        cssClass: 'symthink-alert',
+                        header: 'Confirm Recycle',
+                        message: `This item has ${item.support?.length} supporting item(s). To keep this item, remove the supports first. Or, "Continue" to put the whole branch in the recycle bin.`,
+                        buttons: ['Cancel', { text: 'Continue', role: 'archive' }],
+                    });
+                    await alert.present();
+                    const { role } = await alert.onDidDismiss();
+                    if (role === 'archive') {
                         item.makeOrphan();
-                    }
+                    }    
+                } else {
+                    item.makeOrphan();
                 }
+                // move this functionality to the parent window
+                // then remove orphan funcs from here
+                this.sendMessage(OutgoingMsgActionEnum.RECYCLE, item.getRaw(true));
                 modified = true;
                 break;
             // deprecated; done with punctuation now onBlur
@@ -621,7 +572,7 @@ class AppService {
     }
 
     async notifyMaxItemsReached() {
-        AppSvc.presentNotice('Cannot add more than 9 supporting items. Try consolidating your big ideas into fewer items.  Then expand on those with child items.');
+        AppSvc.presentNotice('Cannot add more than '+MAX_KIDS+' supporting items. Try consolidating into fewer items.  Then expand on those with child items.');
     }
 
     async presentShareLinkInput(): Promise<string> {
