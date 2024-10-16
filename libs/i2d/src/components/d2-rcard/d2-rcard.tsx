@@ -723,7 +723,9 @@ export class D2Rcard {
             enterkeyhint="done"
           ></ion-textarea>,
           <ion-button
-            slot="end" fill="clear" style={{ height: '100%', backgroundColor: '#e8e8e8', color: 'black', marginRight: '0px' }}
+            slot="end" fill="clear" style={{ 
+              height: '100%', width: '45px',
+              backgroundColor: '#e8e8e8', color: 'black', marginRight: '0px' }}
             onClick={() => this.handleExpandClick(this.data)}
           >
             <ion-icon slot="icon-only" size="medium" name="expand-outline"></ion-icon>
@@ -788,12 +790,6 @@ export class D2Rcard {
           'sym-text': true,
         }}
       >
-        <ion-fab vertical="top" horizontal="start" edge slot="fixed">
-          <slot name="fab-top-start"></slot>
-        </ion-fab>
-        <ion-fab vertical="top" horizontal="end" edge slot="fixed">
-          <slot name="fab-top-end"></slot>
-        </ion-fab>
         <slot name="card-top"></slot>
         <br />
         {!this.data.isRoot && !this.canEdit && <div class="back-arrow">⟵</div>}

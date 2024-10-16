@@ -47,6 +47,7 @@ export class AppDoc {
   // @Event() cardExternalMod: EventEmitter<void>;
 
   addItemToolbarEl: HTMLIonToolbarElement;
+  pressTimer: number;
 
   private modified() {
     this.change = !this.change;
@@ -279,22 +280,22 @@ export class AppDoc {
   // }
 
   backLongpress = false;
-  backPressTimeout;
+  backPressTimeout: any;
   backTouchStart(e: TouchEvent | MouseEvent): void {
     e.stopPropagation();
     e.preventDefault();
     this.backLongpress = false;
     this.backPressTimeout = setTimeout(() => {
       this.backLongpress = true;
-      this.docAction.emit({ action: 'go-top', value: true });
-    }, 1000);
+      this.goTop(e);
+    }, 600);
   }
   backTouchEnd(e: TouchEvent | MouseEvent): void {
     clearTimeout(this.backPressTimeout);
     e.stopPropagation();
     e.preventDefault();
     if (!this.backLongpress) {
-      this.docAction.emit({ action: 'go-back', value: true });
+      this.goTop(e);
     }
   }
 
@@ -318,7 +319,7 @@ export class AppDoc {
 
   suppDisabled(): boolean {
     return this.symthink.numeric && this.symthink.support?.length > 9;
-  }
+  } 
 
   renderTouchBackBtn() {
     return (
@@ -341,21 +342,28 @@ export class AppDoc {
     return (
       <div slot="card-top" class="arrow-nav">
         <ion-button shape="round"
-          fill="solid" color="light"
+          fill="solid"
           class="text-active"
-          onClick={(e) => this.goTop(e)}
-        >
-          <ion-icon name="arrow-up-outline" slot="icon-only" style={{ borderTop: '1px solid #06189f' }}></ion-icon>
-        </ion-button>
-        <div style={{ width: '20px' }}>&nbsp;</div>
-        <ion-button shape="round"
-          fill="solid" color="light"
-          class="text-active"
+          onTouchStart={(e) => this.backTouchStart(e)}
+          onTouchEnd={(e) => this.backTouchEnd(e)}
           onMouseDown={(e) => this.backTouchStart(e)}
           onMouseUp={(e) => this.backTouchEnd(e)}
+          style={{
+            margin: '15px 0px 0px 15px',
+            '--background': '#e8e8e8',
+            '--color': '#000000',
+            '--padding-bottom': '2px',
+            '--padding-end': '8px',
+            '--padding-start': '5px',
+            '--padding-top': '2px'
+          }}
         >
-          <ion-icon name="chevron-back-outline" slot="icon-only"></ion-icon>
-        </ion-button>
+          <ion-icon name="chevron-back-outline" style={{
+            marginRight: '-25px',
+            color: '#00000050'
+          }} slot="icon-only" size="large"></ion-icon>
+          <ion-icon name="chevron-back-outline" size="large" slot="icon-only"></ion-icon>
+          </ion-button>
       </div>
     );
   }
@@ -426,18 +434,6 @@ export class AppDoc {
           notify={this.cardSubject}
           domrect={this.domrect}
         >
-          {this.showMetrics() && (
-            <d2-head-format
-              slot="card-top"
-              symthinkDoc={this.symthinkDoc}
-              canEdit={AppSvc.editing}
-              refresh={this.cardSubject}
-              created={this.symthinkDoc.createdTime}
-              modified={this.symthinkDoc.modifiedTime}
-              displayName={this.symthinkDoc.creator}
-            />
-          )}
-
           {this.showBackButton() && this.renderBackBtn()}
           {AppSvc.editing && this.renderAddSupportBtn(this.suppDisabled())}
           {(AppSvc.editing && this.level) && this.renderAddSourceBtn()}
