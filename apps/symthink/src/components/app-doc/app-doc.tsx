@@ -295,7 +295,7 @@ export class AppDoc {
     e.stopPropagation();
     e.preventDefault();
     if (!this.backLongpress) {
-      this.goTop(e);
+      this.goBack(e);
     }
   }
 
@@ -305,8 +305,24 @@ export class AppDoc {
     this.docAction.emit({ action: 'go-top', value: true });
   }
 
+  goBack(e: TouchEvent | MouseEvent): void {
+    e.stopPropagation();
+    e.preventDefault();
+    this.docAction.emit({ action: 'go-back', value: true });
+  }
+
+  onShareClick(e: TouchEvent | MouseEvent) {
+    e.stopPropagation();
+    e.preventDefault();
+    AppSvc.sendMessage(OutgoingMsgActionEnum.SHARE, this.symthink.getRaw(true));
+  }
+
   showBackButton(): boolean {
     return AppSvc.editing && this.level > 0;
+  }
+
+  showShareButton(): boolean {
+    return AppSvc.editing && this.level === 1 && this.symthink.getLabel().toLowerCase() === 'platform';
   }
 
   showQuickAddFabList(): boolean {
@@ -319,15 +335,21 @@ export class AppDoc {
 
   suppDisabled(): boolean {
     return this.symthink.numeric && this.symthink.support?.length > 9;
-  } 
+  }
 
   renderTouchBackBtn() {
     return (
       <ion-fab-button
-        slot="fab-top-start"
         class="nav-back"
         onTouchStart={(e) => this.backTouchStart(e)}
         onTouchEnd={(e) => this.backTouchEnd(e)}
+        onMouseDown={(e) => this.backTouchStart(e)}
+        onMouseUp={(e) => this.backTouchEnd(e)}
+        style={{
+          margin: '15px 0px 0px 15px',
+          '--background': '#e8e8e8',
+          '--color': '#000000',
+        }}
       >
         <ion-icon size="large" name="chevron-back-outline"></ion-icon>
         <ion-icon
@@ -338,37 +360,21 @@ export class AppDoc {
       </ion-fab-button>
     );
   }
-  renderBackBtn() {
+
+  renderShareBtn() {
     return (
-      <div slot="card-top" class="arrow-nav">
-        <ion-button shape="round"
-          fill="solid"
-          class="text-active"
-          onTouchStart={(e) => this.backTouchStart(e)}
-          onTouchEnd={(e) => this.backTouchEnd(e)}
-          onMouseDown={(e) => this.backTouchStart(e)}
-          onMouseUp={(e) => this.backTouchEnd(e)}
-          style={{
-            margin: '15px 0px 0px 15px',
-            '--background': '#e8e8e8',
-            '--color': '#000000',
-            '--padding-bottom': '2px',
-            '--padding-end': '8px',
-            '--padding-start': '5px',
-            '--padding-top': '2px'
-          }}
-        >
-          <ion-icon name="chevron-back-outline" style={{
-            marginRight: '-25px',
-            color: '#00000050'
-          }} slot="icon-only" size="large"></ion-icon>
-          <ion-icon name="chevron-back-outline" size="large" slot="icon-only"></ion-icon>
-          </ion-button>
-      </div>
+      <ion-fab-button
+        onClick={(e) => this.onShareClick(e)}
+        style={{
+          margin: '15px 15px 0px 0px',
+          '--background': '#e8e8e8',
+          '--color': '#000000',
+        }}
+      >
+        <ion-icon md="share-social-outline" ios="share-outline"></ion-icon>
+      </ion-fab-button>
     );
   }
-
-
 
   renderAddSupportBtn(disable = false) {
     const innerStyle = disable ? {
@@ -434,7 +440,10 @@ export class AppDoc {
           notify={this.cardSubject}
           domrect={this.domrect}
         >
-          {this.showBackButton() && this.renderBackBtn()}
+          <div slot="card-top" class="arrow-nav">
+            {this.showBackButton() && this.renderTouchBackBtn()}
+            {this.showShareButton() && this.renderShareBtn()}
+          </div>
           {AppSvc.editing && this.renderAddSupportBtn(this.suppDisabled())}
           {(AppSvc.editing && this.level) && this.renderAddSourceBtn()}
         </d2-rcard>

@@ -35,6 +35,7 @@ export enum OutgoingMsgActionEnum {
     EDITITEM = 112,
     METRIC = 113,
     RECYCLE = 114,
+    SHARE = 115,
 }
 
 export interface IPostMessage {
