@@ -372,9 +372,9 @@ export class SymThink {
         while (c = c.parent) {
             path.push(c.getLabel());
         }
-        const labels = [];
+        let labels = [];
         if (card.hasKids()) {
-            card.support.map(s => labels.push(s.getLabel()));
+            labels = card.support.map(s => s.getLabel());
         }
         return {path: path.reverse(), supportLabels: labels};
     }

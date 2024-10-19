@@ -187,7 +187,6 @@ export class AppDoc {
       if (this.symthinkDoc.log$) {
         this.symthinkDoc.log$.subscribe(() => this.modified());
       }
-      AppSvc.sendMessage(OutgoingMsgActionEnum.PAGECHANGE, this.symthinkDoc.getLabels());
     }
   }
 

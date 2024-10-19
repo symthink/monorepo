@@ -81,14 +81,10 @@ export class AppRoot {
           // console.log('app-doc', appDocEl)
           appDocEl.comingBack();
         }
-        this.ionNav.pop(null, () => {
-          AppSvc.sendMessage(OutgoingMsgActionEnum.PAGECHANGE, AppSvc.currentSymthink.getLabels());
-        });
+        this.ionNav.pop();
         break;
       case 'go-top':
-        this.ionNav.popToRoot(null, () => {
-          AppSvc.sendMessage(OutgoingMsgActionEnum.PAGECHANGE, AppSvc.currentSymthink.getLabels());  
-        });
+        this.ionNav.popToRoot();
         break;
       case 'edit':
         console.log('Edit doc');
@@ -126,13 +122,10 @@ export class AppRoot {
       this.ionNav.addEventListener('ionNavDidChange', async () => {
         const viewController = await this.ionNav.getActive();
         AppSvc.currentSymthink = viewController.params.symthink as SymThink;
-        if (this.lastChildElementCount > this.ionNav.childElementCount) {    
-          // const pages = AppSvc.currentSymthink.getPageIDs();
-          // window.postMessage(
-          //   { action: OutgoingMsgActionEnum.PAGECHANGE, value: pages },
-          //   location.protocol + '//' + location.host
-          // );
-        }
+        AppSvc.sendMessage(OutgoingMsgActionEnum.PAGECHANGE, AppSvc.currentSymthink.getLabels()); 
+        // going back 
+        // if (this.lastChildElementCount > this.ionNav.childElementCount) {  
+        // }
         this.lastChildElementCount = this.ionNav.childElementCount;
       });
     }
