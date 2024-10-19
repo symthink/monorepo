@@ -82,22 +82,12 @@ export class AppRoot {
           appDocEl.comingBack();
         }
         this.ionNav.pop(null, () => {
-          console.log('Popped--------');
-          AppSvc.sendMessage(OutgoingMsgActionEnum.PAGECHANGE, {
-            pageId: AppSvc.currentSymthink.id,
-            level: this.ionNav.childElementCount,
-            label: AppSvc.currentSymthink.getLabel()
-          });
+          AppSvc.sendMessage(OutgoingMsgActionEnum.PAGECHANGE, AppSvc.currentSymthink.getLabels());
         });
         break;
       case 'go-top':
         this.ionNav.popToRoot(null, () => {
-          console.log('PoppedToRoot--------');
-          AppSvc.sendMessage(OutgoingMsgActionEnum.PAGECHANGE, {
-            pageId: AppSvc.currentSymthink.id,
-            level: 0,
-            label: AppSvc.currentSymthink.getLabel()
-          });  
+          AppSvc.sendMessage(OutgoingMsgActionEnum.PAGECHANGE, AppSvc.currentSymthink.getLabels());  
         });
         break;
       case 'edit':

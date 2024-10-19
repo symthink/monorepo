@@ -187,11 +187,7 @@ export class AppDoc {
       if (this.symthinkDoc.log$) {
         this.symthinkDoc.log$.subscribe(() => this.modified());
       }
-      AppSvc.sendMessage(OutgoingMsgActionEnum.PAGECHANGE, {
-        pageId: this.symthink.id,
-        level: this.level,
-        label: this.symthink.getLabel()
-      });
+      AppSvc.sendMessage(OutgoingMsgActionEnum.PAGECHANGE, this.symthinkDoc.getLabels());
     }
   }
 
@@ -349,6 +345,7 @@ export class AppDoc {
           margin: '15px 0px 0px 15px',
           '--background': '#e8e8e8',
           '--color': '#000000',
+          '--box-shadow': 'none',
         }}
       >
         <ion-icon size="large" name="chevron-back-outline"></ion-icon>
@@ -369,6 +366,7 @@ export class AppDoc {
           margin: '15px 15px 0px 0px',
           '--background': '#e8e8e8',
           '--color': '#000000',
+          '--box-shadow': 'none',
         }}
       >
         <ion-icon md="share-social-outline" ios="share-outline"></ion-icon>

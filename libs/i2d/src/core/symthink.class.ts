@@ -365,6 +365,19 @@ export class SymThink {
         IDs.unshift(card.id);
         return IDs;
     }
+    getLabels() {
+        let card: SymThink = this;
+        const path = [card.getLabel()];
+        let c = card;
+        while (c = c.parent) {
+            path.push(c.getLabel());
+        }
+        const labels = [];
+        if (card.hasKids()) {
+            card.support.map(s => labels.push(s.getLabel()));
+        }
+        return {path: path.reverse(), supportLabels: labels};
+    }
     getRaw(deep = true): ISymThink {
         const o: ISymThink = {
             id: this.id,
