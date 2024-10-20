@@ -17,6 +17,7 @@ export enum IncomingMsgActionEnum {
     LISTTYPE = 10,
     REORDER = 11,
     EDITEDITEM = 12,
+    ADDITEM = 13
 }
 
 export enum OutgoingMsgActionEnum {
@@ -155,6 +156,9 @@ class AppService {
                         } 
                         this.mod$.next();
                     }
+                }
+                else if (data.action === IncomingMsgActionEnum.ADDITEM) {
+                    this.currentSymthink.addChild(data.value);
                 }
             }
         } catch (e) {

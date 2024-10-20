@@ -214,9 +214,8 @@ export class SymThink {
 
     addChild(card?: ISymThink, doLog = true) {
         if (!this.isKidEnabled()) {
-            throw new Error(`This item(${this.id}) is not child enabled`);
+            this.enableKids();
         }
-
         let symthink = new SymThink(card?.id || this.genId(), this);
         symthink.apply(card);
         this.support.push(symthink);

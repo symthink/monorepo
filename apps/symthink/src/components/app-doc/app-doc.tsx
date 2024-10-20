@@ -57,7 +57,6 @@ export class AppDoc {
   onItemAction(evt: CustomEvent) {
     const item = evt.detail.value as SymThink;
     const evnt = evt.detail.pointerEvent as PointerEvent;
-    console.log('** itemAction **', evt.detail.action);
     switch (evt.detail.action) {
       case 'support-clicked':
         if (item.isKidEnabled()) {
