@@ -159,6 +159,7 @@ class AppService {
                 }
                 else if (data.action === IncomingMsgActionEnum.ADDITEM) {
                     this.currentSymthink.addChild(data.value);
+                    this.mod$.next();
                 }
             }
         } catch (e) {
